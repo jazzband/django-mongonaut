@@ -18,3 +18,7 @@ Dependencies
 - mongoengine 0.5
 - sphinx (optional - for documentation generation)
 
+Features
+=========
+- Automatic introspection of mongoengine documents
+- Ability to constrain who sees what and can do what.
