@@ -9,16 +9,17 @@ class IndexView(ListView):
 
 class AppListView(ListView):
     """ :args: <app_label> """
-    pass
+
+    template_name = "mongonaut/app_list.html"
 
 class DocumentListView(ListView):
     """ :args: <app_label> <document_name> """
-    pass
+    template_name = "mongonaut/document_list.html"
     
 class DocumentDetailView(DetailView):
     """ :args: <app_label> <document_name> <id> """
-    pass
+    template_name = "mongonaut/document_detail.html"
 
-class DocumentEmbeddedDetailView(DetailView):
+class EmbeddedDocumentDetailView(DetailView):
     """ :args: <app_label> <document_name> <id> <???> """
-    pass
+    template_name = "mongonaut/embedded_document_detail.html"
