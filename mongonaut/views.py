@@ -1,8 +1,11 @@
 from django.views.generic import DetailView
 from django.views.generic import ListView
 
+from mongonaut.sites import NautSite
+
 class IndexView(ListView):
-    pass
+    queryset = NautSite._registry.iteritems()
+    template_name = "mongonaut/index.html"
 
 class AppListView(ListView):
     """ :args: <app_label> """
