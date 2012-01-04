@@ -1,3 +1,5 @@
+import importlib
+
 from django.views.generic import DetailView
 from django.views.generic import ListView
 
@@ -15,6 +17,23 @@ class AppListView(ListView):
 class DocumentListView(ListView):
     """ :args: <app_label> <document_name> """
     template_name = "mongonaut/document_list.html"
+    queryset = []
+    
+    def get_queryset(self):
+        queryset = super(DocumentListView, self).get_queryset(**kwargs):
+        app_label = self.kwargs.get('app_label')
+        document_name = self.kwargs.get('document_name')
+        
+        # TODO Allow this to be assigned via url variable
+        models_name = self.kwargs.get('models_name', 'models.py')
+        
+        # import the models file
+        model_name = "{0}.{1}".format(document_name, models_name)
+        models = importlib.import_module(model_name)
+        
+        # now get the document
+        document = getattr(models, document_name)
+        return document.objects.all()
     
 class DocumentDetailView(DetailView):
     """ :args: <app_label> <document_name> <id> """
