@@ -28,16 +28,21 @@ class DocumentListView(ListView):
 
         # import the models file
         model_name = "{0}.{1}".format(app_label, models_name)
-        print model_name
         models = importlib.import_module(model_name)
 
         # now get the document
-        document = getattr(models, document_name)
-        return document.objects.all()
+        self.document = getattr(models, document_name)
+        self.queryset = self.document.objects.all()
+        return self.queryset
 
     def get_context_data(self, **kwargs):
         context = super(DocumentListView, self).get_context_data(**kwargs)
         context['document_name'] = self.kwargs.get('document_name')
+        context['document'] = self.document
+
+        if self.queryset.count():
+            context['keys'] = sorted(self.document._fields.keys())
+
         return context
 
     

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load mongonaut_tags %}
 
 {% block content %}
 
@@ -7,14 +8,16 @@
 <table class="bordered-table zebra-striped">
     <thead>
         <tr>
-            <th>Mongo Id</th>
-            <th>Created</th>
-            <th>Title</th>
+            {% for key in keys %}
+                <th>{{ key }}</th>
+            {% endfor %}
         </tr>
     </thead>
     {% for obj in object_list %}
         <tr>
-            <td><a href="">{{ obj.id }}</a></td>
+            {% for key in keys %}
+                <td>{% get_document_value obj key %}</td>
+            {% endfor %}
         </tr>
     {% endfor %}
 </table>    
