@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ document_name }} List</h1>
+
+<table class="bordered-table zebra-striped">
+    <thead>
+        <tr>
+            <th>Mongo Id</th>
+            <th>Created</th>
+            <th>Title</th>
+        </tr>
+    </thead>
+    {% for obj in object_list %}
+        <tr>
+            <td><a href="">{{ obj.id }}</a></td>
+        </tr>
+    {% endfor %}
+</table>    
+
+{% endblock %}
