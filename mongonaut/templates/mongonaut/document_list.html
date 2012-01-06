@@ -5,21 +5,51 @@
 
 <h1>{{ document_name }} List</h1>
 
+{% if request.user.is_superuser %}
+    <form action="" method="post">
+    {% csrf_token %}
+    {% include "mongonaut/actions/action_buttons.html" %}
+{% endif %}
+
 <table class="bordered-table zebra-striped">
     <thead>
         <tr>
+            {% if request.user.is_superuser %}<th><input type="checkbox" name="check_all" /></th>{% endif %}
             {% for key in keys %}
                 <th>{{ key }}</th>
             {% endfor %}
         </tr>
     </thead>
+        
     {% for obj in object_list %}
         <tr>
+            {% if request.user.is_superuser %}<td><input type="checkbox" name="mongo_id" value="{{ obj.id }}" /></td>{% endif %}
             {% for key in keys %}
                 <td>{% get_document_value obj key %}</td>
             {% endfor %}
         </tr>
     {% endfor %}
 </table>    
+{% if request.user.is_superuser %}
+    {% include "mongonaut/actions/action_buttons.html" %}
+{% endif %}
+</form>
 
+
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(function() {
+    $('input[name="check_all"]').click ( function() {
+        if ($(this).is(":checked" )){
+            $('input[name="mongo_id"]').prop("checked", true);
+        }       
+        else
+         {
+            $('input[name="mongo_id"]').prop("checked", false);
+         }
+    });
+});
+</script>
 {% endblock %}

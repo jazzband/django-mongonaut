@@ -1,0 +1,9 @@
+{% if request.user.is_staff %}    
+    <div class="row">
+        <div class="span4">
+            <p>
+                <input type="submit" class="btn danger" value="delete" name="delete">
+            </p>
+        </div>    
+    </div>
+{% endif %}
