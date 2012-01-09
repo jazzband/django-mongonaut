@@ -137,5 +137,5 @@ LOGGING = {
     }
 }
 
-from mongoengine import *
-connect('tumblelog')
+from mongoengine import connect
+connect('example_blog')
