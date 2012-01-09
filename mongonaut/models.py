@@ -1,3 +1,1 @@
-from django.db import models
-
-# Create your models here.
+""" Here because Django requires this as boilerplate. """

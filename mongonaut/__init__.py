@@ -1,3 +1,5 @@
+""" Copied nearly line for line from https://github.com/django/django/blob/master/django/contrib/admin/__init__.py"""
+
 def autodiscover():
     """
     Auto-discover INSTALLED_APPS admin.py modules and fail silently when
