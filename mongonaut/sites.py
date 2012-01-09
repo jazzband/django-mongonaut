@@ -25,7 +25,7 @@ LOGIN_FORM_KEY = 'this_is_the_login_form'
 
 class NautSite(object):
     """
-    A NauSite object encapsulates an instance of the mongonaut application, ready
+    A NautSite object encapsulates an instance of the mongonaut application, ready
     to be hooked in to your URLconf. Models are registered with the mongonaut using the
     register() method, and the get_urls() method can then be used to access Django view
     functions that present a full admin interface for the collection of registered
@@ -80,9 +80,10 @@ class NautSite(object):
     def has_permission(self, request):
         """
         Returns True if the given HttpRequest has permission to view
-        *at least one* page in the admin site.
+        *at least one* page in the site.
         """
-        return request.user.is_active and request.user.is_staff
+        # TODO - make this flexible
+        return request.user.is_active #and request.user.is_staff
 
     def check_dependencies(self):
         """
@@ -91,15 +92,6 @@ class NautSite(object):
         The default implementation checks that LogEntry, ContentType and the
         auth context processor are installed.
         """
-        from django.contrib.admin.models import LogEntry
-        from django.contrib.contenttypes.models import ContentType
-
-        if not LogEntry._meta.installed:
-            raise ImproperlyConfigured("Put 'django.contrib.admin' in your "
-                "INSTALLED_APPS setting in order to use the admin application.")
-        if not ContentType._meta.installed:
-            raise ImproperlyConfigured("Put 'django.contrib.contenttypes' in "
-                "your INSTALLED_APPS setting in order to use the admin application.")
         if not ('django.contrib.auth.context_processors.auth' in settings.TEMPLATE_CONTEXT_PROCESSORS or
             'django.core.context_processors.auth' in settings.TEMPLATE_CONTEXT_PROCESSORS):
             raise ImproperlyConfigured("Put 'django.contrib.auth.context_processors.auth' "
@@ -156,7 +148,7 @@ class NautSite(object):
             url(r'^$',
                 wrap(self.index),
                 name='index'),
-            url(r'^r/(?P<content_type_id>\d+)/(?P<object_id>.+)/$',
+            url(r'^r/(?P<app_label>\d+)/(?P<document_name>.+)/$',
                 wrap(contenttype_views.shortcut)),
             url(r'^(?P<app_label>\w+)/$',
                 wrap(self.app_index),
@@ -245,7 +237,7 @@ class NautSite(object):
         }
         context.update(extra_context or {})
         context_instance = template.RequestContext(request, current_app=self.name)
-        return render_to_response(self.index_template or 'admin/index.html', context,
+        return render_to_response(self.index_template or 'mongonaut/index.html', context,
             context_instance=context_instance
         )
 
