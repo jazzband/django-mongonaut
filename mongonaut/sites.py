@@ -1,25 +1,20 @@
 #import re
 #import sys
 
-from django import http, template
-from django.contrib.admin import ModelAdmin
-from django.contrib.admin.forms import AdminAuthenticationForm
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.contenttypes import views as contenttype_views
+from django.conf import settings
 from django.views.decorators.csrf import csrf_protect
-from django.db.models.base import ModelBase
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.utils.functional import update_wrapper
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
-from django.conf import settings
-from django.contrib.admin.sites import NotRegistered, AlreadyRegistered
 
 from mongoengine.base import TopLevelDocumentMetaclass
+
+from mongonaut.options import ModelAdmin
 
 LOGIN_FORM_KEY = 'this_is_the_login_form'
 
@@ -59,6 +54,16 @@ class NautSite(object):
 
         If a model is abstract, this will raise ImproperlyConfigured.
         """
+        
+        if not admin_class:
+            admin_class = ModelAdmin
+            
+        if isinstance(model_or_iterable, TopLevelDocumentMetaclass):
+            model_or_iterable = [model_or_iterable]
+            
+        for model in model_or_iterable:            
+            if model in self._registry:
+                raise AlreadyRegistered('The model %s is already registered' % model.__name__)
 
         # Instantiate the admin class to save in the registry
         self._registry[model] = admin_class(model, self)
@@ -77,225 +82,7 @@ class NautSite(object):
             del self._registry[model]
 
 
-    def has_permission(self, request):
-        """
-        Returns True if the given HttpRequest has permission to view
-        *at least one* page in the site.
-        """
-        # TODO - make this flexible
-        return request.user.is_active #and request.user.is_staff
-
-    def check_dependencies(self):
-        """
-        Check that all things needed to run the admin have been correctly installed.
-
-        The default implementation checks that LogEntry, ContentType and the
-        auth context processor are installed.
-        """
-        if not ('django.contrib.auth.context_processors.auth' in settings.TEMPLATE_CONTEXT_PROCESSORS or
-            'django.core.context_processors.auth' in settings.TEMPLATE_CONTEXT_PROCESSORS):
-            raise ImproperlyConfigured("Put 'django.contrib.auth.context_processors.auth' "
-                "in your TEMPLATE_CONTEXT_PROCESSORS setting in order to use the admin application.")
-
-    def admin_view(self, view, cacheable=False):
-        """
-        Decorator to create an admin view attached to this ``AdminSite``. This
-        wraps the view and provides permission checking by calling
-        ``self.has_permission``.
-
-        You'll want to use this from within ``AdminSite.get_urls()``:
-
-            class MyAdminSite(AdminSite):
-
-                def get_urls(self):
-                    from django.conf.urls.defaults import patterns, url
-
-                    urls = super(MyAdminSite, self).get_urls()
-                    urls += patterns('',
-                        url(r'^my_view/$', self.admin_view(some_view))
-                    )
-                    return urls
-
-        By default, admin_views are marked non-cacheable using the
-        ``never_cache`` decorator. If the view can be safely cached, set
-        cacheable=True.
-        """
-        def inner(request, *args, **kwargs):
-            if not self.has_permission(request):
-                return self.login(request)
-            return view(request, *args, **kwargs)
-        if not cacheable:
-            inner = never_cache(inner)
-        # We add csrf_protect here so this function can be used as a utility
-        # function for any view, without having to repeat 'csrf_protect'.
-        if not getattr(view, 'csrf_exempt', False):
-            inner = csrf_protect(inner)
-        return update_wrapper(inner, view)
-
-    def get_urls(self):
-        from django.conf.urls.defaults import patterns, url, include
-
-        if settings.DEBUG:
-            self.check_dependencies()
-
-        def wrap(view, cacheable=False):
-            def wrapper(*args, **kwargs):
-                return self.admin_view(view, cacheable)(*args, **kwargs)
-            return update_wrapper(wrapper, view)
-
-        # Admin-site-wide views.
-        urlpatterns = patterns('',
-            url(r'^$',
-                wrap(self.index),
-                name='index'),
-            url(r'^r/(?P<app_label>\d+)/(?P<document_name>.+)/$',
-                wrap(contenttype_views.shortcut)),
-            url(r'^(?P<app_label>\w+)/$',
-                wrap(self.app_index),
-                name='app_list')
-        )
-
-
-        # Add in each model's views.
-        for model, model_admin in self._registry.iteritems():
-            # Try to read app_label and module_name from classes _meta attribute.
-            # If they don't exist we try to add a mongo document. app_label and module_name
-            # are then created here and added to the document's _meta.
-            try:
-                app_label = model._meta.app_label
-            except AttributeError:
-                app_label = model_admin.opts.app_label
-                
-            try:
-                module_name = model._meta.module_name
-            except AttributeError:
-                module_name = model_admin.opts.module_name
-            
-            urlpatterns += patterns('',
-                url(r'^%s/%s/' % (app_label, module_name),
-                    include(model_admin.urls))
-            )
-        return urlpatterns
-
-    @property
-    def urls(self):
-        return self.get_urls(), self.app_name, self.name
-
-
-    @never_cache
-    def index(self, request, extra_context=None):
-        """
-        Displays the main admin index page, which lists all of the installed
-        apps that have been registered in this site.
-        """
-        app_dict = {}
-        user = request.user
-        for model, model_admin in self._registry.items():
-            try:
-                app_label = model._meta.app_label
-            except AttributeError:
-                app_label = model_admin.opts.app_label
-                
-            # Replace with internal permission system
-            if user.is_active() and user.is_staff():
-                perms = model_admin.get_model_perms(request)
-
-                # Check whether user has any perm for this module.
-                # If so, add the module to the model_list.
-                if True in perms.values():
-                    try:
-                        name = capfirst(model._meta.verbose_name_plural)
-                    except AttributeError:
-                        name = capfirst(model_admin.opts.verbose_name_plural)
-                    model_dict = {
-                        'name': name,
-                        'admin_url': mark_safe('%s/%s/' % (app_label, model.__name__.lower())),
-                        'perms': perms,
-                    }
-                    if app_label in app_dict:
-                        app_dict[app_label]['models'].append(model_dict)
-                    else:
-                        app_dict[app_label] = {
-                            'name': app_label.title(),
-                            'app_url': app_label + '/',
-                            'has_module_perms': has_module_perms,
-                            'models': [model_dict],
-                        }
-
-        # Sort the apps alphabetically.
-        app_list = app_dict.values()
-        app_list.sort(key=lambda x: x['name'])
-
-        # Sort the models alphabetically within each app.
-        for app in app_list:
-            app['models'].sort(key=lambda x: x['name'])
-
-        context = {
-            'title': _('Site administration'),
-            'app_list': app_list,
-            'root_path': self.root_path,
-        }
-        context.update(extra_context or {})
-        context_instance = template.RequestContext(request, current_app=self.name)
-        return render_to_response(self.index_template or 'mongonaut/index.html', context,
-            context_instance=context_instance
-        )
-
-    def app_index(self, request, app_label, extra_context=None):
-        user = request.user
-        
-        # TODO - replace with mongonaut permissions
-        has_module_perms = user.has_module_perms(app_label)
-        app_dict = {}
-        for model, model_admin in self._registry.items():
-            try:
-                model_app_label = model._meta.app_label
-            except AttributeError:
-                model_app_label = model._admin_opts.app_label
-            if app_label == model_app_label:
-                if has_module_perms:
-                    perms = model_admin.get_model_perms(request)
-
-                    # Check whether user has any perm for this module.
-                    # If so, add the module to the model_list.
-                    if True in perms.values():
-                        try:
-                            name = capfirst(model._meta.verbose_name_plural)
-                        except AttributeError:
-                            name = capfirst(model._admin_opts.verbose_name_plural)
-                        model_dict = {
-                            'name': name,
-                            'admin_url': '%s/' % model.__name__.lower(),
-                            'perms': perms,
-                        }
-                        if app_dict:
-                            app_dict['models'].append(model_dict),
-                        else:
-                            # First time around, now that we know there's
-                            # something to display, add in the necessary meta
-                            # information.
-                            app_dict = {
-                                'name': app_label.title(),
-                                'app_url': '',
-                                'has_module_perms': has_module_perms,
-                                'models': [model_dict],
-                            }
-        if not app_dict:
-            raise http.Http404('The requested admin page does not exist.')
-        # Sort the models alphabetically within each app.
-        app_dict['models'].sort(key=lambda x: x['name'])
-        context = {
-            'title': _('%s administration') % capfirst(app_label),
-            'app_list': [app_dict],
-            'root_path': self.root_path,
-        }
-        context.update(extra_context or {})
-        context_instance = template.RequestContext(request, current_app=self.name)
-        return render_to_response(self.app_index_template or ('admin/%s/app_index.html' % app_label,
-            'admin/app_index.html'), context,
-            context_instance=context_instance
-        )
 
 # This global object represents the default admin site, for the common case.
 # You can instantiate AdminSite in your own code to create a custom admin site.
-site = AdminSite()
+site = NautSite()

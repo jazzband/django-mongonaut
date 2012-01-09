@@ -1,0 +1,3 @@
+class ModelAdmin(object):
+    pass
+    
