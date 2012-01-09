@@ -64,6 +64,13 @@ class NautSite(object):
         for model in model_or_iterable:            
             if model in self._registry:
                 raise AlreadyRegistered('The model %s is already registered' % model.__name__)
+                
+                if options:
+                    # For reasons I don't quite understand, without a __module__
+                    # the created class appears to "live" in the wrong place,
+                    # which causes issues later on.
+                    options['__module__'] = __name__
+                    admin_class = type("%sAdmin" % model.__name__, (admin_class,), options)                
 
         # Instantiate the admin class to save in the registry
         self._registry[model] = admin_class(model, self)
