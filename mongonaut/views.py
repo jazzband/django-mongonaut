@@ -1,4 +1,4 @@
-import importlib
+from django.utils.importlib import import_module
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -8,11 +8,15 @@ from django.views.generic.edit import FormView
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
 
-from mongonaut.forms import ActionForm
+from mongonaut.forms import DocumentListForm
 
 class IndexView(ListView):
-    queryset = NautSite._registry.iteritems()
+    #queryset = NautSite._registry.iteritems()
+    queryset = []
     template_name = "mongonaut/index.html"
+    
+    def has_header(self):
+        return True
 
 class AppListView(ListView):
     """ :args: <app_label> """
@@ -24,7 +28,7 @@ class DocumentListView(FormView):
     
         TODO - Make a generic document fetcher method
     """
-    form_class = ActionForm
+    form_class = DocumentListForm
     success_url = '/'
     template_name = "mongonaut/document_list.html"
 
@@ -38,7 +42,7 @@ class DocumentListView(FormView):
         
         # import the models file
         model_name = "{0}.{1}".format(self.app_label, models_name)
-        models = importlib.import_module(model_name)
+        models = import_module(model_name)
         
         # now get the document
         self.document = getattr(models, self.document_name)

@@ -2,6 +2,7 @@
 #import sys
 
 from django.conf import settings
+from django import http
 from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
@@ -87,8 +88,91 @@ class NautSite(object):
             if model not in self._registry:
                 raise NotRegistered('The model %s is not registered' % model.__name__)
             del self._registry[model]
+            
+    @property
+    def urls(self):
+        return self.get_urls(), self.app_name, self.name
 
+    def get_urls(self):
+        from django.conf.urls.defaults import patterns, url, include
 
+        #if settings.DEBUG:
+        #    self.check_dependencies()
+
+        def wrap(view, cacheable=False):
+            def wrapper(*args, **kwargs):
+                return self.admin_view(view, cacheable)(*args, **kwargs)
+            return update_wrapper(wrapper, view)
+            
+        # Admin-site-wide views.
+        urlpatterns = patterns('',
+            url(r'^$',
+                wrap(self.index),
+                name='index'),
+            url(r'^(?P<app_label>\w+)/$',
+                wrap(self.app_index),
+                name='app_list')
+        )
+        # Add in each model's views.
+        for model, model_admin in self._registry.iteritems():
+            urlpatterns += patterns('',
+                url(r'^%s/%s/' % (model._meta.app_label, model._meta.module_name),
+                    include(model_admin.urls))
+            )
+        print urlpatterns
+        return urlpatterns        
+            
+    def admin_view(self, view, cacheable=False):
+        """
+        Decorator to create an admin view attached to this ``AdminSite``. This
+        wraps the view and provides permission checking by calling
+        ``self.has_permission``.
+
+        You'll want to use this from within ``AdminSite.get_urls()``:
+
+            class MyAdminSite(AdminSite):
+
+                def get_urls(self):
+                    from django.conf.urls import patterns, url
+
+                    urls = super(MyAdminSite, self).get_urls()
+                    urls += patterns('',
+                        url(r'^my_view/$', self.admin_view(some_view))
+                    )
+                    return urls
+
+        By default, admin_views are marked non-cacheable using the
+        ``never_cache`` decorator. If the view can be safely cached, set
+        cacheable=True.
+        """
+        def inner(request, *args, **kwargs):
+            # TODO create new login/permissions scheme similiar to this
+            #if not self.has_permission(request):
+            #    return self.login(request)
+            return view(request, *args, **kwargs)
+        if not cacheable:
+            inner = never_cache(inner)
+        # We add csrf_protect here so this function can be used as a utility
+        # function for any view, without having to repeat 'csrf_protect'.
+        if not getattr(view, 'csrf_exempt', False):
+            inner = csrf_protect(inner)
+        return update_wrapper(inner, view)            
+        
+    @never_cache
+    def index(self, request, extra_context=None):
+        """
+        Displays the main admin index page, which lists all of the installed
+        apps that have been registered in this site.
+        """
+        from mongonaut.views import IndexView
+        return IndexView
+            
+    def app_index(self, request, app_label, extra_context=None):
+        user = request.user
+        has_module_perms = user.has_module_perms(app_label)
+        app_dict = {}
+        for model, model_admin in self._registry.items():            
+            pass
 
 # This global object represents the default admin site, for the common case.
 # You can instantiate AdminSite in your own code to create a custom admin site.

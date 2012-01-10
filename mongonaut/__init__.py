@@ -1,5 +1,7 @@
 """ Copied nearly line for line from https://github.com/django/django/blob/master/django/contrib/admin/__init__.py"""
 
+from mongonaut.sites import NautSite, site
+
 def autodiscover():
     """
     Auto-discover INSTALLED_APPS admin.py modules and fail silently when
@@ -28,5 +30,5 @@ def autodiscover():
             # Decide whether to bubble up this error. If the app just
             # doesn't have an admin module, we can ignore the error
             # attempting to import it, otherwise we want it to bubble up.
-            if module_has_submodule(mod, 'admin'):
+            if module_has_submodule(mod, 'mongoadmin'):
                 raise
