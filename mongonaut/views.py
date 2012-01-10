@@ -36,6 +36,7 @@ class IndexView(ListView):
             try:
                 module = import_module(mongoadmin)
             except ImportError:
+                print app_name
                 continue
             
             app_store = AppStore(module)
