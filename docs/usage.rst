@@ -38,8 +38,7 @@ Simple version. Create a mongonaut.py module in your app:
     
     Post.mongoadmin = MongoAdmin()
 
-    
-Complex version: Create a mongonaut.py module in your app:
+Complex version. Create a mongonaut.py module in your app:
 
 .. sourcecode:: python
 
@@ -79,7 +78,7 @@ Complex version: Create a mongonaut.py module in your app:
             """ This will be attached to a field in the generated form 
                 specified in a dictionary
             """
-            do XYZ
+            do_xyz()
             # TODO write this code or something like it
     
     Article.mongoadmin = ArticleAdmin()
