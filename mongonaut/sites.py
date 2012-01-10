@@ -1,0 +1,3 @@
+class MongoAdmin(object):
+    
+    pass
