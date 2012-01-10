@@ -11,12 +11,17 @@ from mongoengine.fields import EmbeddedDocumentField, ListField
 from mongonaut.forms import DocumentListForm
 
 class IndexView(ListView):
-    #queryset = NautSite._registry.iteritems()
-    queryset = []
+
     template_name = "mongonaut/index.html"
+    queryset = []
     
-    def has_header(self):
-        return True
+    def get_queryset(self):
+        apps = []
+        for app_name in settings.INSTALLED_APPS:
+            model_name = "{0}.mongoadmin".format(self.app_name)
+            model = import_module(model_name)
+            apps.append(dict(app_name=app))
+        return apps
 
 class AppListView(ListView):
     """ :args: <app_label> """
@@ -31,7 +36,6 @@ class DocumentListView(FormView):
     form_class = DocumentListForm
     success_url = '/'
     template_name = "mongonaut/document_list.html"
-
     
     def get_queryset(self):
         self.app_label = self.kwargs.get('app_label')

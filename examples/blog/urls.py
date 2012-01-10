@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 
-import mongonaut
-mongonaut.autodiscover()
+#import mongonaut
+#mongonaut.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
@@ -12,5 +12,5 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^mongonaut/', include(mongonaut.sites.site.urls)),
+    url(r'^mongonaut/', include('mongonaut.urls')),
 )

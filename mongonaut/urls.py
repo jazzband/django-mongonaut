@@ -7,6 +7,11 @@ from mongonaut import views
 
 urlpatterns = patterns('',
     url(
+        regex=r'^$',
+        view=views.IndexView.as_view(),
+        name="index"
+    ),
+    url(
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/$',
         view=views.DocumentListView.as_view(),
         name="document_list"

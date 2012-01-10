@@ -1,6 +1,6 @@
 """ Copied nearly line for line from https://github.com/django/django/blob/master/django/contrib/admin/__init__.py"""
 
-from mongonaut.sites import NautSite, site
+from mongonaut.sites import NautSite, site, SESSION
 
 def autodiscover():
     """
@@ -25,7 +25,7 @@ def autodiscover():
             # this import will have to reoccur on the next request and this
             # could raise NotRegistered and AlreadyRegistered exceptions
             # (see #8245).
-            site._registry = before_import_registry
+            SESSION['registry'] = before_import_registry
 
             # Decide whether to bubble up this error. If the app just
             # doesn't have an admin module, we can ignore the error
