@@ -1,4 +1,4 @@
-from django.core.paginator import Paginat
+#from django.core.paginator import Paginate
 
 try:
     import floppyforms as forms
@@ -44,5 +44,5 @@ class MongoAdmin(BaseMongoAdmin):
     search_fields = ()
     save_as = False
     save_on_top = False
-    paginator = Paginator
+    #paginator = Paginator
     inlines = []

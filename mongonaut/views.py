@@ -35,9 +35,10 @@ class IndexView(ListView):
             mongoadmin = "{0}.mongoadmin".format(app_name)
             try:
                 module = import_module(mongoadmin)
-            except ImportError:
-                print app_name
-                continue
+            except ImportError as e:
+                if e.message == "No module named mongoadmin":
+                    continue
+                raise e
             
             app_store = AppStore(module)
             apps.append(dict(
