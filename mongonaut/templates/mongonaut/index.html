@@ -1,1 +1,29 @@
 {% extends "mongonaut/base.html" %}
+{% load mongonaut_tags %}
+
+{% block content %}
+
+<h1>Mongonaut</h1>
+
+{{ object_list }}
+
+{% for app in object_list %}
+
+    <table class="bordered-table zebra-striped">
+        <thead>
+            <tr>
+                <th colspan=3>{{ app.app_name.title }}</th>
+            </tr>
+        </thead>
+        
+        {% for model in app.obj.models %}
+            <tr>
+                <td><a href="{% url document_list app.app_name model.name %}">{{ model.name }}</a></td>
+                <td>{{ model.add }}</td>
+                <td>{{ model.change }}</td>            
+            </tr>
+        {% endfor %}
+    </table>    
+{% endfor %}
+
+{% endblock %}

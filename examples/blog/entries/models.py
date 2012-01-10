@@ -5,6 +5,10 @@ class User(Document):
     email = StringField(required=True)
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
+    
+class Comment(EmbeddedDocument):
+    content = StringField()
+    name = StringField(max_length=120)    
 
 class Post(Document):
     title = StringField(max_length=120, required=True)
@@ -13,6 +17,3 @@ class Post(Document):
     tags = ListField(StringField(max_length=30))
     comments = ListField(EmbeddedDocumentField(Comment))    
 
-class Comment(EmbeddedDocument):
-    content = StringField()
-    name = StringField(max_length=120)

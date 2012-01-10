@@ -10,6 +10,20 @@ from mongoengine.fields import EmbeddedDocumentField, ListField
 
 from mongonaut.forms import DocumentListForm
 
+class AppStore(object):
+    
+    def __init__(self, module):
+        self.models = []
+        for key in module.__dict__.keys():
+            model_candidate = getattr(module, key)
+            if hasattr(model_candidate, 'mongoadmin'):
+                self.add_model(model_candidate)
+                
+    def add_model(self, model):
+        model.name = model.__name__
+        self.models.append(model)
+        
+
 class IndexView(ListView):
 
     template_name = "mongonaut/index.html"
@@ -18,9 +32,17 @@ class IndexView(ListView):
     def get_queryset(self):
         apps = []
         for app_name in settings.INSTALLED_APPS:
-            model_name = "{0}.mongoadmin".format(self.app_name)
-            model = import_module(model_name)
-            apps.append(dict(app_name=app))
+            mongoadmin = "{0}.mongoadmin".format(app_name)
+            try:
+                module = import_module(mongoadmin)
+            except ImportError:
+                continue
+            
+            app_store = AppStore(module)
+            apps.append(dict(
+                app_name=app_name,
+                obj=app_store
+            ))
         return apps
 
 class AppListView(ListView):
