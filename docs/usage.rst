@@ -59,7 +59,7 @@ Complex version. Create a mongonaut.py module in your app:
         # This shows up in the DocumentDetailView of the Posts.
         document_actions = [generate_word_count,]
         
-        field_actions = {confirm_images: image}
+        field_actions = {confirm_images: 'image'}
         
         def publish_all_drafts(self):
             """ This shows up on the DocumentListView of the Posts """
