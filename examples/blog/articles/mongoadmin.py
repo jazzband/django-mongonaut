@@ -1,5 +1,5 @@
 from mongonaut.sites import MongoAdmin
 
-from entries.models import Post
+from articles.models import Post
 
 Post.mongoadmin = MongoAdmin()
