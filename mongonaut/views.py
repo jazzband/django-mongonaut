@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
@@ -114,11 +115,42 @@ class DocumentListView(FormView):
             
         return self.form_invalid(form)                                    
 
-
     
-class DocumentDetailView(DetailView):
+
+class DocumentDetailView(TemplateView):
     """ :args: <app_label> <document_name> <id> """
     template_name = "mongonaut/document_detail.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(DocumentDetailView, self).get_context_data(**kwargs)
+        
+        self.app_label = self.kwargs.get('app_label')
+        self.document_name = self.kwargs.get('document_name')
+        self.ident = self.kwargs.get('id')
+        
+        # TODO Allow this to be assigned via url variable
+        models_name = self.kwargs.get('models_name', 'models')
+        
+        # import the models file
+        model_name = "{0}.{1}".format(self.app_label, models_name)
+        models = import_module(model_name)
+        
+        # now get the document
+        self.document_type = getattr(models, self.document_name)
+        self.document = self.document_type.objects.get(id=self.ident)    
+        
+        context['document'] = self.document
+        context['app_label'] = self.app_label  
+        context['document_name'] = self.document_name
+
+        return context
+ 
+#class DocumentDetailFormView(FormView):
+#    """ :args: <app_label> <document_name> <id> """#
+
+#    template_name = "mongonaut/document_detail_form.html"
+#    form_class = DocumentListForm
+#    success_url = '/'
 
 class EmbeddedDocumentDetailView(DetailView):
     """ :args: <app_label> <document_name> <id> <???> """
