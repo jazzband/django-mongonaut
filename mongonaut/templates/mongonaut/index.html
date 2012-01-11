@@ -5,6 +5,8 @@
 
 <h1>Mongonaut</h1>
 
+<div class="row">
+    <div class="span16">
 {% for app in object_list %}
 
     <table class="bordered-table zebra-striped">
@@ -17,11 +19,13 @@
         {% for model in app.obj.models %}
             <tr>
                 <td><a href="{% url document_list app.app_name model.name %}">{{ model.name }}</a></td>
-                <td>{{ model.add }}</td>
-                <td>{{ model.change }}</td>            
+                <td>Add</td>
+                <td><a href="{% url document_list app.app_name model.name %}">Change</a></td>            
             </tr>
         {% endfor %}
     </table>    
 {% endfor %}
+    </div>
+</div>    
 
 {% endblock %}
