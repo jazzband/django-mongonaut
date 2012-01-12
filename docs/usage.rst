@@ -2,7 +2,7 @@
 Usage
 =====
 
-.. warning:: This is theoritical and does not work! Don't use this yet!
+.. warning:: This is still in progress. Use at your own discretion!
 
 In your app's models.py create something:
 
