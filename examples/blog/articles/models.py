@@ -11,6 +11,7 @@ class Comment(EmbeddedDocument):
     name = StringField(max_length=120)    
 
 class Post(Document):
+    # See Post.title.max_length to make validation better!
     title = StringField(max_length=120, required=True)
     author = ReferenceField(User)
     content = StringField()    
