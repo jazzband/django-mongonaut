@@ -1,3 +1,6 @@
+""" TODO- too much cut-and-paste going on. Fix plz"""
+
+
 from django.utils.importlib import import_module
 
 from django.conf import settings
@@ -142,9 +145,19 @@ class DocumentDetailView(TemplateView):
         context['document'] = self.document
         context['app_label'] = self.app_label  
         context['document_name'] = self.document_name
+        context['keys'] = ['id',]
+        for key in sorted([x for x in self.document._fields.keys() if x != 'id']):
+            # TODO - Figure out why this EmbeddedDocumentField and ListField breaks this view
+            # Note - This is the challenge part, right? :)
+            if isinstance(self.document._fields[key], EmbeddedDocumentField):            
+                continue
+            if isinstance(self.document._fields[key], ListField):                                
+                continue
+            context['keys'].append(key)
 
         return context
  
+# TODO - get working
 #class DocumentDetailFormView(FormView):
 #    """ :args: <app_label> <document_name> <id> """#
 

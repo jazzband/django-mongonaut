@@ -25,7 +25,12 @@
         <tr>
             {% if request.user.is_superuser %}<td><input type="checkbox" name="mongo_id" value="{{ obj.id }}" /></td>{% endif %}
             {% for key in keys %}
-                <td>{% get_document_value obj key %}</td>
+                {% if key == 'id' %}
+                    <td><a href="{% url document_detail app_label document_name obj.id %}">{{ obj.id }}</a></td>                                
+                {% else %}
+                    <td>{% get_document_value obj key %}</td>                
+                {% endif %}
+
             {% endfor %}
         </tr>
     {% endfor %}

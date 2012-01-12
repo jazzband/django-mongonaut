@@ -9,7 +9,20 @@
 
 <div class="row">
     <div class="span16">
-
+        <table class="bordered-table zebra-striped">
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>                    
+                </tr>
+            </thead>
+            {% for key in keys %}
+                <tr>
+                    <td>{{ key}}</td>
+                    <td>{% get_document_value document key %}</td>                    
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>    
 
