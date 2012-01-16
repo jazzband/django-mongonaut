@@ -10,10 +10,15 @@ Extracted from http://consumernotebook.com, django-mongonaut is an introspective
 
 By writing it from scratch I get to avoid trying to staple ORM functionality on top of a NoSQL key/value store.
 
+Support this project!
+=====================
+
+Sign up for an account on http://consumernotebook.com. ;)
+
 Installation
 ============
 
-Not yet! 
+Not yet!
 
 Dependencies
 ============
