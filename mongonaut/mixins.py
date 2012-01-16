@@ -2,8 +2,6 @@ from django.utils.importlib import import_module
 
 from django.conf import settings
 
-from mongonaut.exceptions import MissingPreliminaryMethod
-
 class AppStore(object):
     
     def __init__(self, module):
@@ -50,9 +48,9 @@ class MongonautViewMixin(object):
         self.model_name = "{0}.{1}".format(self.app_label, self.models_name)
         self.models = import_module(self.model_name)
         
-    def get_mongoadmin(self):
-        """ Returns the MongoAdmin object for an app_label/document_name 
-            Requires 
+    def set_mongoadmin(self):
+        """ Returns the MongoAdmin object for an app_label/document_name style view
+            NOTE: Might refactor this out later
         """
         if not hasattr(self, "document_name"):
             self.set_mongonaut_base()
@@ -60,5 +58,15 @@ class MongonautViewMixin(object):
         for mongoadmin in self.get_mongoadmins():
             for model in mongoadmin['obj'].models:
                 if model.name == self.document_name:
-                    return model.mongoadmin
-        
+                    self.mongoadmin = model.mongoadmin
+                    break
+        # TODO change this to use 'finally' or 'else' or something
+        if not hasattr(self, "mongoadmin"):
+            raise NoMongoAdminSpecified("No MongoAdmin for {0}.{1}".format(self.app_label, self.document_name))
+                    
+    def get_permissions(self, context={}):
+        """ Provides permissions for mongoadmin for use in the context"""
+        context['has_permission'] = self.mongoadmin.has_permission(self.request)
+        context['has_staff_permission'] = self.mongoadmin.has_staff_permission(self.request)        
+        return context
+            

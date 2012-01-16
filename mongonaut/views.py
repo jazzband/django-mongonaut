@@ -99,7 +99,8 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
                 continue
             context['keys'].append(key)
             
-        self.get_mongoadmin()
+        self.set_mongoadmin()
+        context = self.get_permissions(context)
 
         return context
  
