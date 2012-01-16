@@ -7,7 +7,7 @@ from django.views.generic.edit import FormView
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
 
-from mongonaut.forms import DocumentListForm
+from mongonaut.forms import DocumentListForm, DocumentDetailForm, DocumentDetailFormFactory
 from mongonaut.mixins import MongonautViewMixin
 
 class IndexView(ListView, MongonautViewMixin):
@@ -104,13 +104,13 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
 
         return context
  
-# TODO - get working
-#class DocumentDetailFormView(FormView):
-#    """ :args: <app_label> <document_name> <id> """#
 
-#    template_name = "mongonaut/document_detail_form.html"
-#    form_class = DocumentListForm
-#    success_url = '/'
+class DocumentDetailFormView(FormView, MongonautViewMixin):
+    """ :args: <app_label> <document_name> <id> """#
+
+    template_name = "mongonaut/document_detail_form.html"
+    form_class = DocumentDetailForm
+    success_url = '/'
 
 class EmbeddedDocumentDetailView(DetailView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> <???> """

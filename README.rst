@@ -18,7 +18,7 @@ Sign up for an account on http://consumernotebook.com. It's free and always will
 Installation
 ============
 
-Not yet!
+Not yet! This is pre-alpha, and I'm still abstracting/enhancing/extracting from production code.
 
 Dependencies
 ============
