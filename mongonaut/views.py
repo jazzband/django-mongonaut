@@ -1,8 +1,3 @@
-""" TODO- too much cut-and-paste going on. Fix plz"""
-
-
-from django.utils.importlib import import_module
-
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView
@@ -13,63 +8,22 @@ from django.views.generic.edit import FormView
 from mongoengine.fields import EmbeddedDocumentField, ListField
 
 from mongonaut.forms import DocumentListForm
+from mongonaut.mixins import MongonautViewMixin
 
-class AppStore(object):
-    
-    def __init__(self, module):
-        self.models = []
-        for key in module.__dict__.keys():
-            model_candidate = getattr(module, key)
-            if hasattr(model_candidate, 'mongoadmin'):
-                self.add_model(model_candidate)
-                
-    def add_model(self, model):
-        model.name = model.__name__
-        self.models.append(model)
-        
-class MongonautMixin(object):
-    
-    def set_mongonaut_base(self):
-        self.app_label = self.kwargs.get('app_label')
-        self.document_name = self.kwargs.get('document_name')
-    
-        # TODO Allow this to be assigned via url variable
-        self.models_name = self.kwargs.get('models_name', 'models')
-    
-        # import the models file
-        self.model_name = "{0}.{1}".format(self.app_label, self.models_name)
-        self.models = import_module(self.model_name)
-            
-
-class IndexView(ListView):
+class IndexView(ListView, MongonautViewMixin):
 
     template_name = "mongonaut/index.html"
     queryset = []
     
     def get_queryset(self):
-        apps = []
-        for app_name in settings.INSTALLED_APPS:
-            mongoadmin = "{0}.mongoadmin".format(app_name)
-            try:
-                module = import_module(mongoadmin)
-            except ImportError as e:
-                if e.message == "No module named mongoadmin":
-                    continue
-                raise e
-            
-            app_store = AppStore(module)
-            apps.append(dict(
-                app_name=app_name,
-                obj=app_store
-            ))
-        return apps
+        return self.get_mongoadmins()
 
-class AppListView(ListView):
+class AppListView(ListView, MongonautViewMixin):
     """ :args: <app_label> """
 
     template_name = "mongonaut/app_list.html"
 
-class DocumentListView(FormView, MongonautMixin):
+class DocumentListView(FormView, MongonautViewMixin):
     """ :args: <app_label> <document_name> 
     
         TODO - Make a generic document fetcher method
@@ -121,9 +75,7 @@ class DocumentListView(FormView, MongonautMixin):
             
         return self.form_invalid(form)                                    
 
-    
-
-class DocumentDetailView(TemplateView, MongonautMixin):
+class DocumentDetailView(TemplateView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> """
     template_name = "mongonaut/document_detail.html"
     
@@ -146,6 +98,8 @@ class DocumentDetailView(TemplateView, MongonautMixin):
             if isinstance(self.document._fields[key], ListField):                                
                 continue
             context['keys'].append(key)
+            
+        self.get_mongoadmin()
 
         return context
  
@@ -157,6 +111,6 @@ class DocumentDetailView(TemplateView, MongonautMixin):
 #    form_class = DocumentListForm
 #    success_url = '/'
 
-class EmbeddedDocumentDetailView(DetailView):
+class EmbeddedDocumentDetailView(DetailView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> <???> """
     template_name = "mongonaut/embedded_document_detail.html"
