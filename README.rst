@@ -13,7 +13,7 @@ By writing it from scratch I get to avoid trying to staple ORM functionality on 
 Support this project!
 =====================
 
-Sign up for an account on http://consumernotebook.com. ;)
+Sign up for an account on http://consumernotebook.com. It's free and always will be!
 
 Installation
 ============
