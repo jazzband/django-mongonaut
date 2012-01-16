@@ -27,6 +27,19 @@ class AppStore(object):
         model.name = model.__name__
         self.models.append(model)
         
+class MongonautMixin(object):
+    
+    def set_mongonaut_base(self):
+        self.app_label = self.kwargs.get('app_label')
+        self.document_name = self.kwargs.get('document_name')
+    
+        # TODO Allow this to be assigned via url variable
+        self.models_name = self.kwargs.get('models_name', 'models')
+    
+        # import the models file
+        self.model_name = "{0}.{1}".format(self.app_label, self.models_name)
+        self.models = import_module(self.model_name)
+            
 
 class IndexView(ListView):
 
@@ -56,7 +69,7 @@ class AppListView(ListView):
 
     template_name = "mongonaut/app_list.html"
 
-class DocumentListView(FormView):
+class DocumentListView(FormView, MongonautMixin):
     """ :args: <app_label> <document_name> 
     
         TODO - Make a generic document fetcher method
@@ -66,18 +79,8 @@ class DocumentListView(FormView):
     template_name = "mongonaut/document_list.html"
     
     def get_queryset(self):
-        self.app_label = self.kwargs.get('app_label')
-        self.document_name = self.kwargs.get('document_name')
-        
-        # TODO Allow this to be assigned via url variable
-        models_name = self.kwargs.get('models_name', 'models')
-        
-        # import the models file
-        model_name = "{0}.{1}".format(self.app_label, models_name)
-        models = import_module(model_name)
-        
-        # now get the document
-        self.document = getattr(models, self.document_name)
+        self.set_mongonaut_base()
+        self.document = getattr(self.models, self.document_name)
         self.queryset = self.document.objects.all()
         return self.queryset
         
@@ -120,27 +123,16 @@ class DocumentListView(FormView):
 
     
 
-class DocumentDetailView(TemplateView):
+class DocumentDetailView(TemplateView, MongonautMixin):
     """ :args: <app_label> <document_name> <id> """
     template_name = "mongonaut/document_detail.html"
     
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailView, self).get_context_data(**kwargs)
-        
-        self.app_label = self.kwargs.get('app_label')
-        self.document_name = self.kwargs.get('document_name')
+        self.set_mongonaut_base()
+        self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
-        
-        # TODO Allow this to be assigned via url variable
-        models_name = self.kwargs.get('models_name', 'models')
-        
-        # import the models file
-        model_name = "{0}.{1}".format(self.app_label, models_name)
-        models = import_module(model_name)
-        
-        # now get the document
-        self.document_type = getattr(models, self.document_name)
-        self.document = self.document_type.objects.get(id=self.ident)    
+        self.document = self.document_type.objects.get(id=self.ident)
         
         context['document'] = self.document
         context['app_label'] = self.app_label  
