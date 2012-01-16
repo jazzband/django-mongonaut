@@ -31,6 +31,21 @@ class BaseMongoAdmin(object):
     formfield_overrides = {}
     readonly_fields = ()
     ordering = None
+    
+    def has_permission(self, request):
+        """
+        Returns True if the given HttpRequest has permission to view
+        *at least one* page in the mongonaut site.
+        """
+        return request.user.is_active
+
+    def has_staff_permission(self, request):
+        """
+        Returns True if the given HttpRequest has permission to view
+        *at least one* page in the mongonaut site.
+        """
+        return request.user.is_active and request.user.is_staff
+
 
 class MongoAdmin(BaseMongoAdmin):
     
