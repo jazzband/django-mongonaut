@@ -29,7 +29,7 @@ setup(
     author_email='pydanny@gmail.com',
     url='http://github.com/pydanny/django-mongonaut',
     license='MIT',
-    install_requires=['pymongo'], # TODO - pin this
+    #install_requires=['pymongo'], # TODO - pin this
     include_package_data=True,
     zip_safe=False,
 )
