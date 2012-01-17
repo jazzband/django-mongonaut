@@ -9,7 +9,7 @@ from mongoengine.fields import EmbeddedDocumentField, ListField
 
 from mongonaut.forms import DocumentListForm
 from mongonaut.forms import DocumentDetailForm
-from mongonaut.forms import document_detail_form_munger
+from mongonaut.forms import document_detail_form_factory
 from mongonaut.mixins import MongonautViewMixin
 
 class IndexView(ListView, MongonautViewMixin):
@@ -114,6 +114,10 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
     form_class = DocumentDetailForm
     success_url = '/'
     
+    def get_success_url(self):
+        self.set_mongonaut_base()  
+        return reverse('document_detail_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.kwargs.get('id')})    
+    
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailFormView, self).get_context_data(**kwargs)
         self.set_mongonaut_base()
@@ -127,11 +131,32 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
             
         self.set_mongoadmin()
         context = self.get_permissions(context)
-        self.form = DocumentDetailForm()
-        if self.request.method == 'GET':
-            context['form'] = document_detail_form_munger(self.form, self.document_type, self.document)
+        #self.form = DocumentDetailForm()
+        #context['form'] = document_detail_form_munger(self.form, self.document_type, self.document)
+        
+        #if self.request.method == 'POST':
+        #    context['form'].data = self.request.POST
+        #    context['form'].is_bound = True
 
         return context
+        
+    def get_form(self, DocumentDetailForm):
+        self.set_mongonaut_base()
+        self.document_type = getattr(self.models, self.document_name)
+        self.ident = self.kwargs.get('id')
+        self.document = self.document_type.objects.get(id=self.ident)
+        self.form = DocumentDetailForm()        
+        self.form = document_detail_form_factory(self.form, self.document_type, self.document)
+        if self.request.method == 'POST':
+            self.form.data = self.request.POST
+            self.form.is_bound = True
+            if self.form.is_valid():
+                # TODO now save to the document!!!
+                # TODO add message for save
+                pass
+            
+        return self.form
+        
     
 
 class EmbeddedDocumentDetailView(DetailView, MongonautViewMixin):

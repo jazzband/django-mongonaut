@@ -23,9 +23,8 @@ CHECK_ATTRS = dict(
     )
 
 
-def document_detail_form_munger(form, document_type, document, initial=True):
-    """ Adds document field to a form. Not sure what to call this but Factory is not it.
-    Handle during GET """    
+def document_detail_form_factory(form, document_type, document, initial=True):
+    """ Adds document field to a form. """    
     for key in document_type._fields.keys():
         field = document_type._fields[key]
         logger.debug(field.__dict__)
