@@ -2,7 +2,7 @@
 Usage
 =====
 
-.. warning:: This is still in progress. Use at your own discretion!
+.. warning:: This is still in alpha. Use at your own discretion!
 
 In your app's models.py create something:
 
@@ -82,5 +82,3 @@ Complex version. Create a mongonaut.py module in your app:
             # TODO write this code or something like it
     
     Article.mongoadmin = ArticleAdmin()
-    
-.. note:: Because of seeming limitations with mongoengine, we may need to specify the actual model definitions here, or scrape in the code to determine length of fields and stuff.
