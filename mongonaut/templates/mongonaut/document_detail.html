@@ -9,9 +9,18 @@
 
 {% block content %}
 
-<h1>Mongonaut</h1>
+<h1>{{ document_name }} Detail</h1>
 
-<h2>{{ document_name }} Detail</h2>
+{% if has_permission %}
+<div class="row" >
+    <div class="span16" id="document-actions">
+        <p>
+            <a class="btn small document-action-btn" href="{% url document_detail_form app_label document_name document.id %}">Edit</a>
+            <a class="btn small danger document-action-btn" href="#">Delete</a>        
+        </p>
+    </div>
+</div>
+{% endif %}
 
 <div class="row">
     <div class="span16">

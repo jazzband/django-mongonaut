@@ -7,7 +7,9 @@ from django.views.generic.edit import FormView
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
 
-from mongonaut.forms import DocumentListForm, DocumentDetailForm, DocumentDetailFormFactory
+from mongonaut.forms import DocumentListForm
+from mongonaut.forms import DocumentDetailForm
+from mongonaut.forms import document_detail_form_initial
 from mongonaut.mixins import MongonautViewMixin
 
 class IndexView(ListView, MongonautViewMixin):
@@ -111,6 +113,26 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
     template_name = "mongonaut/document_detail_form.html"
     form_class = DocumentDetailForm
     success_url = '/'
+    
+    def get_context_data(self, **kwargs):
+        context = super(DocumentDetailFormView, self).get_context_data(**kwargs)
+        self.set_mongonaut_base()
+        self.document_type = getattr(self.models, self.document_name)
+        self.ident = self.kwargs.get('id')
+        self.document = self.document_type.objects.get(id=self.ident)
+        
+        context['document'] = self.document
+        context['app_label'] = self.app_label  
+        context['document_name'] = self.document_name
+            
+        self.set_mongoadmin()
+        context = self.get_permissions(context)
+        self.form = DocumentDetailForm()
+        if self.request.method == 'GET':
+            context['form'] = document_detail_form_initial(self.form, self.document_type, self.document)
+
+        return context
+    
 
 class EmbeddedDocumentDetailView(DetailView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> <???> """

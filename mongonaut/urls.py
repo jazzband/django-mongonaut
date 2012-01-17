@@ -20,6 +20,11 @@ urlpatterns = patterns('',
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/$',
         view=views.DocumentDetailView.as_view(),
         name="document_detail"
+    ),
+    url(
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/edit/$',
+        view=views.DocumentDetailFormView.as_view(),
+        name="document_detail_form"
     )    
 )
 
