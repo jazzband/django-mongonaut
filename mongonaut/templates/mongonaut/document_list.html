@@ -46,6 +46,16 @@
 {% endif %}
 </form>
 
+<div class="pagination">
+  <ul>
+        {# TODO {% if object_list.has_previus %} #}
+        <li class="prev"><a href="?page={{ previous_page_number }}">&larr; Previous</a></li>
+        <li class="active"><a href="#">{{ page }} of {{ total_pages }}</a></li>
+        {# TODO {% if object_list.has_next %} #}    
+        <li class="next"><a href="?page={{ next_page_number }}">Next &rarr;</a></li>
+  </ul>
+</div>
+
 
 {% endblock %}
 

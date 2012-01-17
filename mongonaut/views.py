@@ -1,9 +1,11 @@
 from django.conf import settings
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
 
@@ -62,6 +64,26 @@ class DocumentListView(FormView, MongonautViewMixin):
                 if isinstance(self.document._fields[key], ListField):                                
                     continue
                 context['keys'].append(key)
+        
+        ### Start pagination
+        # Make sure page request is an int. If not, deliver first page.
+        try:
+            page = int(self.request.GET.get('page', '1'))
+        except ValueError:
+            page = 1
+        context['page'] = page
+            
+        documents_per_page = 25
+        context['total_pages'] = max(context['object_list'].count() / documents_per_page, 1)
+        start = (page -1) * documents_per_page
+        end = page * documents_per_page
+        context['previous_page_number'] = page - 1        
+        context['next_page_number'] = page + 1
+        try:
+            context['object_list'] = context['object_list'][start:end]
+        except Exception as e:
+            print e
+                
         return context                
                 
     def post(self, request, *args, **kwargs):
