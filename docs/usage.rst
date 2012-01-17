@@ -38,7 +38,10 @@ Simple version. Create a mongonaut.py module in your app:
     
     Post.mongoadmin = MongoAdmin()
 
+
 Complex version. Create a mongonaut.py module in your app:
+
+.. warning:: This is is not fully implemented. Just use simple for now.
 
 .. sourcecode:: python
 
