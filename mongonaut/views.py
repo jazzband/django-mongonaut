@@ -40,8 +40,20 @@ class DocumentListView(FormView, MongonautViewMixin):
     
     def get_queryset(self):
         self.set_mongonaut_base()
+        self.set_mongoadmin()        
         self.document = getattr(self.models, self.document_name)
         self.queryset = self.document.objects.all()
+        
+        # search. move this to get_queryset        
+        # search. move this to get_queryset
+        q = self.request.GET.get('q')
+        if self.mongoadmin.search_fields and q:
+            params = {}
+            for field in self.mongoadmin.search_fields:
+                search_key = "{field}__icontains".format(field=field)
+                params[search_key] = q
+            self.queryset = self.queryset.filter(**params)
+        
         return self.queryset
         
     def get_initial(self):
@@ -56,6 +68,7 @@ class DocumentListView(FormView, MongonautViewMixin):
         context['app_label'] = self.app_label  
         context['document_name'] = self.document_name
 
+        # Part of upcoming list view form functionality
         if self.queryset.count():
             context['keys'] = ['id',]
             for key in sorted([x for x in self.document._fields.keys() if x != 'id']):
@@ -66,6 +79,10 @@ class DocumentListView(FormView, MongonautViewMixin):
                 if isinstance(self.document._fields[key], ListField):                                
                     continue
                 context['keys'].append(key)
+        
+        if self.mongoadmin.search_fields:
+            context['search_field'] = True
+            
         
         ### Start pagination
         ### Note: 

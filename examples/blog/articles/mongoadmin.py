@@ -10,6 +10,7 @@ class PostAdmin(MongoAdmin):
     def has_staff_permission(self, request):
         return True
 
+    search_fields = ('title',)
 
 
 Post.mongoadmin = PostAdmin()
