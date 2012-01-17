@@ -15,13 +15,14 @@ def get_widget(field, disabled=False):
     if disabled or \
             isinstance(field, ObjectIdField) or \
             isinstance(field, ListField) or \
-            isinstance(field, ReferenceField) or \
-            isinstance(field, DateTimeField):
+            isinstance(field, ReferenceField):
         attrs['class'] += ' disabled'
         attrs['readonly'] = 'readonly'
     
     if hasattr(field, "max_length") and not field.max_length:
         return forms.Textarea(attrs=attrs)
 
+    if isinstance(field, DateTimeField):
+        return forms.DateTimeInput(attrs=attrs)
 
     return forms.TextInput(attrs=attrs)

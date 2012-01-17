@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.forms.widgets import DateTimeInput
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -175,13 +178,17 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
             self.form.data = self.request.POST
             self.form.is_bound = True
             if self.form.is_valid():
-                for key, value in self.form.fields.items():
-                    #if hasattr(value, 'document_type_obj') or hasattr(value, 'field'):
-                    if 'readonly' in value.widget.attrs:
+                for key, field in self.form.fields.items():                      
+                    if 'readonly' in field.widget.attrs:
                         # For _id
                         # for ReferenceField - like <class 'articles.models.User'> on Blog                        
                         # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
+                        continue                
+                    if isinstance(field.widget, DateTimeInput):
+                        format = field.widget.format
+                        setattr(self.document, key, datetime.strptime(self.request.POST[key], format))
                         continue
+                        
                     setattr(self.document, key, self.request.POST[key])
                 self.document.save()
                 # TODO add message for save
