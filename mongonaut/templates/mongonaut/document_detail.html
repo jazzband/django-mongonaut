@@ -1,6 +1,12 @@
 {% extends "mongonaut/base.html" %}
 {% load mongonaut_tags %}
 
+{% block breadcrumbs %}
+<li><a href="{% url index %}">Mongonaut</a> <span class="divider">/</span></li>
+<li><a href="{% url document_list app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
+<li><a href="">{{ document_name }}</a> <a href="">{{ document.id }}</a></li>
+{% endblock %}
+
 {% block content %}
 
 <h1>Mongonaut</h1>
