@@ -11,6 +11,12 @@ class User(Document):
     email = StringField(required=True)
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
+
+class EmbeddedUser(EmbeddedDocument):
+    email = StringField(required=True)
+    first_name = StringField(max_length=50)
+    last_name = StringField(max_length=50)
+
     
 class Comment(EmbeddedDocument):
     content = StringField()
@@ -25,4 +31,5 @@ class Post(Document):
     comments = ListField(EmbeddedDocumentField(Comment))    
     pub_date = DateTimeField()
     published = BooleanField()
+    creator = EmbeddedDocumentField(EmbeddedUser)    # for testing purposes
 

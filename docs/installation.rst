@@ -8,7 +8,7 @@ Get MongoDB::
 
 Get the code::
 
-    pip install django-mongonaut==0.2.4
+    pip install django-mongonaut==0.2.5
     
 Install the dependency in your settings.py::
 

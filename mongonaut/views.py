@@ -198,9 +198,11 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
                 for key, field in self.form.fields.items():                      
                     if 'readonly' in field.widget.attrs:
                         # For _id
+                        # TODO - make the ones below work
                         # for ReferenceField - like <class 'articles.models.User'> on Blog                        
                         # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
-                        continue                
+                        # For EmbeddedDocumentField
+                        continue       
                         
                     if isinstance(field.widget, DateTimeInput):
                         format = field.widget.format
