@@ -26,7 +26,10 @@ In your app's models.py create something:
         image = FileField()
         thumbnail = FileField()
 
-Simple version. Create a mongonaut.py module in your app:
+MongoAdmin basics
+==================
+
+The easiest way to get your Model to be represented:
 
 .. sourcecode:: python
 
@@ -38,50 +41,41 @@ Simple version. Create a mongonaut.py module in your app:
     
     Post.mongoadmin = MongoAdmin()
 
+Complex MongoAdmin
+==================
 
-Complex version. Create a mongonaut.py module in your app:
-
-.. warning:: This is is not fully implemented. Just use simple for now.
+This gives you similar controls to what the Django ORM provides:
 
 .. sourcecode:: python
 
     #myapp.mongonaut
-    from datetime import datetime
-    
+
     from mongonaut.sites import MongoAdmin
-    
-    from blog.models import Post
-    
-    class ArticleAdmin(MongoAdmin):
-    
-        search_fields = ['title',]
-        
-        #This shows up on the DocumentListView of the Posts
-        list_actions = [publish_all_drafts,] 
-        
-        # This shows up in the DocumentDetailView of the Posts.
-        document_actions = [generate_word_count,]
-        
-        field_actions = {confirm_images: 'image'}
-        
-        def publish_all_drafts(self):
-            """ This shows up on the DocumentListView of the Posts """
-            for post in Post.objects.filter(published=False):
-                post.published = True
-                post.pub_date = datetime.now()
-                post.save()
-                
-        def generate_word_count(self):
-            """ This shows up in the DocumentDetailView of the Posts. 
-            ID in this case is somehow the ID of the Posting objecy
-            """
-            return len(Post.objects.get(self.id).content.split(' '))
-            
-        def confirm_images(self):
-            """ This will be attached to a field in the generated form 
-                specified in a dictionary
-            """
-            do_xyz()
-            # TODO write this code or something like it
-    
-    Article.mongoadmin = ArticleAdmin()
+
+    from articles.models import Post, User
+
+    class PostAdmin(MongoAdmin):
+
+        def has_permission(self, request):
+            # Overrides MongoAdmin default
+            # Any user can view content
+            #   even unauthenticated users        
+            return True
+
+        def has_staff_permission(self, request):
+            # Overrides MongoAdmin default
+            # Any user can view content
+            #   even unauthenticated users
+            return True
+
+        # Provides a search field using Q objects
+        #   so you can do ('title','content',) to check both
+        search_fields = ('title',)
+
+
+    Post.mongoadmin = PostAdmin()
+    User.mongoadmin = MongoAdmin()
+
+
+
+

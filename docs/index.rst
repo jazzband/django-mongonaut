@@ -15,6 +15,7 @@ Contents:
    
    installation
    usage
+   future_usage   
 
 Indices and tables
 ==================
