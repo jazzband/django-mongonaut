@@ -6,7 +6,7 @@
 Welcome to django-mongonaut's documentation!
 ============================================
 
-An introspective interface for Django and Mongo. Built from scratch to replicate some of the Django admin functionality, but for Mongo.
+An introspective interface for Django and MongoDB. Built from scratch to replicate some of the Django admin functionality, but for MongoDB.
 
 Contents:
 

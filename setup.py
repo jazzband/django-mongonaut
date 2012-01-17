@@ -8,12 +8,12 @@ LONG_DESCRIPTION = """
 ================
 django-mongonaut
 ================
-:Info: An introspective interface for Django and Mongo.
+:Info: An introspective interface for Django and MongoDB.
 :Author: Daniel Greenfeld (http://github.com/pydanny)
 
 About
 =====
-Extracted from http://consumernotebook.com, django-mongonaut is an introspective interface for working with Mongo via mongoengine. Rather then attempt to staple this functionality into Django's Admin interface, django-mongonaut takes the approach of rolling a new framework from scratch.
+Extracted from http://consumernotebook.com, django-mongonaut is an introspective interface for working with MongoDB via mongoengine. Rather then attempt to staple this functionality into Django's Admin interface, django-mongonaut takes the approach of rolling a new framework from scratch.
 
 By writing it from scratch I get to avoid trying to staple ORM functionality on top of a NoSQL key/value store.
 

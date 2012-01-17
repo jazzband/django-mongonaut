@@ -2,6 +2,10 @@
 Installation
 ============
 
+Get MongoDB::
+
+    # TODO
+
 Get the code::
 
     pip install django-mongonaut==0.2.0
