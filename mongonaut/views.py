@@ -151,9 +151,17 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
             self.form.data = self.request.POST
             self.form.is_bound = True
             if self.form.is_valid():
-                # TODO now save to the document!!!
+                for key, value in self.form.fields.items():
+                    #if hasattr(value, 'document_type_obj') or hasattr(value, 'field'):
+                    if 'readonly' in value.widget.attrs:
+                        # For _id
+                        # for ReferenceField - like <class 'articles.models.User'> on Blog                        
+                        # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
+                        continue
+                    setattr(self.document, key, self.request.POST[key])
+                self.document.save()
                 # TODO add message for save
-                pass
+
             
         return self.form
         
