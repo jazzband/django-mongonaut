@@ -15,9 +15,17 @@
 <div class="row">
     <div class="span16">
         <form>
-        {% for field in form %}
-            {% include "mongonaut/includes/_field.html" %}
-        {% endfor %}
+            <fieldset>
+                {% for field in form %}
+                    {% include "mongonaut/includes/_field.html" %}
+                {% endfor %}
+            </fieldset>
+            <div class="actions">
+                <input type="submit" name="action" class="btn primary" value="Save">&nbsp;
+                <input type="submit" name="action" class="btn disabled" value="Save and continue editing">&nbsp;                
+                <input type="submit" name="action" class="btn disabled" value="Save and add another">&nbsp;                                                
+                <input type="submit" name="action" class="btn danger disabled" value="X Delete">&nbsp;
+            </div>            
         </form>        
     </div>
 </div>    

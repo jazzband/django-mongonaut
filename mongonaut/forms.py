@@ -29,6 +29,7 @@ def document_detail_form_munger(form, document_type, document, initial=True):
     for key in document_type._fields.keys():
         field = document_type._fields[key]
         logger.debug(field.__dict__)
+        logging.debug('help')
         form.fields[key] = forms.CharField(
             key, 
             required=field.required,
