@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
  
-version = '0.2.0'
+version = '0.2.1'
 
 # TODO - add in dependencies
  
@@ -27,7 +27,7 @@ Installation
 
 Get the code::
 
-    pip install django-mongonaut==0.2.0
+    pip install django-mongonaut==0.2.1
     
 Install the dependency in your settings.py::
 
@@ -61,7 +61,7 @@ Features
 setup(
     name='django-mongonaut',
     version=version,
-    description="django-mongonaut",
+    description="An introspective interface for Django and MongoDB",
     long_description=LONG_DESCRIPTION,
     classifiers=[
         "Development Status :: 3 - Alpha",
