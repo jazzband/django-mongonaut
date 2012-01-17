@@ -4,6 +4,8 @@ CHANGELOG
 
 # 0.2.3 Supporting of Boolean and Datetime fields and search to boot
 
+# 0.2.2 Supporting of Boolean and Datetime fields and search to boot
+
 * 0.2.1 Project description fix
 
 * 0.2.0 basic form saves, pagination, and formatting

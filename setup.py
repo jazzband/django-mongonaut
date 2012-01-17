@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
  
-version = '0.2.3'
+version = '0.2.4'
 
 # TODO - add in dependencies
  
@@ -29,7 +29,7 @@ setup(
     author_email='pydanny@gmail.com',
     url='http://github.com/pydanny/django-mongonaut',
     license='MIT',
-    #install_requires=['pymongo'], # TODO - pin this
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
 )

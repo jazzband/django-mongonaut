@@ -20,7 +20,7 @@ Installation
 
 Get the code::
 
-    pip install django-mongonaut==0.2.3
+    pip install django-mongonaut==0.2.4
     
 Install the dependency in your settings.py::
 
