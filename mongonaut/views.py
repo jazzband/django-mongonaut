@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -66,6 +65,9 @@ class DocumentListView(FormView, MongonautViewMixin):
                 context['keys'].append(key)
         
         ### Start pagination
+        ### Note: 
+        ###    Didn't use the Paginator in Django cause mongoengine querysets are 
+        ###    not the same as Django ORM querysets and it broke.
         # Make sure page request is an int. If not, deliver first page.
         try:
             page = int(self.request.GET.get('page', '1'))
