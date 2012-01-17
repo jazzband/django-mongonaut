@@ -18,7 +18,24 @@ Sign up for an account on http://consumernotebook.com. It's free and always will
 Installation
 ============
 
-Not yet! This is pre-alpha, and I'm still abstracting/enhancing/extracting from production code.
+Get the code::
+
+    pip install django-mongonaut==0.2.0
+    
+Install the dependency in your settings.py::
+
+    INSTALLED_APPS = (
+    ...
+    'mongonaut',
+    ...
+    )
+    
+You will need the following also set up:
+
+* django.contrib.sessions
+* django.contrib.messages
+
+    
 
 Dependencies
 ============
