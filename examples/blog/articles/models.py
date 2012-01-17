@@ -1,3 +1,4 @@
+from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
 from mongoengine import EmbeddedDocument
@@ -23,4 +24,5 @@ class Post(Document):
     tags = ListField(StringField(max_length=30))
     comments = ListField(EmbeddedDocumentField(Comment))    
     pub_date = DateTimeField()
+    published = BooleanField()
 

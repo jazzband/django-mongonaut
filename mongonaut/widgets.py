@@ -3,6 +3,7 @@
 from django import forms
 
 from mongoengine.base import ObjectIdField
+from mongoengine.fields import BooleanField
 from mongoengine.fields import DateTimeField
 from mongoengine.fields import ListField
 from mongoengine.fields import ReferenceField
@@ -24,5 +25,8 @@ def get_widget(field, disabled=False):
 
     if isinstance(field, DateTimeField):
         return forms.DateTimeInput(attrs=attrs)
+        
+    if isinstance(field, BooleanField):
+        return forms.CheckboxInput(attrs=attrs)
 
     return forms.TextInput(attrs=attrs)
