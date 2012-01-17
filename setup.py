@@ -76,7 +76,7 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    keywords='mongo,django',
+    keywords='mongodb,django',
     author='Daniel Greenfeld',
     author_email='pydanny@gmail.com',
     url='http://github.com/pydanny/django-mongonaut',
