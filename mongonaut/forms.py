@@ -1,7 +1,11 @@
+import logging
+
 from django import forms
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
 from mongonaut.widgets import get_widget
+
+logger = logging.getLogger('mongonaut.forms')
 
 class DocumentListForm(forms.Form):
     """ The main document list form """
@@ -22,14 +26,9 @@ CHECK_ATTRS = dict(
 def document_detail_form_munger(form, document_type, document, initial=True):
     """ Adds document field to a form. Not sure what to call this but Factory is not it.
     Handle during GET """    
-    for key in sorted(document_type._fields.keys()):
+    for key in document_type._fields.keys():
         field = document_type._fields[key]
-        print field.__dict__
-        print '-------'
-        if isinstance(field, EmbeddedDocumentField):            
-            continue
-        if isinstance(field, ListField):                                
-            continue
+        logger.debug(field.__dict__)
         form.fields[key] = forms.CharField(
             key, 
             required=field.required,

@@ -14,9 +14,11 @@
 
 <div class="row">
     <div class="span16">
-        <table class="bordered-table zebra-striped">
-            {{ form }}
-        </table>
+        <form>
+        {% for field in form %}
+            {% include "mongonaut/includes/_field.html" %}
+        {% endfor %}
+        </form>        
     </div>
 </div>    
 

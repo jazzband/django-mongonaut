@@ -144,3 +144,28 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 
 from mongoengine import connect
 connect('example_blog')
+
+########## LOGGING CONFIGURATION
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+          'level':'DEBUG',
+          'class':'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'cn_project': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+#            'filters': ['special']
+        }
+    }
+}
+########## END LOGGING CONFIGURATION

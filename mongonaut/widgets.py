@@ -10,5 +10,18 @@ def get_widget(field, disabled=False):
         attrs['css_cls'] += ' disabled'
         attrs['readonly'] = 'readonly'
     
+    if hasattr(field, "max_length") and not field.max_length:
+        return forms.Textarea(attrs=attrs)
+        
+    if hasattr(field, 'document_type_obj'):
+        # for ReferenceField - like <class 'articles.models.User'> on Blog
+        attrs['css_cls'] += ' disabled'
+        attrs['readonly'] = 'readonly'
+        
+    if hasattr(field, "field"):
+        # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,        
+        attrs['css_cls'] += ' disabled'
+        attrs['readonly'] = 'readonly'
+        
 
     return forms.TextInput(attrs=attrs)
