@@ -1,5 +1,10 @@
-from mongoengine import Document, StringField, ReferenceField, ListField
-from mongoengine import EmbeddedDocumentField, EmbeddedDocument
+from mongoengine import DateTimeField
+from mongoengine import Document
+from mongoengine import EmbeddedDocument
+from mongoengine import EmbeddedDocumentField
+from mongoengine import ListField
+from mongoengine import ReferenceField
+from mongoengine import StringField
 
 class User(Document):
     email = StringField(required=True)
@@ -17,4 +22,5 @@ class Post(Document):
     content = StringField()    
     tags = ListField(StringField(max_length=30))
     comments = ListField(EmbeddedDocumentField(Comment))    
+    pub_date = DateTimeField()
 
