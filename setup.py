@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
  
-version = '0.2.5'
+version = '0.2.6'
 
 # TODO - add in dependencies
  

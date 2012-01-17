@@ -39,10 +39,13 @@ class DocumentListView(FormView, MongonautViewMixin):
     template_name = "mongonaut/document_list.html"
     
     def get_queryset(self):
+        if hasattr(self, "queryset") and self.queryset:
+            return self.queryset
+        
         self.set_mongonaut_base()
         self.set_mongoadmin()        
         self.document = getattr(self.models, self.document_name)
-        self.queryset = self.document.objects.all()
+        queryset = self.document.objects.all()
         
         # search. move this to get_queryset        
         # search. move this to get_queryset
@@ -52,12 +55,36 @@ class DocumentListView(FormView, MongonautViewMixin):
             for field in self.mongoadmin.search_fields:
                 search_key = "{field}__icontains".format(field=field)
                 params[search_key] = q
-            self.queryset = self.queryset.filter(**params)
+            queryset = queryset.filter(**params)
         
-        return self.queryset
+        ### Start pagination
+        ### Note: 
+        ###    Didn't use the Paginator in Django cause mongoengine querysets are 
+        ###    not the same as Django ORM querysets and it broke.
+        # Make sure page request is an int. If not, deliver first page.
+        try:
+            page = int(self.request.GET.get('page', '1'))
+        except ValueError:
+            page = 1
+        self.page = page
+            
+        self.documents_per_page = 25
+        self.total_pages = max(queryset.count() / self.documents_per_page, 1)
+        start = (self.page -1) * self.documents_per_page
+        end = self.page * self.documents_per_page
+        self.previous_page_number = page - 1        
+        self.next_page_number = page + 1
+        try:
+            queryset = queryset[start:end]
+        except Exception as e:
+            print e
+
+        self.queryset = queryset
+        return queryset
         
     def get_initial(self):
-        mongo_ids = {'mongo_id':[unicode(x.id) for x in self.get_queryset()]}
+        self.query = self.get_queryset()
+        mongo_ids = {'mongo_id':[unicode(x.id) for x in self.query]}
         return mongo_ids
         
     def get_context_data(self, **kwargs):
@@ -67,6 +94,13 @@ class DocumentListView(FormView, MongonautViewMixin):
         context['document'] = self.document
         context['app_label'] = self.app_label  
         context['document_name'] = self.document_name
+        
+        # pagination bits
+        context['page'] = self.page
+        context['documents_per_page'] = self.documents_per_page
+        context['previous_page_number'] = self.previous_page_number
+        context['next_page_number'] = self.next_page_number
+        context['total_pages'] = self.total_pages
 
         # Part of upcoming list view form functionality
         if self.queryset.count():
@@ -82,35 +116,12 @@ class DocumentListView(FormView, MongonautViewMixin):
         
         if self.mongoadmin.search_fields:
             context['search_field'] = True
-            
-        
-        ### Start pagination
-        ### Note: 
-        ###    Didn't use the Paginator in Django cause mongoengine querysets are 
-        ###    not the same as Django ORM querysets and it broke.
-        # Make sure page request is an int. If not, deliver first page.
-        try:
-            page = int(self.request.GET.get('page', '1'))
-        except ValueError:
-            page = 1
-        context['page'] = page
-            
-        documents_per_page = 25
-        context['total_pages'] = max(context['object_list'].count() / documents_per_page, 1)
-        start = (page -1) * documents_per_page
-        end = page * documents_per_page
-        context['previous_page_number'] = page - 1        
-        context['next_page_number'] = page + 1
-        try:
-            context['object_list'] = context['object_list'][start:end]
-        except Exception as e:
-            print e
-                
-        return context                
-                
+
+        return context
+
     def post(self, request, *args, **kwargs):
         # TODO - make sure to check the rights of the poster
-        self.get_queryset() # TODO - write something that grabs the document class better
+        #self.get_queryset() # TODO - write something that grabs the document class better
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         mongo_ids = self.get_initial()['mongo_id']             

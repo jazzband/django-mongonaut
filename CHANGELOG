@@ -2,6 +2,8 @@
 CHANGELOG
 =========
 
+# 0.2.6 Major performance enhancement of the DocumentListView
+
 # 0.2.5 Added EmbeddedDocument to form views
 
 # 0.2.4 Installation fix
