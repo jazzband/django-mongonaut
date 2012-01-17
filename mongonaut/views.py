@@ -9,7 +9,7 @@ from mongoengine.fields import EmbeddedDocumentField, ListField
 
 from mongonaut.forms import DocumentListForm
 from mongonaut.forms import DocumentDetailForm
-from mongonaut.forms import document_detail_form_initial
+from mongonaut.forms import document_detail_form_munger
 from mongonaut.mixins import MongonautViewMixin
 
 class IndexView(ListView, MongonautViewMixin):
@@ -129,7 +129,7 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
         context = self.get_permissions(context)
         self.form = DocumentDetailForm()
         if self.request.method == 'GET':
-            context['form'] = document_detail_form_initial(self.form, self.document_type, self.document)
+            context['form'] = document_detail_form_munger(self.form, self.document_type, self.document)
 
         return context
     
