@@ -31,6 +31,7 @@ class BaseMongoAdmin(object):
     formfield_overrides = {}
     readonly_fields = ()
     ordering = None
+
     
     def has_permission(self, request):
         """
@@ -60,4 +61,3 @@ class MongoAdmin(BaseMongoAdmin):
     save_as = False
     save_on_top = False
     #paginator = Paginator
-    inlines = []
