@@ -26,8 +26,8 @@ In your app's models.py create something:
         image = FileField()
         thumbnail = FileField()
 
-MongoAdmin basics
-==================
+MongoAdmin: Fast and Easy
+==========================
 
 The easiest way to get your Model to be represented:
 
@@ -41,8 +41,8 @@ The easiest way to get your Model to be represented:
     
     Post.mongoadmin = MongoAdmin()
 
-Complex MongoAdmin
-==================
+Advanced features of MongoAdmin
+================================
 
 This gives you similar controls to what the Django ORM provides:
 
