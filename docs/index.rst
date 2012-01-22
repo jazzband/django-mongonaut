@@ -16,6 +16,37 @@ Contents:
    installation
    usage
    future_usage   
+   
+What django-mongonaut gives you
+================================
+
+(**Implemented items are in bold**)
+
+* Introspection of Mongo data
+
+    * **Introspection via mongo engine**
+    * Introspection via pymongo (so you don't need to define a schema ahead of time)
+    * **Q based searches**
+    * **django.contrib.admin style browsing**
+    * **Automatic detection of field types**
+    * **Automatic discovery of collections**    
+    * Admin determination of which fields are displayed
+    
+* Data Management
+
+    * **Editing on all fields** except ListFields, EmbeddedFields, and ReferenceFields
+    * **Automatic detection of widget types**
+    * Text field shorthand for letting user quickly determine type
+    * Document Deletes
+    * Admin authored Collection level document control functions
+    
+* Permissions
+
+    * User level controls
+    * Staff level controls
+    * Group defined controls
+    * Admin defined controls
+
 
 Indices and tables
 ==================
