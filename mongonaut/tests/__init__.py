@@ -1,0 +1,1 @@
+from mongonaut.tests.test_views import *
