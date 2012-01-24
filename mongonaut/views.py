@@ -165,7 +165,7 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
 class DocumentDetailEditFormView(FormView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> """#
 
-    template_name = "mongonaut/document_detail_form.html"
+    template_name = "mongonaut/document_detail_edit_form.html"
     form_class = DocumentDetailForm
     success_url = '/'
     
