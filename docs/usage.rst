@@ -1,6 +1,6 @@
-=====
-Usage
-=====
+============
+Basic Usage
+============
 
 .. warning:: This is still in alpha. Use at your own discretion!
 
@@ -33,7 +33,7 @@ The easiest way to get your Model to be represented:
 
 .. sourcecode:: python
 
-    #myapp.mongonaut
+    # myapp/mongonaut.py
 
     from mongonaut.sites import MongoAdmin
 

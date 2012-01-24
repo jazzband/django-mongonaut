@@ -22,3 +22,5 @@ You will need the following also set up:
 
 * django.contrib.sessions
 * django.contrib.messages
+
+.. note:: No need for `autodiscovery()` with django-mongonaut!

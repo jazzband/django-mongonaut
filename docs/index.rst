@@ -15,7 +15,8 @@ Contents:
    
    installation
    usage
-   future_usage   
+   configuration
+   future_usage 
    
 Features
 ========
