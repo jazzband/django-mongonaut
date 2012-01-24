@@ -240,7 +240,7 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
 
     def get_success_url(self):
         self.set_mongonaut_base()  
-        return reverse('document_detail_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.document.id})    
+        return reverse('document_detail', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':str(self.document.id)})
 
     def get_context_data(self, **kwargs):
         """ TODO - possibly inherit this from DocumentDetailEditFormView. This is same thing minus:
