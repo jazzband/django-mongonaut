@@ -4,11 +4,18 @@ from articles.models import Post, User
 
 class PostAdmin(MongoAdmin):
     
-    def has_permission(self, request):
+    def has_view_permission(self, request):
         return True
 
-    def has_staff_permission(self, request):
+    def has_edit_permission(self, request):
         return True
+
+    def has_add_permission(self, request):
+        return True
+
+    def has_delete_permission(self, request):
+        return True
+
 
     search_fields = ('title',)
 

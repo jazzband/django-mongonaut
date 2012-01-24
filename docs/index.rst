@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to django-mongonaut's documentation!
-============================================
+django-mongonaut
+================
 
-An introspective interface for Django and MongoDB. Built from scratch to replicate some of the Django admin functionality, but for MongoDB.
+This is an introspective interface for Django and MongoDB. Built from scratch to replicate some of the Django admin functionality, but for MongoDB.
 
 Contents:
 
@@ -17,8 +17,8 @@ Contents:
    usage
    future_usage   
    
-What django-mongonaut gives you
-================================
+Features
+========
 
 (**Implemented items are in bold**)
 
@@ -43,10 +43,10 @@ What django-mongonaut gives you
     
 * Permissions
 
-    * User level controls
-    * Staff level controls
-    * Group defined controls
-    * Admin defined controls
+    * **User level controls**
+    * **Staff level controls**
+    * **Admin defined controls**
+    * Group defined controls    
 
 
 Indices and tables

@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.forms.widgets import DateTimeInput, CheckboxInput
+from django.http import HttpResponseForbidden
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView

@@ -17,7 +17,7 @@
         <input type="submit" class="btn small info" value="search">
     </form>
 {% endif %}
-{% if request.user.is_admin or request.user.is_staff or has_staff_permission %}
+{% if has_add_permission %}
     <a href="{% url document_detail_add_form app_label document_name %}">Add</a>
 {% endif %}
 {% if request.user.is_superuser %}

@@ -56,17 +56,22 @@ This gives you similar controls to what the Django ORM provides:
 
     class PostAdmin(MongoAdmin):
 
-        def has_permission(self, request):
-            # Overrides MongoAdmin default
-            # Any user can view content
-            #   even unauthenticated users        
-            return True
-
-        def has_staff_permission(self, request):
-            # Overrides MongoAdmin default
+        def has_view_permission(self, request):
+            # Overrides Mongonaut default
             # Any user can view content
             #   even unauthenticated users
             return True
+
+        def has_edit_permission(self, request):
+            # Overrides Mongonaut default
+            # Any authenticated user user can edit content - kind of like a bliki 
+
+            return request.user.is_authenticated() and request.user.is_active()
+
+        def has_delete_permission(self, request):
+            # Overrides Mongonaut default
+            # Only admins can remove post items
+            return request.user.is_authenticated() and request.user.is_active() and request.user.is_admin()
 
         # Provides a search field using Q objects
         #   so you can do ('title','content',) to check both
