@@ -16,9 +16,12 @@ class PostAdmin(MongoAdmin):
     def has_delete_permission(self, request):
         return True
 
-
     search_fields = ('title',)
+    list_fields = ('title', "published", "pub_date")    
+    
+class UserAdmin(MongoAdmin):    
+    list_fields = ('first_name', "last_name", "email")
 
 
 Post.mongoadmin = PostAdmin()
-User.mongoadmin = MongoAdmin()
+User.mongoadmin = UserAdmin()

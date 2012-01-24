@@ -1,13 +1,15 @@
 try:
     import floppyforms as forms
 except ImportError:
-    from django import forms
-    
-# TODO add default widgets    
+    from django import forms  
 
 class BaseMongoAdmin(object):
     
     search_fields = []
+    
+    # Show the fields to be displayed as columns
+    # TODO: Confirm that this is what the Django admin uses
+    list_fields = []
     
     #This shows up on the DocumentListView of the Posts
     list_actions = [] 
