@@ -37,6 +37,7 @@ What django-mongonaut gives you
     * **Editing on all fields** except ListFields, EmbeddedFields, and ReferenceFields
     * **Automatic detection of widget types**
     * Text field shorthand for letting user quickly determine type
+    * Document Adds
     * Document Deletes
     * Admin authored Collection level document control functions
     
