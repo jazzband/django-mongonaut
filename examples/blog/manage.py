@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 from django.core.management import execute_manager
 import imp
+
+# lamo cheat to make work a little easier. Don't do this in other places
+import sys
+import os
+sys.path.insert(0, os.path.abspath('../..'))
 try:
     imp.find_module('settings') # Assumed to be in the same directory.
 except ImportError:

@@ -23,7 +23,7 @@
         {% for model in app.obj.models %}
             <tr>
                 <td><a href="{% url document_list app.app_name model.name %}">{{ model.name }}</a></td>
-                <td>Add</td>
+                <td><a href="{% url document_detail_add_form app.app_name model.name %}">Add</a></td>
                 <td><a href="{% url document_list app.app_name model.name %}">Change</a></td>            
             </tr>
         {% endfor %}

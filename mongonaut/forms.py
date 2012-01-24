@@ -23,7 +23,7 @@ CHECK_ATTRS = dict(
     )
 
 
-def document_detail_form_factory(form, document_type, document, initial=True):
+def document_detail_form_factory(form, document_type, initial=False):
     """ Adds document field to a form. """    
     for key in document_type._fields.keys():
         field = document_type._fields[key]
@@ -34,7 +34,7 @@ def document_detail_form_factory(form, document_type, document, initial=True):
             required=field.required,
             widget=get_widget(field))
         if initial:
-            form.fields[key].initial = getattr(document, key)            
+            form.fields[key].initial = getattr(initial, key)            
         
         for field_key, form_attr in CHECK_ATTRS.items():
             if hasattr(field, field_key):

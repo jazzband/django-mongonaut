@@ -8,12 +8,12 @@ from mongoengine import ReferenceField
 from mongoengine import StringField
 
 class User(Document):
-    email = StringField(required=True)
+    email = StringField(required=True, max_length=50)
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
 
 class EmbeddedUser(EmbeddedDocument):
-    email = StringField(required=True)
+    email = StringField(required=True, max_length=50)
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
 

@@ -17,14 +17,19 @@ urlpatterns = patterns('',
         name="document_list"
     ),
     url(
-        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/$',
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/$',
         view=views.DocumentDetailView.as_view(),
         name="document_detail"
     ),
     url(
-        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/edit/$',
-        view=views.DocumentDetailFormView.as_view(),
-        name="document_detail_form"
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/edit/$',
+        view=views.DocumentDetailEditFormView.as_view(),
+        name="document_detail_edit_form"
+    ),    
+    url(
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/add/$',
+        view=views.DocumentDetailAddFormView.as_view(),
+        name="document_detail_add_form"
     )    
 )
 

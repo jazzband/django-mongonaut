@@ -162,7 +162,7 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
         return context
  
 
-class DocumentDetailFormView(FormView, MongonautViewMixin):
+class DocumentDetailEditFormView(FormView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> """#
 
     template_name = "mongonaut/document_detail_form.html"
@@ -171,10 +171,10 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
     
     def get_success_url(self):
         self.set_mongonaut_base()  
-        return reverse('document_detail_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.kwargs.get('id')})    
+        return reverse('document_detail_edit_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.kwargs.get('id')})    
     
     def get_context_data(self, **kwargs):
-        context = super(DocumentDetailFormView, self).get_context_data(**kwargs)
+        context = super(DocumentDetailEditFormView, self).get_context_data(**kwargs)
         self.set_mongonaut_base()
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
@@ -186,12 +186,6 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
             
         self.set_mongoadmin()
         context = self.get_permissions(context)
-        #self.form = DocumentDetailForm()
-        #context['form'] = document_detail_form_munger(self.form, self.document_type, self.document)
-        
-        #if self.request.method == 'POST':
-        #    context['form'].data = self.request.POST
-        #    context['form'].is_bound = True
 
         return context
         
@@ -201,7 +195,7 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
         self.form = DocumentDetailForm()        
-        self.form = document_detail_form_factory(self.form, self.document_type, self.document)
+        self.form = document_detail_form_factory(form=self.form, document_type=self.document_type, initial=self.document)
         if self.request.method == 'POST':
             self.form.data = self.request.POST
             self.form.is_bound = True
@@ -234,6 +228,73 @@ class DocumentDetailFormView(FormView, MongonautViewMixin):
 
             
         return self.form
+        
+class DocumentDetailAddFormView(FormView, MongonautViewMixin):
+    """ :args: <app_label> <document_name> <id> """#
+
+    template_name = "mongonaut/document_detail_add_form.html"
+    form_class = DocumentDetailForm
+    success_url = '/'
+
+    def get_success_url(self):
+        self.set_mongonaut_base()  
+        return reverse('document_detail_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.document.id})    
+
+    def get_context_data(self, **kwargs):
+        """ TODO - possibly inherit this from DocumentDetailEditFormView. This is same thing minus:
+            self.ident = self.kwargs.get('id')
+            self.document = self.document_type.objects.get(id=self.ident)
+        """
+        context = super(DocumentDetailAddFormView, self).get_context_data(**kwargs)
+        self.set_mongonaut_base()
+        self.document_type = getattr(self.models, self.document_name)
+
+        context['app_label'] = self.app_label  
+        context['document_name'] = self.document_name
+
+        self.set_mongoadmin()
+        context = self.get_permissions(context)
+
+        return context
+
+    def get_form(self, DocumentDetailForm):
+        self.set_mongonaut_base()
+        self.document_type = getattr(self.models, self.document_name)
+        self.form = DocumentDetailForm()        
+        self.form = document_detail_form_factory(form=self.form, document_type=self.document_type)
+        if self.request.method == 'POST':
+            self.form.data = self.request.POST
+            self.form.is_bound = True
+            if self.form.is_valid():
+                self.document = self.document_type()              
+                for key, field in self.form.fields.items():                      
+                    if 'readonly' in field.widget.attrs:
+                        # For _id
+                        # TODO - make the ones below work
+                        # for ReferenceField - like <class 'articles.models.User'> on Blog                        
+                        # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
+                        # For EmbeddedDocumentField
+                        continue       
+
+                    if isinstance(field.widget, DateTimeInput):
+                        format = field.widget.format
+                        setattr(self.document, key, datetime.strptime(self.request.POST[key], format))
+                        continue
+
+                    if isinstance(field.widget, CheckboxInput):
+                        if key in self.request.POST:
+                            setattr(self.document, key, True)
+                        else:
+                            setattr(self.document, key, False)
+                        continue
+
+                    # for strings
+                    setattr(self.document, key, self.request.POST[key])
+                self.document.save()
+                # TODO add message for save
+
+
+        return self.form        
         
     
 
