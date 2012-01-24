@@ -11,16 +11,19 @@
 
 <h1>{{ document_name }} List</h1>
 
-{% if request.user.is_superuser %}
-    <form action="" method="post">
-    {% csrf_token %}
-    {% include "mongonaut/actions/action_buttons.html" %}
-{% endif %}
 {% if search_field %}
     <form action="" method="get">
         <input type="text" name="q">
         <input type="submit" class="btn small info" value="search">
     </form>
+{% endif %}
+{% if request.user.is_admin or request.user.is_staff or has_staff_permission %}
+    <a href="{% url document_detail_add_form app_label document_name %}">Add</a>
+{% endif %}
+{% if request.user.is_superuser %}
+    <form action="" method="post">
+    {% csrf_token %}
+    {% include "mongonaut/actions/action_buttons.html" %}
 {% endif %}
 <table class="bordered-table zebra-striped">
     <thead>

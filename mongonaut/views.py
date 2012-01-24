@@ -117,6 +117,7 @@ class DocumentListView(FormView, MongonautViewMixin):
         if self.mongoadmin.search_fields:
             context['search_field'] = True
 
+        context = self.get_permissions(context)
         return context
 
     def post(self, request, *args, **kwargs):
