@@ -57,7 +57,7 @@ Configuration
 
 django-mongonaut will let you duplicate much of what `django.contrib.admin` gives you, but in a way more suited for MongoDB. Still being implemented, but already works better than any other MongoDB solution for Django. A simple example::
 
-    # myapp/mongonaut.py
+    # myapp/mongoadmin.py
 
     # Import the MongoAdmin base class
     from mongonaut.sites import MongoAdmin

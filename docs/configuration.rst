@@ -11,7 +11,7 @@ In your app, create a module called 'mongoadmin.py'. It has to be called that or
 
 .. sourcecode:: python
 
-    # myapp/mongonaut.py
+    # myapp/mongoadmin.py
 
     # Import the MongoAdmin base class
     from mongonaut.sites import MongoAdmin
