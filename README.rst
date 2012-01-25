@@ -8,7 +8,7 @@ About
 =====
 Extracted from http://consumernotebook.com, django-mongonaut is an introspective interface for working with MongoDB via mongoengine. Rather then attempt to staple this functionality into Django's Admin interface, django-mongonaut takes the approach of rolling a new framework from scratch.
 
-By writing it from scratch I get to avoid trying to staple ORM functionality on top of a NoSQL key/value store.
+By writing it from scratch I get to avoid trying to staple ORM functionality on top of MongoDB, a NoSQL key/value binary-tree store.
 
 Features
 =========
@@ -16,18 +16,22 @@ Features
 - Automatic introspection of mongoengine documents.
 - Ability to constrain who sees what and can do what.
 - Full control to add, edit, and delete documents
-- More more! See http://django-mongonaut.readthedocs.org/en/latest/index.html#features
+- More awesome stuff! See http://django-mongonaut.readthedocs.org/en/latest/index.html#features
 
 Installation
 ============
 
-See: http://django-mongonaut.readthedocs.org/en/latest/installation.html
+Made as easy as possible, setup is actually easier than `django.contrib.admin`. Furthermore, the only dependencies are mongoengine and pymongo. Eventually django-mongonaut will be able to support installations without mongoengine. Check it out!
+
+* http://django-mongonaut.readthedocs.org/en/latest/installation.html
 
 
 Configuration
 =============
 
-See: http://django-mongonaut.readthedocs.org/en/latest/configuration.html
+django-mongonaut will let you duplicate much of what `django.contrib.admin` gives you, but in a way more suited for MongoDB. Still being implemented, but already works better than any other MongoDB solution for Django.
+
+* http://django-mongonaut.readthedocs.org/en/latest/configuration.html
 
 Documentation
 ==============
@@ -39,15 +43,10 @@ Support this project!
 
 Sign up for an account on http://consumernotebook.com. It's free and always will be!
 
-
-
-
-    
-
 Dependencies
 ============
 
-- pymongo 1.1+
-- mongoengine 0.5
+- mongoengine 0.5+
+- pymongo 1.1+ (comes with mongoengine)
 - sphinx (optional - for documentation generation)
 
