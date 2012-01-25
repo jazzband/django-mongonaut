@@ -21,33 +21,34 @@ Contents:
 Features
 ========
 
-(**Implemented items are in bold**)
+Introspection of Mongo data
+----------------------------
 
-* Introspection of Mongo data
-
-    * **Introspection via mongo engine**
-    * Introspection via pymongo (so you don't need to define a schema ahead of time)
-    * **Q based searches**
-    * **django.contrib.admin style browsing**
-    * **Automatic detection of field types**
-    * **Automatic discovery of collections**    
-    * Admin determination of which fields are displayed
+    * Introspection via mongo engine
+    * [in progress] Introspection via pymongo (so you don't need to define a schema ahead of time)
+    * Q based searches
+    * django.contrib.admin style browsing
+    * Automatic detection of field types
+    * Automatic discovery of collections    
+    * [in progress] Admin determination of which fields are displayed
     
-* Data Management
+Data Management
+----------------------------
 
-    * **Editing on all fields** except ListFields, EmbeddedFields, and ReferenceFields
-    * **Automatic detection of widget types**
+    * Editing on all fields except ListFields, EmbeddedFields, and ReferenceFields
+    * Automatic detection of widget types
     * Text field shorthand for letting user quickly determine type when using without mongoengine
-    * **Document Adds**
-    * Document Deletes
-    * Admin authored Collection level document control functions
+    * Document Adds
+    * [in progress] Document Deletes
+    * [in progress] Admin authored Collection level document control functions
     
-* Permissions
+Permissions
+----------------------------
 
-    * **User level controls**
-    * **Staff level controls**
-    * **Admin defined controls**
-    * Group defined controls    
+    * User level controls
+    * Staff level controls
+    * Admin defined controls
+    * [in progress] Group defined controls    
 
 
 Indices and tables
