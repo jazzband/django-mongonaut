@@ -74,7 +74,7 @@ django-mongonaut will let you duplicate much of what `django.contrib.admin` give
 Documentation
 ==============
 
-You can find out how to install and use this project at http://django-mongonaut.rtfd.org.
+All the documentation for this project is hosted at http://django-mongonaut.rtfd.org.
 
 Support this project!
 =====================
