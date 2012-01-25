@@ -4,7 +4,7 @@ Installation
 
 Get MongoDB::
 
-    # TODO
+    Download the right version per http://www.mongodb.org/downloads
 
 Get the code::
 
