@@ -10,6 +10,25 @@ Extracted from http://consumernotebook.com, django-mongonaut is an introspective
 
 By writing it from scratch I get to avoid trying to staple ORM functionality on top of a NoSQL key/value store.
 
+Features
+=========
+
+- Automatic introspection of mongoengine documents.
+- Ability to constrain who sees what and can do what.
+- Full control to add, edit, and delete documents
+- More more! See http://django-mongonaut.readthedocs.org/en/latest/index.html#features
+
+Installation
+============
+
+See: http://django-mongonaut.readthedocs.org/en/latest/installation.html
+
+
+Configuration
+=============
+
+See: http://django-mongonaut.readthedocs.org/en/latest/configuration.html
+
 Documentation
 ==============
 
@@ -20,25 +39,8 @@ Support this project!
 
 Sign up for an account on http://consumernotebook.com. It's free and always will be!
 
-Installation
-============
 
-Get the code::
 
-    pip install django-mongonaut==0.2.6
-    
-Install the dependency in your settings.py::
-
-    INSTALLED_APPS = (
-    ...
-    'mongonaut',
-    ...
-    )
-    
-You will need the following also set up:
-
-* django.contrib.sessions
-* django.contrib.messages
 
     
 
@@ -49,8 +51,3 @@ Dependencies
 - mongoengine 0.5
 - sphinx (optional - for documentation generation)
 
-Features
-=========
-
-- Automatic introspection of mongoengine documents
-- Ability to constrain who sees what and can do what.
