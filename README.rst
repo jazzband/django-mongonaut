@@ -84,7 +84,7 @@ Sign up for an account on http://consumernotebook.com. It's free and always will
 Dependencies
 ============
 
-- mongoengine 0.5+
-- pymongo 1.1+ (comes with mongoengine)
+- mongoengine 0.5.2
+- pymongo 2.1.1 (comes with mongoengine)
 - sphinx (optional - for documentation generation)
 
