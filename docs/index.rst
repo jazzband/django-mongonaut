@@ -24,18 +24,18 @@ Features
 Introspection of Mongo data
 ----------------------------
 
+    * **[in progress]** Admin determination of which fields are displayed. Currently they can do so in the Document List view but not the Document Detail view.
+    * **[in progress]** Introspection via pymongo (so you don't need to define a schema ahead of time). This *might* be too much a jump in scope for this project, requiring a separate project. We'll see.
     * Introspection via mongo engine
-    * **[in progress]** Introspection via pymongo (so you don't need to define a schema ahead of time)
     * Q based searches
     * django.contrib.admin style browsing
     * Automatic detection of field types
     * Automatic discovery of collections    
-    * **[in progress]** Admin determination of which fields are displayed
     
 Data Management
 ----------------------------
 
-    * **[in progress]** Editing on ListFields, EmbeddedFields, and ReferenceFields
+    * **[in progress]** Editing on ListFields, EmbeddedDocumentsFields, and ReferenceFields
     * **[in progress]** Document Deletes
     * **[in progress]** Admin authored Collection level document control functions    
     * Editing on most other fields 
@@ -46,10 +46,10 @@ Data Management
 Permissions
 ----------------------------
 
+    * **[in progress]** Group defined controls    
     * User level controls
     * Staff level controls
     * Admin defined controls
-    * **[in progress]** Group defined controls    
 
 
 Indices and tables
