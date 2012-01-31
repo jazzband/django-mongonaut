@@ -26,3 +26,5 @@ In your app, create a module called 'mongoadmin.py'. It has to be called that or
 That's it! Now you can view, add, edit, and delete your MongoDB models!
 
 .. note:: You will notice a difference between how and `django.contrib.admin` and `django-mongonaut` do configuration. The former associates the configuration class with the model object via a registration utility, and the latter does so by adding the configuration class as an attribute of the model object.
+
+More details and features are available in the API reference document.

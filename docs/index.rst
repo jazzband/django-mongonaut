@@ -11,12 +11,15 @@ This is an introspective interface for Django and MongoDB. Built from scratch to
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    
    installation
    usage
    configuration
    future_usage 
+   api     
+
+
    
 Features
 ========
