@@ -11,6 +11,9 @@ class User(Document):
     email = StringField(required=True, max_length=50)
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
+    
+    def __unicode__(self):
+        return self.email
 
 class EmbeddedUser(EmbeddedDocument):
     email = StringField(required=True, max_length=50)

@@ -170,11 +170,27 @@ LOGGING = {
 }
 ########## END LOGGING CONFIGURATION
 
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += ('debug_toolbar',)
-INTERNAL_IPS = ('127.0.0.1',)
+########## DJANGO-DEBUG CONFIGURATION
+try:
+    import debug_toolbar
+    MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+    INSTALLED_APPS += ('debug_toolbar',)
+    INTERNAL_IPS = ('127.0.0.1',)
 
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    'SHOW_TEMPLATE_CONTEXT': True,
-}
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+        'SHOW_TEMPLATE_CONTEXT': True,
+    }
+except:
+    pass
+
+########## END DJANGO-DEBUG CONFIGURATION
+
+########## DJANGO_EXTENSIONS CONFIGURATION
+try:
+    import django_extensions    
+    INSTALLED_APPS += ('django_extensions',)
+except:
+    pass
+
+########## END DJANGO_EXTENSIONS CONFIGURATION

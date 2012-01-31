@@ -20,6 +20,15 @@ class PostAdmin(MongoAdmin):
     list_fields = ('title', "published", "pub_date")    
     
 class UserAdmin(MongoAdmin):    
+    def has_view_permission(self, request):
+        return True
+
+    def has_edit_permission(self, request):
+        return True
+
+    def has_add_permission(self, request):
+        return True
+    
     list_fields = ('first_name', "last_name", "email")
 
 

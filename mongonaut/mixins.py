@@ -34,7 +34,8 @@ class MongonautViewMixin(object):
                 app_name=app_name,
                 obj=app_store
             ))
-        return apps        
+        return apps
+        
     
     def set_mongonaut_base(self):
         """ Sets a number of commonly used attributes """        
