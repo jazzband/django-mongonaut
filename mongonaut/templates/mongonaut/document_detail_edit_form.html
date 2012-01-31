@@ -14,7 +14,7 @@
 
 <div class="row">
     <div class="span16">
-        <form method="post" action="">
+        <form method="POST" action="">
             {% csrf_token %}
             <fieldset>
                 {% for field in form %}
@@ -23,9 +23,13 @@
             </fieldset>
             <div class="actions">
                 <input type="submit" name="action" class="btn primary" value="Save">&nbsp;
+        </form>
                 <input type="submit" name="action" class="btn disabled" readonly value="Save and continue editing">&nbsp;                
-                <input type="submit" name="action" class="btn disabled" readonly value="Save and add another">&nbsp;                                                
-                <input type="submit" name="action" class="btn danger disabled" readonly value="X Delete">&nbsp;
+                <input type="submit" name="action" class="btn disabled" readonly value="Save and add another">&nbsp;
+        <form method="post" action="{% url document_delete app_label document_name document.id %}">
+            {% csrf_token %}
+            <input type="submit" name="action_delete" class="btn danger{% if not has_delete_permission %} disabled{%endif%}" {% if not has_delete_permission %}readonly{% endif %} value="X Delete">&nbsp;
+        </form>
             </div>            
         </form>        
     </div>

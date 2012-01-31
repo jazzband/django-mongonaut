@@ -29,6 +29,11 @@ urlpatterns = patterns('',
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/add/$',
         view=views.DocumentDetailAddFormView.as_view(),
         name="document_detail_add_form"
+    ),
+    url(
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/delete/$',
+        view=views.DocumentDeleteView.as_view(),
+        name="document_delete"
     )    
 )
 

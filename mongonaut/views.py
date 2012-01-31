@@ -1,9 +1,15 @@
+"""
+    TODO move permission checks to the dispatch view thingee
+
+"""
+
 from datetime import datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.forms.widgets import DateTimeInput, CheckboxInput
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.views.generic.edit import DeletionMixin
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -178,32 +184,38 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
     success_url = '/'
     
     def get_success_url(self):
-        self.set_mongonaut_base()  
-        return reverse('document_detail_edit_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.kwargs.get('id')})    
+        self.set_mongonaut_base() 
+        return reverse('document_detail_edit_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.kwargs.get('id')})
     
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailEditFormView, self).get_context_data(**kwargs)
         self.set_mongoadmin()        
         context = self.get_permissions(context)
         if not context['has_edit_permission']:
-            return HttpResponseForbidden("You do not have permissions to edit view content.")
+            return HttpResponseForbidden("You do not have permissions to edit this content.")
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
-        self.document = self.document_type.objects.get(id=self.ident)
+        self.document = self.document_type.objects.get(id=self.ident)        
         
         context['document'] = self.document
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
-            
 
         return context
         
     def get_form(self, DocumentDetailForm):
-        self.set_mongonaut_base()
+        self.has_delete_permission = None        
+        self.delete_document = False
+        self.set_mongoadmin()
+        context = self.get_permissions({})
+        if not context['has_edit_permission']:
+            return HttpResponseForbidden("You do not have permissions to edit this content.")
+        
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
-        self.form = DocumentDetailForm()        
+        self.form = DocumentDetailForm()                
+            
         self.form = document_detail_form_factory(form=self.form, document_type=self.document_type, initial=self.document)
         if self.request.method == 'POST':
             self.form.data = self.request.POST
@@ -260,11 +272,9 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
         if not context['has_add_permission']:
             return HttpResponseForbidden("You do not have permissions to edit view content.")
         self.document_type = getattr(self.models, self.document_name)
-
+        
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
-
-
         return context
 
     def get_form(self, DocumentDetailForm):
@@ -303,10 +313,28 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
                 self.document.save()
                 # TODO add message for save
 
+        return self.form
 
-        return self.form        
-        
+class DocumentDeleteView(TemplateView, DeletionMixin, MongonautViewMixin):
+    """ :args: <app_label> <document_name> <id> 
     
+        TODO - implement a GET view for confirmation
+    """
+    
+    success_url = "/"
+    template_name = "mongonaut/document_delete.html"
+    
+    def get_success_url(self):
+        self.set_mongonaut_base()  
+        return reverse('document_list', kwargs={'app_label':self.app_label,'document_name':self.document_name})
+
+    def get_object(self):
+        self.set_mongoadmin()                
+        self.document_type = getattr(self.models, self.document_name)
+        self.ident = self.kwargs.get('id')
+        self.document = self.document_type.objects.get(id=self.ident)
+        return self.document        
+
 
 class EmbeddedDocumentDetailView(DetailView, MongonautViewMixin):
     """ :args: <app_label> <document_name> <id> <???> """
