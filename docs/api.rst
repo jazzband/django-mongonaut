@@ -35,7 +35,80 @@ Sample Usage
 MongoAdmin Listing
 ===================
 
-`mongonaut.sites.MongoAdmin.search_fields`
+All of these fields are attached to `mongonaut.sites.MongoAdmin`.
+
+`has_add_permission`
+------------------------------------------------
+
+**default**:
+
+.. sourcecode:: python
+
+    # myapp/mongoadmin.py
+    class PostAdmin(MongoAdmin):
+
+        def has_add_permission(self, request):
+            """ Can add this object """
+            return request.user.is_authenticated() and request.user.is_active() and request.user.is_staff()
+
+`has_edit_permission`
+------------------------------------------------
+
+**default**:
+
+.. sourcecode:: python
+
+    # myapp/mongoadmin.py
+    class PostAdmin(MongoAdmin):
+
+        def has_delete_permission(self, request):
+            """ Can delete this object """
+            return request.user.is_authenticated() and request.user.is_active() and request.user.is_admin()
+
+`has_edit_permission`
+------------------------------------------------
+
+**default**:
+
+.. sourcecode:: python
+
+    # myapp/mongoadmin.py
+    class PostAdmin(MongoAdmin):
+
+        def has_edit_permission(self, request):
+            """ Can edit this object """
+            return request.user.is_authenticated() and request.user.is_active() and request.user.is_staff()
+
+`has_view_permission`
+------------------------------------------------
+
+**default**:
+
+.. sourcecode:: python
+
+    # myapp/mongoadmin.py
+    class PostAdmin(MongoAdmin):
+
+        def has_view_permission(self, request):
+            """ Can view this object """
+            return request.user.is_authenticated() and request.user.is_active()
+
+`list_fields`
+----------------------------------------
+
+**default**: Mongo _id
+
+Accepts an iterable of string fields that matches fields in the associated model. Displays these fields as columns.
+
+.. sourcecode:: python
+
+    # myapp/mongoadmin.py
+    class PostAdmin(MongoAdmin):
+
+        # provide following fields for view in the DocumentListView
+        list_fields = ('title', "published", "pub_date")
+
+`search_fields`
 ------------------------------------------
 
 **default**: []
@@ -49,18 +122,3 @@ Accepts an iterable of string fields that matches fields in the associated model
     
         # Searches on the title field. Displayed in the DocumentListView.
         search_fields = ('title',)
-
-`mongonaut.sites.MongoAdmin.list_fields`
-----------------------------------------
-
-**default**: Mongo _id
-
-Accepts an iterable of string fields that matches fields in the associated model. Displays these fields as columns.
-
-.. sourcecode:: python
-
-    # myapp/mongoadmin.py
-    class PostAdmin(MongoAdmin):
-    
-    # provide following fields for view in the DocumentListView
-    list_fields = ('title', "published", "pub_date")
