@@ -19,7 +19,7 @@
                 <a class="btn small document-action-btn" href="{% url document_detail_edit_form app_label document_name document.id %}">Edit</a>
             {% endif %}
             {% if has_delete_permission %}                        
-                <a class="btn small danger document-action-btn" href="#">Delete</a>        
+                <a class="btn small danger document-action-btn" href="#">Delete</a> (Warning - no confirmation yet)
             {% endif %}
         </p>
     </div>

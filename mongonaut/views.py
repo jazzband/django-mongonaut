@@ -1,6 +1,5 @@
 """
     TODO move permission checks to the dispatch view thingee
-
 """
 
 from datetime import datetime

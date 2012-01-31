@@ -29,6 +29,7 @@
         <form method="post" action="{% url document_delete app_label document_name document.id %}">
             {% csrf_token %}
             <input type="submit" name="action_delete" class="btn danger{% if not has_delete_permission %} disabled{%endif%}" {% if not has_delete_permission %}readonly{% endif %} value="X Delete">&nbsp;
+            (Warning - no confirmation yet)
         </form>
             </div>            
         </form>        
