@@ -90,6 +90,9 @@ class DocumentListView(FormView, MongonautViewMixin):
         
     def get_context_data(self, **kwargs):
         context = super(DocumentListView, self).get_context_data(**kwargs)
+        context = self.get_permissions(context)
+        if not context['has_view_permission']:
+            return HttpResponseForbidden("You do not have permissions to view this content.")
         
         context['object_list'] = self.get_queryset()        
         context['document'] = self.document
@@ -121,7 +124,6 @@ class DocumentListView(FormView, MongonautViewMixin):
         if self.mongoadmin.search_fields:
             context['search_field'] = True
 
-        context = self.get_permissions(context)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -143,7 +145,10 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
     
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailView, self).get_context_data(**kwargs)
-        self.set_mongonaut_base()
+        self.set_mongoadmin()        
+        context = self.get_permissions(context)
+        if not context['has_view_permission']:
+            return HttpResponseForbidden("You do not have permissions to view this content.")
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
@@ -161,8 +166,6 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
                 continue
             context['keys'].append(key)
             
-        self.set_mongoadmin()
-        context = self.get_permissions(context)
 
         return context
  
@@ -180,17 +183,18 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
     
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailEditFormView, self).get_context_data(**kwargs)
-        self.set_mongonaut_base()
+        self.set_mongoadmin()        
+        context = self.get_permissions(context)
+        if not context['has_edit_permission']:
+            return HttpResponseForbidden("You do not have permissions to edit view content.")
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
         
         context['document'] = self.document
-        context['app_label'] = self.app_label  
+        context['app_label'] = self.app_label
         context['document_name'] = self.document_name
             
-        self.set_mongoadmin()
-        context = self.get_permissions(context)
 
         return context
         
@@ -251,14 +255,15 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
             self.document = self.document_type.objects.get(id=self.ident)
         """
         context = super(DocumentDetailAddFormView, self).get_context_data(**kwargs)
-        self.set_mongonaut_base()
+        self.set_mongoadmin()        
+        context = self.get_permissions(context)
+        if not context['has_add_permission']:
+            return HttpResponseForbidden("You do not have permissions to edit view content.")
         self.document_type = getattr(self.models, self.document_name)
 
-        context['app_label'] = self.app_label  
+        context['app_label'] = self.app_label
         context['document_name'] = self.document_name
 
-        self.set_mongoadmin()
-        context = self.get_permissions(context)
 
         return context
 
