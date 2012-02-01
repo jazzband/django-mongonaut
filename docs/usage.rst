@@ -66,12 +66,12 @@ This gives you similar controls to what the Django ORM provides:
             # Overrides Mongonaut default
             # Any authenticated user user can edit content - kind of like a bliki 
 
-            return request.user.is_authenticated() and request.user.is_active()
+            return request.user.is_authenticated and request.user.is_active
 
         def has_delete_permission(self, request):
             # Overrides Mongonaut default
             # Only admins can remove post items
-            return request.user.is_authenticated() and request.user.is_active() and request.user.is_admin()
+            return request.user.is_authenticated and request.user.is_active and request.user.is_admin()
 
         # Provides a search field using Q objects
         #   so you can do ('title','content',) to check both

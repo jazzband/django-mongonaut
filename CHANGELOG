@@ -2,9 +2,11 @@
 CHANGELOG
 =========
 
+# 0.2.9 Permissions correction - Do remember this is in ALPHA!!!
+
 # 0.2.8 Test components, permission controls in the views, first pass on deletes, Reference field display and some really bad SELECT widget implementations on it.
 
-# 0.2.7 Permissions refactor, list_fields implementation, and ability to add new documents
+# authenticated Permissions refactor, list_fields implementation, and ability to add new documents
 
 # 0.2.6 Major performance enhancement of the DocumentListView
 
