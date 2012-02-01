@@ -15,13 +15,13 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-
 from mongoengine.fields import EmbeddedDocumentField, ListField
 
 from mongonaut.forms import DocumentListForm
 from mongonaut.forms import DocumentDetailForm
 from mongonaut.forms import document_detail_form_factory
 from mongonaut.mixins import MongonautViewMixin
+from mongonaut.utils import is_valid_object_id
 
 class IndexView(ListView, MongonautViewMixin):
 
@@ -45,6 +45,21 @@ class DocumentListView(FormView, MongonautViewMixin):
     success_url = '/'
     template_name = "mongonaut/document_list.html"
     
+    def get_qset(self, queryset, q):
+        if self.mongoadmin.search_fields and q:
+            params = {}
+            for field in self.mongoadmin.search_fields:
+                if field == 'id':
+                    # check to make sure this is a valid ID, otherwise we just continue
+                    if is_valid_object_id(q):
+                        return queryset.filter(id=q)
+                    continue
+                search_key = "{field}__icontains".format(field=field)
+                params[search_key] = q
+
+            queryset = queryset.filter(**params)        
+        return queryset
+    
     def get_queryset(self):
         if hasattr(self, "queryset") and self.queryset:
             return self.queryset
@@ -57,12 +72,8 @@ class DocumentListView(FormView, MongonautViewMixin):
         # search. move this to get_queryset        
         # search. move this to get_queryset
         q = self.request.GET.get('q')
-        if self.mongoadmin.search_fields and q:
-            params = {}
-            for field in self.mongoadmin.search_fields:
-                search_key = "{field}__icontains".format(field=field)
-                params[search_key] = q
-            queryset = queryset.filter(**params)
+        query = self.get_qset(queryset, q)
+
         
         ### Start pagination
         ### Note: 
@@ -239,14 +250,16 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                         else:
                             setattr(self.document, key, False)
                         continue
+                        
+                    if isinstance(field.widget, widgets.Select):
+                        # TODO - support reference fields
+                        continue
 
                     # for strings
                     setattr(self.document, key, self.request.POST[key])
                 self.document.save()
                 # TODO add message for save
-
-        print self.form.fields['author'].choices
-        print self.form
+                
         return self.form
         
 class DocumentDetailAddFormView(FormView, MongonautViewMixin):

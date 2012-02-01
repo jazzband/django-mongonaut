@@ -50,8 +50,12 @@ def document_detail_form_factory(form, document_type, initial=False):
                 # probably a reference field so we add some choices
                 form.fields[key].initial = field_initial.id
                 form.fields[key].choices = [(unicode(x.id), get_document_unicode(x)) for x in type(field_initial).objects.all()]
+            elif isinstance(form.fields[key].widget, forms.widgets.Select):
+                # probably a reference field so we add some choices                
+                form.fields[key].choices = [(unicode(x.id), get_document_unicode(x)) for x in field.document_type.objects.all()]
             else:
                 form.fields[key].initial = getattr(initial, key)
+            
         
         for field_key, form_attr in CHECK_ATTRS.items():
             if hasattr(field, field_key):
