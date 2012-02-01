@@ -14,10 +14,10 @@ Contents:
    :maxdepth: 3
    
    installation
-   usage
    configuration
+   api
    future_usage 
-   api     
+  
 
 
    

@@ -1,10 +1,10 @@
-=============
-Future Usage
-=============
+======================
+Future Usage Concepts
+======================
+
+.. warning:: This is is not implemented. It's sort of my dream of what I want this project to be able to do.
 
 Complex version. Create a mongonaut.py module in your app:
-
-.. warning:: This is is not fully implemented. Use it at your own extreme risk.
 
 .. sourcecode:: python
 
