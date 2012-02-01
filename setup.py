@@ -1,14 +1,13 @@
+import os
 from setuptools import setup, find_packages
  
-version = '0.2.7'
-
-# TODO - add in dependencies
+import mongonaut
  
 LONG_DESCRIPTION = open('README.rst').read()
  
 setup(
     name='django-mongonaut',
-    version=version,
+    version=mongonaut.__version__,
     description="An introspective interface for Django and MongoDB",
     long_description=LONG_DESCRIPTION,
     classifiers=[
@@ -25,11 +24,12 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords='mongodb,django',
-    author='Daniel Greenfeld',
+    author=mongonaut.__author__,
     author_email='pydanny@gmail.com',
     url='http://github.com/pydanny/django-mongonaut',
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
+    install_requires=['mongoengine==0.5.2'],
     zip_safe=False,
 )
