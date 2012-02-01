@@ -2,7 +2,7 @@
 django-mongonaut
 ================
 :Info: An introspective interface for Django and MongoDB.
-:Version: 0.2.7
+:Version: 0.2.8
 :Author: Daniel Greenfeld (http://github.com/pydanny)
 
 About
@@ -34,7 +34,7 @@ Get mongoengine (and pymongo):
 
 Get the code::
 
-    pip install django-mongonaut==0.2.7
+    pip install django-mongonaut==0.2.8
     
 Install the dependency in your settings.py::
 
