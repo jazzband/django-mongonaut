@@ -67,9 +67,10 @@ class MongonautViewMixin(object):
         # TODO change this to use 'finally' or 'else' or something
         if not hasattr(self, "mongoadmin"):
             raise NoMongoAdminSpecified("No MongoAdmin for {0}.{1}".format(self.app_label, self.document_name))
-                    
-    def get_permissions(self, context={}):
+
+    def set_permissions_in_context(self, context={}):
         """ Provides permissions for mongoadmin for use in the context"""
+        
         context['has_view_permission'] = self.mongoadmin.has_view_permission(self.request)
         context['has_edit_permission'] = self.mongoadmin.has_edit_permission(self.request)
         context['has_add_permission'] = self.mongoadmin.has_add_permission(self.request)

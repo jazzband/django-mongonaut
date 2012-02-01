@@ -2,6 +2,8 @@
 CHANGELOG
 =========
 
+# 0.2.10 Proper Reference field saves
+
 # 0.2.9 Permissions correction - Do remember this is in ALPHA!!!
 
 # 0.2.8 Test components, permission controls in the views, first pass on deletes, Reference field display and some really bad SELECT widget implementations on it.
