@@ -6,6 +6,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.forms import widgets
 from django.forms.widgets import DateTimeInput, CheckboxInput
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.views.generic.edit import DeletionMixin
@@ -203,8 +204,6 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
         return context
         
     def get_form(self, DocumentDetailForm):
-        self.has_delete_permission = None        
-        self.delete_document = False
         self.set_mongoadmin()
         context = self.get_permissions({})
         if not context['has_edit_permission']:
@@ -224,7 +223,6 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                     if 'readonly' in field.widget.attrs:
                         # For _id
                         # TODO - make the ones below work
-                        # for ReferenceField - like <class 'articles.models.User'> on Blog                        
                         # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
                         # For EmbeddedDocumentField
                         continue       
@@ -233,7 +231,8 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                         format = field.widget.format
                         setattr(self.document, key, datetime.strptime(self.request.POST[key], format))
                         continue
-                        
+
+
                     if isinstance(field.widget, CheckboxInput):
                         if key in self.request.POST:
                             setattr(self.document, key, True)
@@ -246,7 +245,8 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                 self.document.save()
                 # TODO add message for save
 
-            
+        print self.form.fields['author'].choices
+        print self.form
         return self.form
         
 class DocumentDetailAddFormView(FormView, MongonautViewMixin):

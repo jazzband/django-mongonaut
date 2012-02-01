@@ -2,7 +2,7 @@ import logging
 
 from django import forms
 
-from mongoengine.fields import EmbeddedDocumentField, ListField
+from mongoengine.fields import Document, EmbeddedDocumentField, ListField
 from mongonaut.widgets import get_widget
 
 logger = logging.getLogger('mongonaut.forms')
@@ -16,12 +16,16 @@ class DocumentDetailForm(forms.Form):
     pass
     
 CHECK_ATTRS = dict(
-        choices='choices',
         required='required',
         help_text='help_text',
         name='name'
     )
 
+def get_document_unicode(document):
+    try:
+        return document.__unicode__()
+    except AttributeError:
+        return unicode(document)
 
 def document_detail_form_factory(form, document_type, initial=False):
     """ Adds document field to a form. """    
@@ -29,17 +33,31 @@ def document_detail_form_factory(form, document_type, initial=False):
         field = document_type._fields[key]
         logger.debug(field.__dict__)
         logging.debug('help')
-        form.fields[key] = forms.CharField(
-            key, 
-            required=field.required,
-            widget=get_widget(field))
+        widget = get_widget(field)
+        if isinstance(widget, forms.widgets.Select):
+            form.fields[key] = forms.ChoiceField(
+                key, 
+                required=field.required,
+                widget=widget)            
+        else:
+            form.fields[key] = forms.CharField(
+                key, 
+                required=field.required,
+                widget=widget)
         if initial:
-            form.fields[key].initial = getattr(initial, key)            
+            field_initial =   getattr(initial, key)
+            if isinstance(field_initial, Document):
+                # probably a reference field so we add some choices
+                form.fields[key].initial = field_initial.id
+                form.fields[key].choices = [(unicode(x.id), get_document_unicode(x)) for x in type(field_initial).objects.all()]
+            else:
+                form.fields[key].initial = getattr(initial, key)
         
         for field_key, form_attr in CHECK_ATTRS.items():
             if hasattr(field, field_key):
                 value = getattr(field, field_key)
-                setattr(form.fields[key], field_key, value)
+                setattr(form.fields[key], field_key, value)                
+                
     return form
 
 

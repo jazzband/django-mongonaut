@@ -16,7 +16,6 @@ def get_widget(field, disabled=False):
     attrs['class'] = 'span6 xlarge'
     if disabled or \
             isinstance(field, ObjectIdField) or \
-            isinstance(field, ReferenceField) or \
             isinstance(field, ListField) or \
             isinstance(field, EmbeddedDocumentField):
         attrs['class'] += ' disabled'
@@ -31,7 +30,7 @@ def get_widget(field, disabled=False):
     if isinstance(field, BooleanField):
         return forms.CheckboxInput(attrs=attrs)
         
-    #if isinstance(field, ReferenceField):
-    #    return forms.Select(attrs=attrs)
+    if isinstance(field, ReferenceField):
+        return forms.Select(attrs=attrs)
 
     return forms.TextInput(attrs=attrs)
