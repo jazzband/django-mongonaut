@@ -41,15 +41,15 @@ class BaseMongoAdmin(object):
 
     def has_edit_permission(self, request):
         """ Can edit this object """
-        return request.user.is_authenticated and request.user.is_active and request.user.is_staff()
+        return request.user.is_authenticated and request.user.is_active and request.user.is_staff
 
     def has_add_permission(self, request):
         """ Can add this object """
-        return request.user.is_authenticated and request.user.is_active and request.user.is_staff()
+        return request.user.is_authenticated and request.user.is_active and request.user.is_staff
 
     def has_delete_permission(self, request):
         """ Can delete this object """
-        return request.user.is_authenticated and request.user.is_active and request.user.is_admin()
+        return request.user.is_authenticated and request.user.is_active and request.user.is_admin
 
 
 class MongoAdmin(BaseMongoAdmin):

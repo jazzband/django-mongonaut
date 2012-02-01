@@ -49,7 +49,7 @@ All of these fields are attached to `mongonaut.sites.MongoAdmin`.
 
         def has_add_permission(self, request):
             """ Can add this object """
-            return request.user.is_authenticated and request.user.is_active and request.user.is_staff()
+            return request.user.is_authenticated and request.user.is_active and request.user.is_staff)
 
 `has_edit_permission`
 ------------------------------------------------
@@ -77,7 +77,7 @@ All of these fields are attached to `mongonaut.sites.MongoAdmin`.
 
         def has_edit_permission(self, request):
             """ Can edit this object """
-            return request.user.is_authenticated and request.user.is_active and request.user.is_staff()
+            return request.user.is_authenticated and request.user.is_active and request.user.is_staff)
 
 `has_view_permission`
 ------------------------------------------------
