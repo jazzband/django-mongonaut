@@ -2,7 +2,7 @@ import logging
 
 from django import forms
 
-from mongoengine.fields import Document, EmbeddedDocumentField, ListField
+from mongoengine.fields import Document, EmbeddedDocumentField, ListField, ReferenceField
 from mongonaut.widgets import get_widget
 
 logger = logging.getLogger('mongonaut.forms')
@@ -53,18 +53,20 @@ def document_detail_form_factory(form, document_type, initial=False):
                 form.fields[key].initial = field_initial.id
                 form.fields[key].choices = [(unicode(x.id), get_document_unicode(x)) for x in type(field_initial).objects.all()]
             else:
-                form.fields[key].initial = getattr(initial, key)
-        
-        form.fields[key].mongofield = field
-        if hasattr(form.fields[key].widget, "document_type"):
-            # probably a reference or list field so we add some choices                
+                form.fields[key].initial = field_initial
+
+        if form.fields[key].initial is None and isinstance(field, ReferenceField):
             form.fields[key].choices = [(unicode(x.id), get_document_unicode(x)) for x in field.document_type.objects.all()]
+            
         
         for field_key, form_attr in CHECK_ATTRS.items():
             if hasattr(field, field_key):
                 value = getattr(field, field_key)
                 setattr(form.fields[key], field_key, value)
-                
+
+        # used as a handy reference field
+        form.fields[key].mongofield = field
+            
     return form
 
 

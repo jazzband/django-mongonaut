@@ -2,7 +2,7 @@
 django-mongonaut
 ================
 :Info: An introspective interface for Django and MongoDB.
-:Version: 0.2.9
+:Version: 0.2.10
 :Author: Daniel Greenfeld (http://github.com/pydanny)
 
 About
@@ -34,7 +34,7 @@ Get mongoengine (and pymongo):
 
 Get the code::
 
-    pip install django-mongonaut==0.2.9
+    pip install django-mongonaut==0.2.10
     
 Install the dependency in your settings.py::
 
@@ -69,7 +69,7 @@ django-mongonaut will let you duplicate much of what `django.contrib.admin` give
     # Then attach the mongoadmin to your model
     Post.mongoadmin = MongoAdmin()
 
-* http://django-mongonaut.readthedocs.org/en/latest/configuration.html
+* http://django-mongonaut.readthedocs.org/en/latest/api.html
 
 Documentation
 ==============
