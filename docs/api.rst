@@ -6,8 +6,13 @@ The following are advanced configuration features for django-mongonaut. Using th
 
 .. note:: Future versions of mongonaut will allow you to work with pymongo collections without mongoengine serving as an intermediary.
 
-Sample Usage
-==============
+MongoAdmin Objects
+===================
+
+class MongoAdmin
+------------------
+
+The MongoAdmin class is the representation of a model in the mongonaut interface. These are stored in a file named mongoadmin.py in your application. Let’s take a look at a very simple example of the MongoAdmin:
 
 .. sourcecode:: python
 
@@ -32,13 +37,13 @@ Sample Usage
     # Then attach PostAdmin to your model
     Post.mongoadmin = PostAdmin()
 
-MongoAdmin Listing
-===================
+MongoAdmin Options
+------------------
 
-All of these fields are attached to `mongonaut.sites.MongoAdmin`.
+The MongoAdmin is very flexible. It has many options for dealing with customizing the interface. All options are defined on the MongoAdmin subclass:
 
 `has_add_permission`
-------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~
 
 **default**:
 
@@ -52,7 +57,7 @@ All of these fields are attached to `mongonaut.sites.MongoAdmin`.
             return request.user.is_authenticated and request.user.is_active and request.user.is_staff)
 
 `has_edit_permission`
-------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 **default**:
 
@@ -66,7 +71,7 @@ All of these fields are attached to `mongonaut.sites.MongoAdmin`.
             return request.user.is_authenticated and request.user.is_active and request.user.is_admin()
 
 `has_edit_permission`
-------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 **default**:
 
@@ -80,7 +85,7 @@ All of these fields are attached to `mongonaut.sites.MongoAdmin`.
             return request.user.is_authenticated and request.user.is_active and request.user.is_staff)
 
 `has_view_permission`
-------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 **default**:
 
@@ -94,7 +99,7 @@ All of these fields are attached to `mongonaut.sites.MongoAdmin`.
             return request.user.is_authenticated and request.user.is_active
 
 `list_fields`
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 **default**: Mongo _id
 
@@ -109,7 +114,7 @@ Accepts an iterable of string fields that matches fields in the associated model
         list_fields = ('title', "published", "pub_date")
 
 `search_fields`
-------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 **default**: []
 
