@@ -10,16 +10,17 @@
 <h1>Mongonaut</h1>
 
 <div class="row">
-    <div class="span16">
+    <div class="span12">
 {% for app in object_list %}
 
-    <table class="bordered-table zebra-striped">
+    <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th colspan=3>{{ app.app_name.title }}</th>
             </tr>
         </thead>
         
+        <tbody>
         {% for model in app.obj.models %}
             <tr>
                 <td><a href="{% url document_list app.app_name model.name %}">{{ model.name }}</a></td>
@@ -32,6 +33,7 @@
                 {% endif %}    
             </tr>
         {% endfor %}
+        </tbody>        
     </table>    
 {% endfor %}
     </div>

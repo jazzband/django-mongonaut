@@ -12,8 +12,8 @@
 <h1>{{ document_name }} List</h1>
 
 {% if search_field %}
-    <form action="" method="get">
-        <input type="text" name="q">
+    <form action="" method="get" class="form-search">
+        <input type="text" name="q" class="input-medium search-query">
         <input type="submit" class="btn small info" value="search">
     </form>
 {% endif %}
@@ -25,7 +25,7 @@
     {% csrf_token %}
     {% include "mongonaut/actions/action_buttons.html" %}
 {% endif %}
-<table class="bordered-table zebra-striped">
+    <table class="table table-bordered table-striped">
     <thead>
         <tr>
             {% if request.user.is_superuser %}<th><input type="checkbox" name="check_all" /></th>{% endif %}
