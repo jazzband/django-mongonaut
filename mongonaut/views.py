@@ -5,6 +5,7 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.forms import widgets
 from django.forms.widgets import DateTimeInput, CheckboxInput
@@ -263,7 +264,7 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                     setattr(self.document, key, self.request.POST[key])
                     
                 self.document.save()
-                # TODO add message for save
+                messages.add_message(self.request, messages.INFO, 'Your changes have been saved.')
                 
         return self.form
         
