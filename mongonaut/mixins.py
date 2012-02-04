@@ -54,8 +54,10 @@ class MongonautViewMixin(object):
         
     def set_mongoadmin(self):
         """ Returns the MongoAdmin object for an app_label/document_name style view
-            NOTE: Might refactor this out later
         """
+        if hasattr(self, "mongoadmin"):
+            return
+                    
         if not hasattr(self, "document_name"):
             self.set_mongonaut_base()
         
