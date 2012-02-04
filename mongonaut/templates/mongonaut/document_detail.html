@@ -20,10 +20,11 @@
                     <a class="btn btn-primary" href="{% url document_detail_edit_form app_label document_name document.id %}">Edit</a>
                 {% endif %}
                 {% if has_delete_permission %}                        
-                    <a class="btn btn-danger" href="#">Delete</a> (Warning - no confirmation yet)
+                    <a id="action_delete"  class="btn btn-danger" href="#">Delete</a>
                 {% endif %}
             </div>
         </p>
+        {% include "mongonaut/includes/_delete_warning.html" %}
     </div>
 </div>
 
@@ -49,3 +50,10 @@
 </div>    
 
 {% endblock %}
+
+{% block extrajs %}
+<form method="post" id="delete_form" action="{% url document_delete app_label document_name document.id %}">
+{% csrf_token %}
+</form>
+{% endblock %}
+
