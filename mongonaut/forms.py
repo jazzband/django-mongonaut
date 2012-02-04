@@ -34,6 +34,10 @@ def document_detail_form_factory(form, document_type, initial=False):
         logger.debug(field.__dict__)
         logging.debug('help')
         widget = get_widget(field)
+        if widget is None:
+            # ListField or EmbeddedDocumentField
+            continue
+            
         if isinstance(widget, forms.widgets.Select):
             form.fields[key] = forms.ChoiceField(
                 key, 

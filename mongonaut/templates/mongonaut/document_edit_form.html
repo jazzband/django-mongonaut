@@ -13,18 +13,15 @@
 <h1>{{ document_name }} Detail Edit</h1>
 
 <form method="POST" action="">
+{% csrf_token %}
 <div class="row">
-    <div class="span12">
-        {% csrf_token %}
+    <div class="span6">
+        <h2>Main Document</h2>        
         <fieldset>
             {% for field in form %}
                 {% include "mongonaut/includes/_field.html" %}
             {% endfor %}
-        </fieldset>
-    </div>
-</div>  
-<div class="row">
-    <div class="span6">      
+        </fieldset>      
         <div class="btn-group">
             <input type="submit" name="action" class="btn btn-primary" value="Save">
 
@@ -42,7 +39,11 @@
                         <a class="btn btn-danger" id="action_delete_ok" href="#">Delete forever!</a> 
                     </p>
         </div> 
-    </div>        
+    </div>   
+    <div class="span5 offset1">
+        <h2>Internal Documents</h2>
+        <p>TODO - include EmbeddedDocumentFields, ListFields here</p>
+    </div>
 </div>
 </form>        
   

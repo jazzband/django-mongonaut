@@ -11,13 +11,14 @@ from mongoengine.fields import ReferenceField
 
 
 def get_widget(field, disabled=False):
-    """ TODO: Make this do something besides just character fields """
+    
+    if isinstance(field, ListField) or \
+        isinstance(field, EmbeddedDocumentField):
+        return None
+    
     attrs={}
     attrs['class'] = 'span6 xlarge'
-    if disabled or \
-            isinstance(field, ObjectIdField) or \
-            isinstance(field, ListField) or \
-            isinstance(field, EmbeddedDocumentField):
+    if disabled or isinstance(field, ObjectIdField):
         attrs['class'] += ' disabled'
         attrs['readonly'] = 'readonly'
     

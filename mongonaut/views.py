@@ -237,10 +237,7 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
             if self.form.is_valid():
                 for key, field in self.form.fields.items():                      
                     if 'readonly' in field.widget.attrs:
-                        # For _id
-                        # TODO - make the ones below work
-                        # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
-                        # For EmbeddedDocumentField
+                        # For _id or things specified as such
                         continue       
                         
                     if isinstance(field.widget, DateTimeInput):
