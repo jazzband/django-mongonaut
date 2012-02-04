@@ -38,10 +38,10 @@ Introspection of Mongo data
 Data Management
 ----------------------------
 
-    * **[in progress]** Editing on ListFields, EmbeddedDocumentsFields, and ReferenceFields
-    * **[in progress]** Document Deletes
-    * **[in progress]** Admin authored Collection level document control functions    
-    * Editing on most other fields 
+    * **[in progress]** Editing on ListFields and EmbeddedDocumentsFields
+    * **[in progress]** Admin authored Collection level document control functions
+    * Document Deletes    
+    * Editing on most other fields including ReferenceFields.
     * Automatic detection of widget types
     * Text field shorthand for letting user quickly determine type when using without mongoengine
     * Document Adds
