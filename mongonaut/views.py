@@ -345,7 +345,8 @@ class DocumentDeleteView(TemplateView, DeletionMixin, MongonautViewMixin):
     template_name = "mongonaut/document_delete.html"
     
     def get_success_url(self):
-        self.set_mongonaut_base()  
+        self.set_mongonaut_base()
+        messages.add_message(self.request, messages.INFO, 'Your document has been deleted.')
         return reverse('document_list', kwargs={'app_label':self.app_label,'document_name':self.document_name})
 
     def get_object(self):
