@@ -262,6 +262,7 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
 
                     # for strings
                     setattr(self.document, key, self.request.POST[key])
+                    
                 self.document.save()
                 # TODO add message for save
                 
