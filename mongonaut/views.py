@@ -331,7 +331,7 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
                     # for strings
                     setattr(self.document, key, self.request.POST[key])
                 self.document.save()
-                # TODO add message for save
+                messages.add_message(self.request, messages.INFO, 'Your new document has been added and saved.')
 
         return self.form
 
