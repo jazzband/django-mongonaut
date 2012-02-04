@@ -15,12 +15,14 @@
 <div class="row" >
     <div class="span12" id="document-actions">
         <p>
-            {% if has_edit_permission %}            
-                <a class="btn small document-action-btn" href="{% url document_detail_edit_form app_label document_name document.id %}">Edit</a>
-            {% endif %}
-            {% if has_delete_permission %}                        
-                <a class="btn small danger document-action-btn" href="#">Delete</a> (Warning - no confirmation yet)
-            {% endif %}
+            <div class="btn-group">
+                {% if has_edit_permission %}            
+                    <a class="btn btn-primary" href="{% url document_detail_edit_form app_label document_name document.id %}">Edit</a>
+                {% endif %}
+                {% if has_delete_permission %}                        
+                    <a class="btn btn-danger" href="#">Delete</a> (Warning - no confirmation yet)
+                {% endif %}
+            </div>
         </p>
     </div>
 </div>
