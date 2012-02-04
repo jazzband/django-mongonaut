@@ -18,7 +18,9 @@
     </form>
 {% endif %}
 {% if has_add_permission %}
-    <a href="{% url document_detail_add_form app_label document_name %}">Add</a>
+    <p>
+        <a class="btn btn-primary" href="{% url document_detail_add_form app_label document_name %}">Add</a>
+    </p>
 {% endif %}
 {% if request.user.is_superuser %}
     <form action="" method="post">
