@@ -255,9 +255,8 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                         
                     if isinstance(field.widget, widgets.Select):
                         # supporting reference fields!
-                        # TODO - support ListFields
                         value = field.mongofield.document_type.objects.get(id=self.request.POST[key])
-                        setattr(self.document, key, value)                        
+                        setattr(self.document, key, value)
                         continue
 
                     # for strings
@@ -308,10 +307,6 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
                 for key, field in self.form.fields.items():                      
                     if 'readonly' in field.widget.attrs:
                         # For _id
-                        # TODO - make the ones below work
-                        # for ReferenceField - like <class 'articles.models.User'> on Blog                        
-                        # For ListField - like 'field': <mongoengine.fields.StringField object at 0x101b51810>,                                
-                        # For EmbeddedDocumentField
                         continue       
 
                     if isinstance(field.widget, DateTimeInput):
@@ -325,6 +320,12 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
                         else:
                             setattr(self.document, key, False)
                         continue
+                        
+                    if isinstance(field.widget, widgets.Select):
+                        # supporting reference fields!
+                        value = field.mongofield.document_type.objects.get(id=self.request.POST[key])
+                        setattr(self.document, key, value)
+                        continue                        
 
                     # for strings
                     setattr(self.document, key, self.request.POST[key])
