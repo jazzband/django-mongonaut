@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.importlib import import_module
 
 from django.conf import settings
@@ -16,6 +17,13 @@ class AppStore(object):
         self.models.append(model)
         
 class MongonautViewMixin(object):
+    
+    def get_context_data(self, **kwargs):
+        context = super(MongonautViewMixin, self).get_context_data(**kwargs)
+        context['MONGONAUT_JQUERY'] = getattr(settings, "MONGONAUT_JQUERY", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+        context['MONGONAUT_TWITTER_BOOTSTRAP'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP", "http://twitter.github.com/bootstrap/assets/css/bootstrap.css")
+        context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP_ALERT", "http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js")
+        return context
     
     def get_mongoadmins(self):
         """ Returns a list of all mongoadmin implementations for the site """
@@ -56,7 +64,7 @@ class MongonautViewMixin(object):
         """ Returns the MongoAdmin object for an app_label/document_name style view
         """
         if hasattr(self, "mongoadmin"):
-            return
+            return None
                     
         if not hasattr(self, "document_name"):
             self.set_mongonaut_base()

@@ -19,7 +19,9 @@
 {% endif %}
 {% if has_add_permission %}
     <p>
-        <a class="btn btn-primary" href="{% url document_detail_add_form app_label document_name %}">Add</a>
+        <a class="btn btn-primary" href="{% url document_detail_add_form app_label document_name %}">
+            <i class="icon-plus icon-white"></i> Add
+        </a>
     </p>
 {% endif %}
 {% if request.user.is_superuser %}

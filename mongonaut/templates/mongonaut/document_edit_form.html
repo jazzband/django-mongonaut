@@ -27,7 +27,10 @@
 
             <input type="submit" name="action" class="btn btn-disabled" readonly value="Save and continue editing">
             <input type="submit" name="action" class="btn btn-disabled" readonly value="Save and add another">
-            <a href="#" id="action_delete" class="btn btn-danger{% if not has_delete_permission %} disabled{%endif%}" {% if not has_delete_permission %}readonly{% endif %}>X Delete</a>
+            <a href="#" id="action_delete" 
+                class="btn btn-danger{% if not has_delete_permission %} disabled{%endif%}" {% if not has_delete_permission %}readonly{% endif %}>
+                    <i class="icon-trash icon-white"></i> Delete
+            </a>
 
         </div>     
         {% include "mongonaut/includes/_delete_warning.html" %}

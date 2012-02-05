@@ -40,6 +40,20 @@ You will need the following also set up:
 
 .. note:: No need for `autodiscovery()` with django-mongonaut!
 
+Static Media Installation
+=========================
+
+By default, `django-mongonaut` uses static media hosted by other services such as Google or Github. 
+If you need to point to another location, then you can change the following defaults to your new source:
+
+.. sourcecode:: python
+
+    # settings.py defaults
+    MONGONAUT_JQUERY = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+    MONGONAUT_TWITTER_BOOTSTRAP = "http://twitter.github.com/bootstrap/assets/css/bootstrap.css"
+    MONGONAUT_TWITTER_BOOTSTRAP_ALERT = http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js"
+    
+
 Heroku MongoDB connection via MongoLabs
 =======================================
 

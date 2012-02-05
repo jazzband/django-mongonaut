@@ -24,7 +24,7 @@ from mongonaut.forms import document_detail_form_factory
 from mongonaut.mixins import MongonautViewMixin
 from mongonaut.utils import is_valid_object_id
 
-class IndexView(ListView, MongonautViewMixin):
+class IndexView(MongonautViewMixin, ListView):
 
     template_name = "mongonaut/index.html"
     queryset = []
@@ -32,12 +32,12 @@ class IndexView(ListView, MongonautViewMixin):
     def get_queryset(self):
         return self.get_mongoadmins()
 
-class AppListView(ListView, MongonautViewMixin):
+class AppListView(MongonautViewMixin, ListView):
     """ :args: <app_label> """
 
     template_name = "mongonaut/app_list.html"
 
-class DocumentListView(FormView, MongonautViewMixin):
+class DocumentListView(MongonautViewMixin, FormView):
     """ :args: <app_label> <document_name> 
     
         TODO - Make a generic document fetcher method
@@ -162,7 +162,7 @@ class DocumentListView(FormView, MongonautViewMixin):
             
         return self.form_invalid(form)                                    
 
-class DocumentDetailView(TemplateView, MongonautViewMixin):
+class DocumentDetailView(MongonautViewMixin, TemplateView):
     """ :args: <app_label> <document_name> <id> """
     template_name = "mongonaut/document_detail.html"
     
@@ -193,7 +193,7 @@ class DocumentDetailView(TemplateView, MongonautViewMixin):
         return context
  
 
-class DocumentDetailEditFormView(FormView, MongonautViewMixin):
+class DocumentDetailEditFormView(MongonautViewMixin, FormView):
     """ :args: <app_label> <document_name> <id> """#
 
     template_name = "mongonaut/document_edit_form.html"
@@ -268,7 +268,7 @@ class DocumentDetailEditFormView(FormView, MongonautViewMixin):
                 
         return self.form
         
-class DocumentDetailAddFormView(FormView, MongonautViewMixin):
+class DocumentDetailAddFormView(MongonautViewMixin, FormView):
     """ :args: <app_label> <document_name> <id> """#
 
     template_name = "mongonaut/document_add_form.html"
@@ -335,7 +335,7 @@ class DocumentDetailAddFormView(FormView, MongonautViewMixin):
 
         return self.form
 
-class DocumentDeleteView(TemplateView, DeletionMixin, MongonautViewMixin):
+class DocumentDeleteView(DeletionMixin, MongonautViewMixin, TemplateView):
     """ :args: <app_label> <document_name> <id> 
     
         TODO - implement a GET view for confirmation
@@ -357,6 +357,6 @@ class DocumentDeleteView(TemplateView, DeletionMixin, MongonautViewMixin):
         return self.document        
 
 
-class EmbeddedDocumentDetailView(DetailView, MongonautViewMixin):
+class EmbeddedDocumentDetailView(MongonautViewMixin, DetailView):
     """ :args: <app_label> <document_name> <id> <???> """
     template_name = "mongonaut/embedded_document_detail.html"

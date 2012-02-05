@@ -17,10 +17,13 @@
         <p>
             <div class="btn-group">
                 {% if has_edit_permission %}            
-                    <a class="btn btn-primary" href="{% url document_detail_edit_form app_label document_name document.id %}">Edit</a>
+                    <a class="btn btn-primary" href="{% url document_detail_edit_form app_label document_name document.id %}">
+                        <i class="icon-pencil icon-white"></i> Edit
+                    </a>
+                            
                 {% endif %}
                 {% if has_delete_permission %}                        
-                    <a id="action_delete"  class="btn btn-danger" href="#">Delete</a>
+                    <a id="action_delete"  class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Delete</a>
                 {% endif %}
             </div>
         </p>
