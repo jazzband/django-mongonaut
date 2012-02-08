@@ -180,13 +180,15 @@ class DocumentDetailView(MongonautViewMixin, TemplateView):
         context['app_label'] = self.app_label  
         context['document_name'] = self.document_name
         context['keys'] = ['id',]
+        context['embedded_documents'] = []        
+        context['list_fields'] = []
         for key in sorted([x for x in self.document._fields.keys() if x != 'id']):
             # TODO - Figure out why this EmbeddedDocumentField and ListField breaks this view
             # Note - This is the challenge part, right? :)
             if isinstance(self.document._fields[key], EmbeddedDocumentField):            
-                continue
+                context['embedded_documents'].append(key)
             if isinstance(self.document._fields[key], ListField):                                
-                continue
+                context['list_fields'].append(key)
             context['keys'].append(key)
             
 

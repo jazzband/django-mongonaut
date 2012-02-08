@@ -32,8 +32,9 @@
 </div>
 
 <div class="row">
-    <div class="span12">
+    <div class="span6">
         <table class="table table-bordered table-striped">
+            <caption>Content</caption>
             <thead>
                 <tr>
                     <th>Key</th>
@@ -49,6 +50,47 @@
             {% endfor %}
             </tbody>            
         </table>
+    </div>
+    <div class="span6">
+            {% if list_fields %}
+                <table class="table table-bordered table-striped">
+                    <caption>List Fields</caption>
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>                    
+                        </tr>
+                    </thead>
+                    <tbody>            
+                    {% for key in list_fields %}
+                        <tr>
+                            <td>{{ key}}</td>
+                            <td>{% get_document_value document key %}</td>                    
+                        </tr>
+                    {% endfor %}
+                    </tbody>            
+                </table>
+            {% endif %}
+            {% if embedded_documents %}
+                <table class="table table-bordered table-striped">
+                    <caption>Embedded Documents</caption>
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>                    
+                        </tr>
+                    </thead>
+                    <tbody>            
+                    {% for key in embedded_documents %}
+                        <tr>
+                            <td>{{ key}}</td>
+                            <td>{% get_document_value document key %}</td>                    
+                        </tr>
+                    {% endfor %}
+                    </tbody>            
+                </table>
+            {% endif %}            
+        </div>        
     </div>
 </div>    
 
