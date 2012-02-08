@@ -359,6 +359,8 @@ class DocumentDeleteView(DeletionMixin, MongonautViewMixin, TemplateView):
 class ListFieldListView(MongonautViewMixin, FormView):
     pass
 
+class EmbeddedDocumentView(MongonautViewMixin, DetailView):
+    pass
 
 
 class EmbeddedDocumentDetailView(MongonautViewMixin, DetailView):
