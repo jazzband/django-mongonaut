@@ -190,8 +190,6 @@ class DocumentDetailView(MongonautViewMixin, TemplateView):
             if isinstance(self.document._fields[key], ListField):                                
                 context['list_fields'].append(key)
             context['keys'].append(key)
-            
-
         return context
  
 
@@ -356,7 +354,11 @@ class DocumentDeleteView(DeletionMixin, MongonautViewMixin, TemplateView):
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
-        return self.document        
+        return self.document   
+
+class ListFieldListView(MongonautViewMixin, FormView):
+    pass
+
 
 
 class EmbeddedDocumentDetailView(MongonautViewMixin, DetailView):
