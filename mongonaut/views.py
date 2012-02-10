@@ -187,13 +187,15 @@ class DocumentDetailView(MongonautViewMixin, TemplateView):
             # Note - This is the challenge part, right? :)
             if isinstance(self.document._fields[key], EmbeddedDocumentField):            
                 context['embedded_documents'].append(key)
+                continue
             if isinstance(self.document._fields[key], ListField):                                
                 context['list_fields'].append(key)
+                continue                
             context['keys'].append(key)
         return context
  
 
-class DocumentDetailEditFormView(MongonautViewMixin, FormView):
+class DocumentEditFormView(MongonautViewMixin, FormView):
     """ :args: <app_label> <document_name> <id> """#
 
     template_name = "mongonaut/document_edit_form.html"
@@ -205,7 +207,7 @@ class DocumentDetailEditFormView(MongonautViewMixin, FormView):
         return reverse('document_detail_edit_form', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':self.kwargs.get('id')})
     
     def get_context_data(self, **kwargs):
-        context = super(DocumentDetailEditFormView, self).get_context_data(**kwargs)
+        context = super(DocumentEditFormView, self).get_context_data(**kwargs)
         self.set_mongoadmin()        
         context = self.set_permissions_in_context(context)
         if not context['has_edit_permission']:
@@ -268,7 +270,7 @@ class DocumentDetailEditFormView(MongonautViewMixin, FormView):
                 
         return self.form
         
-class DocumentDetailAddFormView(MongonautViewMixin, FormView):
+class DocumentAddFormView(MongonautViewMixin, FormView):
     """ :args: <app_label> <document_name> <id> """#
 
     template_name = "mongonaut/document_add_form.html"
@@ -280,11 +282,11 @@ class DocumentDetailAddFormView(MongonautViewMixin, FormView):
         return reverse('document_detail', kwargs={'app_label':self.app_label,'document_name':self.document_name,'id':str(self.document.id)})
 
     def get_context_data(self, **kwargs):
-        """ TODO - possibly inherit this from DocumentDetailEditFormView. This is same thing minus:
+        """ TODO - possibly inherit this from DocumentEditFormView. This is same thing minus:
             self.ident = self.kwargs.get('id')
             self.document = self.document_type.objects.get(id=self.ident)
         """
-        context = super(DocumentDetailAddFormView, self).get_context_data(**kwargs)
+        context = super(DocumentAddFormView, self).get_context_data(**kwargs)
         self.set_mongoadmin()        
         context = self.set_permissions_in_context(context)
         if not context['has_add_permission']:

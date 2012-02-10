@@ -10,6 +10,10 @@ logger = logging.getLogger('mongonaut.forms')
 class DocumentListForm(forms.Form):
     """ The main document list form """
     mongo_id = forms.MultipleChoiceField(required=True, widget=forms.CheckboxSelectMultiple)
+    
+    def clean(self):
+        for field in self.fields:
+            print field
 
 
 class DocumentDetailForm(forms.Form):

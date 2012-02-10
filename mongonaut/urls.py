@@ -22,12 +22,12 @@ urlpatterns = patterns('',
     ),
     url(
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/edit/$',
-        view=views.DocumentDetailEditFormView.as_view(),
+        view=views.DocumentEditFormView.as_view(),
         name="document_detail_edit_form"
     ),    
     url(
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/add/$',
-        view=views.DocumentDetailAddFormView.as_view(),
+        view=views.DocumentAddFormView.as_view(),
         name="document_detail_add_form"
     ),
     url(
