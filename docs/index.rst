@@ -29,6 +29,11 @@ Introspection of Mongo data
 
     * **[in progress]** Admin determination of which fields are displayed. Currently they can do so in the Document List view but not the Document Detail view.
     * **[in progress]** Introspection via pymongo (so you don't need to define a schema ahead of time). This *might* be too much a jump in scope for this project, requiring a separate project. We'll see.
+
+        * concept 1: Determine structure from checking random documents
+        * concept 2: Provide common fields basic structure in the mongoadmin
+        * concept 3: Determine structure from each document individually
+
     * Introspection via mongo engine
     * Q based searches
     * django.contrib.admin style browsing
