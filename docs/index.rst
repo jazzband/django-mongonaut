@@ -24,16 +24,24 @@ Contents:
 Features
 ========
 
-Introspection of Mongo data
-----------------------------
+Introspection of mongoengine data
+----------------------------------
 
-    * **[in progress]** Admin determination of which fields are displayed. Currently they can do so in the Document List view but not the Document Detail view.
-    * **[in progress]** Introspection via pymongo (so you don't need to define a schema ahead of time). This *might* be too much a jump in scope for this project, requiring a separate project. We'll see.
     * Introspection via mongo engine
     * Q based searches
     * django.contrib.admin style browsing
     * Automatic detection of field types
     * Automatic discovery of collections    
+
+Introspection of pymongodata
+-----------------------------
+
+    * **[in progress]** Admin determination of which fields are displayed. Currently they can do so in the Document List view but not the Document Detail view.
+    * **[in progress]** Introspection via pymongo. This is becoming very necessary. Plan:
+
+        * Always guarantee the _id.
+        * Allow devs to set 1 or more field as 'expected'. But there is no hard contract!
+        * introspect on field types to match how pymongo pulls data. So a `str` is handled differently than a list field.
     
 Data Management
 ----------------------------
