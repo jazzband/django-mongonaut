@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.utils.importlib import import_module
 
-from django.conf import settings
+from django.http import HttpResponseForbidden
+
 
 class AppStore(object):
     
@@ -15,9 +16,21 @@ class AppStore(object):
     def add_model(self, model):
         model.name = model.__name__
         self.models.append(model)
-        
+
+
 class MongonautViewMixin(object):
-    
+
+    def render_to_response(self, context, **response_kwargs):
+        if hasattr(self, 'permission') and self.permission not in context:
+            return HttpResponseForbidden("You do not have permissions to access this content.")
+
+        return self.response_class(
+            request = self.request,
+            template = self.get_template_names(),
+            context = context,
+            **response_kwargs
+        )
+
     def get_context_data(self, **kwargs):
         context = super(MongonautViewMixin, self).get_context_data(**kwargs)
         context['MONGONAUT_JQUERY'] = getattr(settings, "MONGONAUT_JQUERY", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
@@ -86,4 +99,3 @@ class MongonautViewMixin(object):
         context['has_add_permission'] = self.mongoadmin.has_add_permission(self.request)
         context['has_delete_permission'] = self.mongoadmin.has_delete_permission(self.request)
         return context
-            
