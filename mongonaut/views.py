@@ -9,7 +9,6 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.forms import widgets
 from django.forms.widgets import DateTimeInput, CheckboxInput
-from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.views.generic.edit import DeletionMixin
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -45,6 +44,7 @@ class DocumentListView(MongonautViewMixin, FormView):
     form_class = DocumentListForm
     success_url = '/'
     template_name = "mongonaut/document_list.html"
+    permission = 'has_view_permission'
     
     #def dispatch(self, *args, **kwargs):
     #    self.set_mongoadmin()
@@ -114,8 +114,6 @@ class DocumentListView(MongonautViewMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(DocumentListView, self).get_context_data(**kwargs)
         context = self.set_permissions_in_context(context)
-        if not context['has_view_permission']:
-            return HttpResponseForbidden("You do not have permissions to view this content.")
         
         context['object_list'] = self.get_queryset()        
         context['document'] = self.document
@@ -165,13 +163,12 @@ class DocumentListView(MongonautViewMixin, FormView):
 class DocumentDetailView(MongonautViewMixin, TemplateView):
     """ :args: <app_label> <document_name> <id> """
     template_name = "mongonaut/document_detail.html"
+    permission = 'has_view_permission'
     
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailView, self).get_context_data(**kwargs)
         self.set_mongoadmin()        
         context = self.set_permissions_in_context(context)
-        if not context['has_view_permission']:
-            return HttpResponseForbidden("You do not have permissions to view this content.")
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
@@ -201,6 +198,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
     template_name = "mongonaut/document_edit_form.html"
     form_class = DocumentDetailForm
     success_url = '/'
+    permission = 'has_edit_permission'
     
     def get_success_url(self):
         self.set_mongonaut_base() 
@@ -210,8 +208,6 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
         context = super(DocumentEditFormView, self).get_context_data(**kwargs)
         self.set_mongoadmin()        
         context = self.set_permissions_in_context(context)
-        if not context['has_edit_permission']:
-            return HttpResponseForbidden("You do not have permissions to edit this content.")
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)        
@@ -225,8 +221,6 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
     def get_form(self, DocumentDetailForm):
         self.set_mongoadmin()
         context = self.set_permissions_in_context({})
-        if not context['has_edit_permission']:
-            return HttpResponseForbidden("You do not have permissions to edit this content.")
         
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
@@ -276,6 +270,7 @@ class DocumentAddFormView(MongonautViewMixin, FormView):
     template_name = "mongonaut/document_add_form.html"
     form_class = DocumentDetailForm
     success_url = '/'
+    permission = 'has_add_permission'
 
     def get_success_url(self):
         self.set_mongonaut_base()  
@@ -289,8 +284,6 @@ class DocumentAddFormView(MongonautViewMixin, FormView):
         context = super(DocumentAddFormView, self).get_context_data(**kwargs)
         self.set_mongoadmin()        
         context = self.set_permissions_in_context(context)
-        if not context['has_add_permission']:
-            return HttpResponseForbidden("You do not have permissions to edit view content.")
         self.document_type = getattr(self.models, self.document_name)
         
         context['app_label'] = self.app_label
