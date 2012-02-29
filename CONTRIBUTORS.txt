@@ -1,2 +1,3 @@
 Daniel Greenfeld <pydanny@gmail.com>
 Audrey Roy <audreyr@gmail.com>
+Chris Gilmer <chris.gilmer@gmail.com>
