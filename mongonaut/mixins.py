@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.utils.importlib import import_module
 
-from django.conf import settings
+from django.http import HttpResponseForbidden
+
 
 
 class AppStore(object):
@@ -19,6 +20,17 @@ class AppStore(object):
 
 
 class MongonautViewMixin(object):
+
+    def render_to_response(self, context, **response_kwargs):
+        if hasattr(self, 'permission') and self.permission not in context:
+            return HttpResponseForbidden("You do not have permissions to access this content.")
+
+        return self.response_class(
+            request=self.request,
+            template=self.get_template_names(),
+            context=context,
+            **response_kwargs
+        )
 
     def get_context_data(self, **kwargs):
         context = super(MongonautViewMixin, self).get_context_data(**kwargs)
