@@ -2,6 +2,7 @@ __author__ = 'Daniel Greenfeld'
 
 VERSION = (0, 2, 11)
 
+
 def get_version():
     version = '%s.%s' % (VERSION[0], VERSION[1])
     if VERSION[2]:
