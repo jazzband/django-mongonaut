@@ -1,10 +1,9 @@
-import os
 from setuptools import setup, find_packages
- 
+
 import mongonaut
- 
+
 LONG_DESCRIPTION = open('README.rst').read()
- 
+
 setup(
     name='django-mongonaut',
     version=mongonaut.__version__,

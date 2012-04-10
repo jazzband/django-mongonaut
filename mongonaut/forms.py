@@ -2,15 +2,16 @@ import logging
 
 from django import forms
 
-from mongoengine.fields import Document, EmbeddedDocumentField, ListField, ReferenceField
+from mongoengine.fields import Document, ReferenceField
 from mongonaut.widgets import get_widget
 
 logger = logging.getLogger('mongonaut.forms')
 
+
 class DocumentListForm(forms.Form):
     """ The main document list form """
     mongo_id = forms.MultipleChoiceField(required=True, widget=forms.CheckboxSelectMultiple)
-    
+
     def clean(self):
         for field in self.fields:
             print field
@@ -18,12 +19,13 @@ class DocumentListForm(forms.Form):
 
 class DocumentDetailForm(forms.Form):
     pass
-    
+
 CHECK_ATTRS = dict(
         required='required',
         help_text='help_text',
         name='name'
     )
+
 
 def get_document_unicode(document):
     try:
@@ -31,8 +33,9 @@ def get_document_unicode(document):
     except AttributeError:
         return unicode(document)
 
+
 def document_detail_form_factory(form, document_type, initial=False):
-    """ Adds document field to a form. """    
+    """ Adds document field to a form. """
     for key in document_type._fields.keys():
         field = document_type._fields[key]
         logger.debug(field.__dict__)
@@ -41,20 +44,20 @@ def document_detail_form_factory(form, document_type, initial=False):
         if widget is None:
             # ListField or EmbeddedDocumentField
             continue
-            
+
         if isinstance(widget, forms.widgets.Select):
             form.fields[key] = forms.ChoiceField(
-                key, 
+                key,
                 required=field.required,
-                widget=widget)            
+                widget=widget)
         else:
             form.fields[key] = forms.CharField(
-                key, 
+                key,
                 required=field.required,
                 widget=widget)
         if initial:
 
-            field_initial =   getattr(initial, key)
+            field_initial = getattr(initial, key)
             if isinstance(field_initial, Document):
                 # probably a reference field so we add some choices
                 # TODO - does this actually work? Need tests and test coverage!!!
@@ -65,8 +68,7 @@ def document_detail_form_factory(form, document_type, initial=False):
 
         if form.fields[key].initial is None and isinstance(field, ReferenceField):
             form.fields[key].choices = [(unicode(x.id), get_document_unicode(x)) for x in field.document_type.objects.all()]
-            
-        
+
         for field_key, form_attr in CHECK_ATTRS.items():
             if hasattr(field, field_key):
                 value = getattr(field, field_key)
@@ -74,7 +76,4 @@ def document_detail_form_factory(form, document_type, initial=False):
 
         # used as a handy reference field
         form.fields[key].mongofield = field
-            
     return form
-
-

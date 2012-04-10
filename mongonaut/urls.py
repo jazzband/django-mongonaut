@@ -1,6 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from django.views.generic.base import TemplateView
-from django.views.generic import ListView
+
 
 from mongonaut import views
 
@@ -24,7 +23,7 @@ urlpatterns = patterns('',
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/edit/$',
         view=views.DocumentEditFormView.as_view(),
         name="document_detail_edit_form"
-    ),    
+    ),
     url(
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/add/$',
         view=views.DocumentAddFormView.as_view(),
@@ -34,7 +33,5 @@ urlpatterns = patterns('',
         regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/delete/$',
         view=views.DocumentDeleteView.as_view(),
         name="document_delete"
-    )    
+    )
 )
-
-
