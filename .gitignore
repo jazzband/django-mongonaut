@@ -28,6 +28,7 @@ pip-log.txt
 
 # Django
 dev.db*
+dev
 *.log
 local_settings.py
 collected_static/
