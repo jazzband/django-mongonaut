@@ -2,6 +2,8 @@
 CHANGELOG
 =========
 
+# 0.2.12 Bump to mongoengine 0.6.2, PEP-8, and fixing the is_authenticated problem in default permission controls.
+
 # 0.2.11 Change style over to Twitter Bootstrap 2.0.0, Add templates to manifest
 
 # 0.2.10 Proper Reference field saves, more permission fixes

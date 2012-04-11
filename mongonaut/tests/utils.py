@@ -9,11 +9,13 @@ from django.conf import settings
 
 from mongoengine import connect
 
+
 class MongoTestCase(TestCase):
     """
     TestCase class that clear the collection between the tests
     """
     db_name = 'test_%s' % settings.MONGO_DATABASE_NAME
+
     def __init__(self, methodName='runtest'):
         self.db = connect(self.db_name)
         super(MongoTestCase, self).__init__(methodName)
