@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.utils.importlib import import_module
-
 from django.http import HttpResponseForbidden
 
+from mongonaut.exceptions import NoMongoAdminSpecified
 
 
 class AppStore(object):
