@@ -3,7 +3,7 @@ import logging
 from django import forms
 
 from mongoengine.fields import Document, ReferenceField
-from mongonaut.widgets import get_widget
+from mongonaut.widgets import get_widget, get_form_field_class
 
 logger = logging.getLogger('mongonaut.forms')
 
@@ -51,7 +51,8 @@ def document_detail_form_factory(form, document_type, initial=False):
                 required=field.required,
                 widget=widget)
         else:
-            form.fields[key] = forms.CharField(
+            form_class = get_form_field_class(field)
+            form.fields[key] = form_class(
                 key,
                 required=field.required,
                 widget=widget)
