@@ -252,13 +252,6 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
                         setattr(self.document, key, datetime.strptime(self.request.POST[key], format))
                         continue
 
-                    if isinstance(field.widget, CheckboxInput):
-                        if key in self.request.POST:
-                            setattr(self.document, key, True)
-                        else:
-                            setattr(self.document, key, False)
-                        continue
-
                     if isinstance(field.widget, widgets.Select):
                         # supporting reference fields!
                         value = field.mongofield.document_type.objects.get(id=self.request.POST[key])
@@ -266,7 +259,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
                         continue
 
                     # for strings
-                    setattr(self.document, key, self.request.POST[key])
+                    setattr(self.document, key, self.form.cleaned_data[key])
 
                 self.document.save()
                 messages.add_message(self.request, messages.INFO, 'Your changes have been saved.')
