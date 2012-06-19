@@ -8,6 +8,12 @@ from mongoengine.fields import DateTimeField
 from mongoengine.fields import EmbeddedDocumentField
 from mongoengine.fields import ListField
 from mongoengine.fields import ReferenceField
+from mongoengine.fields import FloatField
+from mongoengine.fields import EmailField
+from mongoengine.fields import DecimalField
+from mongoengine.fields import URLField
+from mongoengine.fields import IntField
+from mongoengine.fields import StringField
 
 
 def get_widget(field, disabled=False):
@@ -35,3 +41,19 @@ def get_widget(field, disabled=False):
         return forms.Select(attrs=attrs)
 
     return forms.TextInput(attrs=attrs)
+
+
+MAPPING = {
+    IntField: forms.IntegerField,
+    StringField: forms.CharField,
+    FloatField: forms.FloatField,
+    BooleanField: forms.BooleanField,
+    DateTimeField: forms.DateTimeField,
+    DecimalField: forms.DecimalField,
+    URLField: forms.URLField,
+    EmailField: forms.EmailField
+}
+
+
+def get_form_field_class(field):
+    return MAPPING.get(field.__class__, forms.CharField)
