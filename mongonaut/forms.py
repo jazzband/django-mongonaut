@@ -47,17 +47,17 @@ def document_detail_form_factory(form, document_type, initial=False):
 
         if isinstance(widget, forms.widgets.Select):
             form.fields[key] = forms.ChoiceField(
-                key,
+                label=field.name,
                 required=field.required,
                 widget=widget)
         else:
-            form_class = get_form_field_class(field)
-            form.fields[key] = form_class(
-                key,
+            field_class = get_form_field_class(field)
+            form.fields[key] = field_class(
+                label=field.name,
                 required=field.required,
                 widget=widget)
-        if initial:
 
+        if initial:
             field_initial = getattr(initial, key)
             if isinstance(field_initial, Document):
                 # probably a reference field so we add some choices
