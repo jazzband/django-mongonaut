@@ -49,6 +49,8 @@ class DocumentListView(MongonautViewMixin, FormView):
     template_name = "mongonaut/document_list.html"
     permission = 'has_view_permission'
 
+    documents_per_page = 25
+
     #def dispatch(self, *args, **kwargs):
     #    self.set_mongoadmin()
     #    self.set_permissions()
@@ -89,21 +91,23 @@ class DocumentListView(MongonautViewMixin, FormView):
         ###    not the same as Django ORM querysets and it broke.
         # Make sure page request is an int. If not, deliver first page.
         try:
-            page = int(self.request.GET.get('page', '1'))
+            self.page = int(self.request.GET.get('page', '1'))
         except ValueError:
-            page = 1
-        self.page = page
+            self.page = 1
 
-        self.documents_per_page = 25
-        self.total_pages = max(queryset.count() / self.documents_per_page, 1)
+        obj_count = queryset.count()
+        self.total_pages = obj_count / self.documents_per_page + (1 if obj_count % self.documents_per_page else 0)
+
+        if self.page < 1:
+            self.page = 1
+
+        if self.page > self.total_pages:
+            self.page = self.total_pages
+
         start = (self.page - 1) * self.documents_per_page
         end = self.page * self.documents_per_page
-        self.previous_page_number = page - 1
-        self.next_page_number = page + 1
-        try:
-            queryset = queryset[start:end]
-        except Exception as e:
-            print e
+
+        queryset = queryset[start:end]
 
         self.queryset = queryset
         return queryset
@@ -129,8 +133,21 @@ class DocumentListView(MongonautViewMixin, FormView):
         # pagination bits
         context['page'] = self.page
         context['documents_per_page'] = self.documents_per_page
-        context['previous_page_number'] = self.previous_page_number
-        context['next_page_number'] = self.next_page_number
+
+        if self.page > 1:
+            previous_page_number = self.page - 1
+        else:
+            previous_page_number = None
+
+        if self.page < self.total_pages:
+            next_page_number = self.page + 1
+        else:
+            next_page_number = None
+
+        context['previous_page_number'] = previous_page_number
+        context['has_previous_page'] = previous_page_number is not None
+        context['next_page_number'] = next_page_number
+        context['has_next_page'] = next_page_number is not None
         context['total_pages'] = self.total_pages
 
         # Part of upcoming list view form functionality
