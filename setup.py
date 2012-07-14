@@ -29,6 +29,6 @@ setup(
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['mongoengine==0.5.2'],
+    install_requires=['mongoengine>=0.5.2'],
     zip_safe=False,
 )
