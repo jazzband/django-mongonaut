@@ -2,3 +2,6 @@ Daniel Greenfeld <pydanny@gmail.com>
 Audrey Roy <audreyr@gmail.com>
 Chris Gilmer <chris.gilmer@gmail.com>
 Bryan Veloso <bryan@github.com>
+jerzyk
+Mario Rodas <rodasmario2@gmail.com>
+Garry Polley <garrympolley@gmail.com>

@@ -2,7 +2,7 @@
 django-mongonaut
 ================
 :Info: An introspective interface for Django and MongoDB.
-:Version: 0.2.12
+:Version: 0.2.15
 :Author: Daniel Greenfeld (http://pydanny.com)
 
 About
@@ -34,7 +34,7 @@ Get mongoengine (and pymongo):
 
 Get the code::
 
-    pip install django-mongonaut==0.2.12
+    pip install django-mongonaut==0.2.15
     
 Install the dependency in your settings.py::
 
@@ -50,6 +50,16 @@ You will need the following also set up:
 * django.contrib.messages
 
 .. note:: No need for `autodiscovery()` with django-mongonaut!
+
+Add the mongonaut urls.py file to your urlconf file:
+
+.. sourcecode:: python
+
+    urlpatterns = patterns('',
+        ...
+        (r'^mongonaut/', include('mongonaut.urls')),
+        ...
+    )
 
 
 Configuration

@@ -2,6 +2,12 @@
 CHANGELOG
 =========
 
+# 0.2.15 Editing or Adding a document does not require all fields to be filled out @garrypolley
+
+# 0.2.14 Fixed pymongo version thanks to @marsam and pagination fixes thanks to @jerzyk
+
+# 0.2.13 Fields validation and type conversion thanks to @jerzyk
+
 # 0.2.12 Bump to mongoengine 0.6.2, PEP-8, and fixing the is_authenticated problem in default permission controls.
 
 # 0.2.11 Change style over to Twitter Bootstrap 2.0.0, Add templates to manifest
