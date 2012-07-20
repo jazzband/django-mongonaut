@@ -107,7 +107,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         start = (self.page - 1) * self.documents_per_page
         end = self.page * self.documents_per_page
 
-        queryset = queryset[start:end]
+        queryset = queryset[start:end] if obj_count else queryset
 
         self.queryset = queryset
         return queryset
