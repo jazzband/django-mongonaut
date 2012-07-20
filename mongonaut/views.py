@@ -107,7 +107,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         start = (self.page - 1) * self.documents_per_page
         end = self.page * self.documents_per_page
 
-        queryset = queryset[start:end]
+        queryset = queryset[start:end] if obj_count else queryset
 
         self.queryset = queryset
         return queryset
@@ -260,6 +260,10 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
             self.form.is_bound = True
             if self.form.is_valid():
                 for key, field in self.form.fields.items():
+                    # If the field has no value do not attempt to access it.
+                    if not self.request.POST[key]:
+                        continue
+
                     if 'readonly' in field.widget.attrs:
                         # For _id or things specified as such
                         continue
@@ -321,6 +325,10 @@ class DocumentAddFormView(MongonautViewMixin, FormView):
             if self.form.is_valid():
                 self.document = self.document_type()
                 for key, field in self.form.fields.items():
+                    # If the field has no value do not attempt to access it.
+                    if not self.request.POST[key]:
+                        continue
+
                     if 'readonly' in field.widget.attrs:
                         # For _id
                         continue
