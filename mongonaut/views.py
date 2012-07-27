@@ -4,7 +4,6 @@
 """
 
 import ast
-
 from datetime import datetime
 
 from django.contrib import messages
@@ -19,7 +18,6 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
 from mongoengine.fields import EmbeddedDocumentField, ListField
-
 from mongonaut.forms import DocumentListForm
 from mongonaut.forms import DocumentDetailForm
 from mongonaut.forms import document_detail_form_factory
@@ -328,7 +326,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView):
                     setattr(self.document, key, self.form.cleaned_data[key])
 
                 for key, list_values in list_fields_dict.iteritems():
-                    # Remove None items from the list
+                    # Remove None items from the list so blank fields can be submitted
                     list_values = filter(None, list_values)
                     setattr(self.document, key, list_values)
 
@@ -431,7 +429,7 @@ class DocumentAddFormView(MongonautViewMixin, FormView):
                     setattr(self.document, key, self.request.POST[key])
 
                 for key, list_values in list_fields_dict.iteritems():
-                    # Remove None items from the list
+                    # Remove None items from the list so blank fields can be submitted
                     list_values = filter(None, list_values)
                     setattr(self.document, key, list_values)
 

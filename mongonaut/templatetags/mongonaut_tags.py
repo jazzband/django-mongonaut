@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django import template
 from django.core.urlresolvers import reverse
 
@@ -6,7 +7,6 @@ from django.utils.safestring import mark_safe
 
 from bson.objectid import ObjectId
 from mongoengine import Document
-from mongonaut.widgets import ListFieldWidget
 
 register = template.Library()
 
@@ -24,11 +24,3 @@ def get_document_value(document, key):
         return mark_safe("""<a href="{0}">{1}</a>""".format(url, value.__unicode__()))
 
     return value
-
-
-@register.filter
-def is_complex(field):
-    """Used to tell if the field is a ListField or an EmbeddedDocumentField"""
-    if isinstance(field, ListFieldWidget):
-        return True
-    return False
