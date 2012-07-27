@@ -18,7 +18,7 @@ class PostAdmin(MongoAdmin):
         return True
 
     search_fields = ('title', 'id')
-    list_fields = ('title', "published", "pub_date")
+    list_fields = ('title', "published", "pub_date", "update_times")
 
 
 class UserAdmin(MongoAdmin):

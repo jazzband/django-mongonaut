@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
@@ -6,6 +8,8 @@ from mongoengine import EmbeddedDocumentField
 from mongoengine import ListField
 from mongoengine import ReferenceField
 from mongoengine import StringField
+
+from datetime import datetime
 
 
 class User(Document):
@@ -36,6 +40,15 @@ class Post(Document):
     tags = ListField(StringField(max_length=30))
     comments = ListField(EmbeddedDocumentField(Comment))
     pub_date = DateTimeField()
+    created_date = DateTimeField()
     published = BooleanField()
     creator = EmbeddedDocumentField(EmbeddedUser)    # for testing purposes
+    wanted_published = ListField(BooleanField())  # used for testing boolean list
+    published_dates = ListField(DateTimeField())  # used for testing datefield lists
 
+    def save(self, *args, **kwargs):
+        if not self.created_date:
+            self.created_date = datetime.utcnow()
+        if self.published:
+            self.published_dates.append(datetime.utcnow())
+        super(Post, self).save(*args, **kwargs)
