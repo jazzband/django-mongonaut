@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mongoengine.base import ObjectIdField, ValidationError
 
 # Used to valid object_ids.
