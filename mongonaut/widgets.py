@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """ Widgets for mongonaut forms"""
 
 from django import forms
@@ -16,10 +18,14 @@ from mongoengine.fields import IntField
 from mongoengine.fields import StringField
 
 
+class ListFieldWidget(object):
+    """A custom widget for use with the mongoengine ListField."""
+    pass
+
+
 def get_widget(field, disabled=False):
 
-    if isinstance(field, ListField) or \
-        isinstance(field, EmbeddedDocumentField):
+    if isinstance(field, EmbeddedDocumentField):
         return None
 
     attrs = {}
@@ -40,6 +46,16 @@ def get_widget(field, disabled=False):
     if isinstance(field, ReferenceField):
         return forms.Select(attrs=attrs)
 
+    if isinstance(field, ListField):
+        new_widget = get_widget(field.field, disabled)
+
+        if new_widget is None:
+            return None
+
+        class InternalListFieldWidget(new_widget.__class__, ListFieldWidget):
+            pass
+
+        return InternalListFieldWidget(attrs=attrs)
     return forms.TextInput(attrs=attrs)
 
 
