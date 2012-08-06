@@ -1,8 +1,18 @@
+# -*- coding: utf-8 -*-
+
+import ast
+from datetime import datetime
+
 from django.conf import settings
-from django.utils.importlib import import_module
+from django.contrib import messages
+from django.forms import widgets
+from django.forms.widgets import DateTimeInput, CheckboxInput
 from django.http import HttpResponseForbidden
+from django.utils.importlib import import_module
 
 from mongonaut.exceptions import NoMongoAdminSpecified
+from mongonaut.forms import document_detail_form_factory
+from mongonaut.widgets import ListFieldWidget
 
 
 class AppStore(object):
@@ -99,3 +109,89 @@ class MongonautViewMixin(object):
         context['has_add_permission'] = self.mongoadmin.has_add_permission(self.request)
         context['has_delete_permission'] = self.mongoadmin.has_delete_permission(self.request)
         return context
+
+
+class MongonautFormViewMixin(object):
+    """View used to help with processing of posted forms for add and edit forms
+    """
+
+    def process_post_form(self, success_message=None):
+        """As long as the form is set on the view this method will validate the for and
+        save the submitted data.  Only call this if you are posting data.  The given success_message
+        will be used with the djanog messages framework if the posted data sucessfully submits.
+        """
+        initial_arg = self.document if hasattr(self, 'document') else None
+        self.form = document_detail_form_factory(form=self.form, document_type=self.document_type, initial=initial_arg,
+                                                 post_data=self.request.POST)
+        self.form.data = self.request.POST
+        self.form.is_bound = True
+        if self.form.is_valid():
+            # When on initial args are given we need to set the base document.
+            if initial_arg is None:
+                self.document = self.document_type()
+            # Need  keep track of each listfield submitted
+            list_fields_dict = {}
+            for key, field in self.form.fields.items():
+                posted_value = self.request.POST.get(key, None)
+
+                if 'readonly' in field.widget.attrs:
+                    # For _id or things specified as such
+                    continue
+
+                if isinstance(field.widget, ListFieldWidget):
+                    # Need to know what list this data belongs to
+                    list_key = key.split('_')
+
+                    # If the last value is not an integer we will raise a value error most likely
+                    try:
+                        if isinstance(ast.literal_eval(list_key[-1]), int):
+                            del list_key[-1]
+                    except ValueError:
+                        pass
+                    list_key = u"_".join(list_key)
+
+                    # Get the value based on field type and append it to the existing list
+                    if isinstance(field.widget, DateTimeInput):
+                        format = field.widget.format
+                        value = datetime.strptime(posted_value, format) if posted_value else None
+                    elif isinstance(field.widget, widgets.Select):
+                        # supporting reference fields!
+                        value = field.mongofield.document_type.objects.get(id=posted_value) if posted_value else None
+                    else:
+                        value = self.form.cleaned_data[key]
+
+                    if list_key in list_fields_dict:
+                        list_fields_dict[list_key].append(value)
+                    else:
+                        list_fields_dict[list_key] = [value]
+                    continue
+
+                if isinstance(field.widget, CheckboxInput):
+                    value = self.form.cleaned_data[key]
+                    setattr(self.document, key, value)
+                    continue
+
+                if isinstance(field.widget, DateTimeInput):
+                    format = field.widget.format
+                    value = datetime.strptime(posted_value, format) if posted_value else None
+                    setattr(self.document, key, value)
+                    continue
+
+                if isinstance(field.widget, widgets.Select):
+                    # supporting reference fields!
+                    value = field.mongofield.document_type.objects.get(id=posted_value) if posted_value else None
+                    setattr(self.document, key, value)
+                    continue
+
+                # for strings
+                setattr(self.document, key, self.form.cleaned_data[key])
+
+            for key, list_values in list_fields_dict.iteritems():
+                # Remove None items from the list so blank fields can be submitted
+                list_values = filter(None, list_values)
+                setattr(self.document, key, list_values)
+
+            self.document.save()
+            if success_message:
+                messages.add_message(self.request, messages.INFO, success_message)
+        return self.form

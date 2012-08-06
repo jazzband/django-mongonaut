@@ -11,23 +11,10 @@
 
 <h1>Add {{ document_name }}</h1>
 
-<div class="row">
-    <div class="span16">
-        <form method="post" action="">
-            {% csrf_token %}
-            <fieldset>
-                {% for field in form %}
-                    {% include "mongonaut/includes/_field.html" %}
-                {% endfor %}
-            </fieldset>
-            <div class="actions">
-                <input type="submit" name="action" class="btn primary" value="Save">&nbsp;
-                <input type="submit" name="action" class="btn disabled" readonly value="Save and continue editing">&nbsp;                
-                <input type="submit" name="action" class="btn disabled" readonly value="Save and add another">&nbsp;                                                
-                <input type="submit" name="action" class="btn danger disabled" readonly value="X Delete">&nbsp;
-            </div>            
-        </form>        
-    </div>
-</div>    
+{% include "mongonaut/includes/form.html" %}
 
+{% endblock %}
+
+{% block inlinejs %}
+{% include 'mongonaut/includes/list_add.js' %}
 {% endblock %}

@@ -39,9 +39,15 @@
     </div>        
 </div>
 
-
 {% block extrajs %}
 {% endblock %}
+
+<script type="text/javascript">
+//<![CDATA[
+{% block inlinejs %}
+{% endblock %}
+//]]>
+</script>
 
 <script type="text/javascript">
     $("#action_delete").click(function(){
