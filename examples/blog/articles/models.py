@@ -45,6 +45,7 @@ class Post(Document):
     creator = EmbeddedDocumentField(EmbeddedUser)    # for testing purposes
     wanted_published = ListField(BooleanField())  # used for testing boolean list
     published_dates = ListField(DateTimeField())  # used for testing datefield lists
+    past_authors = ListField(ReferenceField(User))  # used for testing reference fields
 
     def save(self, *args, **kwargs):
         if not self.created_date:
