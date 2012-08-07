@@ -50,7 +50,6 @@ function attachButton(input) {
        the addInputFromPrevious function. */
     var currentInput = input;
     var inputName = currentInput.attr('name');
-    console.log(inputName);
     var button = "<div class='btn btn-primary " + inputName + "'>add</div>";
     $(button).insertAfter(currentInput);
 
