@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import ast
-from datetime import datetime
-
 from django.conf import settings
 from django.contrib import messages
-from django.forms import widgets
-from django.forms.widgets import DateTimeInput, CheckboxInput
 from django.http import HttpResponseForbidden
 from django.utils.importlib import import_module
+from mongoengine.fields import EmbeddedDocumentField
 
 from mongonaut.exceptions import NoMongoAdminSpecified
-from mongonaut.forms import document_detail_form_factory
-from mongonaut.widgets import ListFieldWidget
+from mongonaut.forms import MongoModelForm
+from mongonaut.forms.form_utils import has_digit
+from mongonaut.forms.form_utils import make_key
+from mongonaut.utils import translate_value
+from mongonaut.utils import trim_field_key
 
 
 class AppStore(object):
@@ -44,9 +43,12 @@ class MongonautViewMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(MongonautViewMixin, self).get_context_data(**kwargs)
-        context['MONGONAUT_JQUERY'] = getattr(settings, "MONGONAUT_JQUERY", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
-        context['MONGONAUT_TWITTER_BOOTSTRAP'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP", "http://twitter.github.com/bootstrap/assets/css/bootstrap.css")
-        context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP_ALERT", "http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js")
+        context['MONGONAUT_JQUERY'] = getattr(settings, "MONGONAUT_JQUERY",
+                                      "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+        context['MONGONAUT_TWITTER_BOOTSTRAP'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP",
+                                                 "http://twitter.github.com/bootstrap/assets/css/bootstrap.css")
+        context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP_ALERT",
+                                                       "http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js")
         return context
 
     def get_mongoadmins(self):
@@ -112,86 +114,131 @@ class MongonautViewMixin(object):
 
 
 class MongonautFormViewMixin(object):
-    """View used to help with processing of posted forms for add and edit forms
+    """
+    View used to help with processing of posted forms.
+    Must define self.document_type for process_post_form to work.
     """
 
     def process_post_form(self, success_message=None):
-        """As long as the form is set on the view this method will validate the for and
-        save the submitted data.  Only call this if you are posting data.  The given success_message
-        will be used with the djanog messages framework if the posted data sucessfully submits.
         """
-        initial_arg = self.document if hasattr(self, 'document') else None
-        self.form = document_detail_form_factory(form=self.form, document_type=self.document_type, initial=initial_arg,
-                                                 post_data=self.request.POST)
-        self.form.data = self.request.POST
+        As long as the form is set on the view this method will validate the form
+        and save the submitted data.  Only call this if you are posting data.
+        The given success_message will be used with the djanog messages framework
+        if the posted data sucessfully submits.
+        """
+
+        # When on initial args are given we need to set the base document.
+        if not hasattr(self, 'document') or self.document is None:
+            self.document = self.document_type()
+        self.form = MongoModelForm(model=self.document_type, instance=self.document,
+                                   form_post_data=self.request.POST).get_form()
         self.form.is_bound = True
         if self.form.is_valid():
-            # When on initial args are given we need to set the base document.
-            if initial_arg is None:
-                self.document = self.document_type()
-            # Need  keep track of each listfield submitted
-            list_fields_dict = {}
-            for key, field in self.form.fields.items():
-                posted_value = self.request.POST.get(key, None)
 
-                if 'readonly' in field.widget.attrs:
-                    # For _id or things specified as such
-                    continue
+            self.document_map_dict = MongoModelForm(model=self.document_type).create_document_dictionary(self.document_type)
+            self.new_document = self.document_type
 
-                if isinstance(field.widget, ListFieldWidget):
-                    # Need to know what list this data belongs to
-                    list_key = key.split('_')
+            # Used to keep track of embedded documents in lists.  Keyed by the list and the number of the
+            # document.
+            self.embedded_list_docs = {}
 
-                    # If the last value is not an integer we will raise a value error most likely
-                    try:
-                        if isinstance(ast.literal_eval(list_key[-1]), int):
-                            del list_key[-1]
-                    except ValueError:
-                        pass
-                    list_key = u"_".join(list_key)
+            if self.new_document is None:
+                messages.error(self.request, u"Failed to save document")
+            else:
+                self.new_document = self.new_document()
 
-                    # Get the value based on field type and append it to the existing list
-                    if isinstance(field.widget, DateTimeInput):
-                        format = field.widget.format
-                        value = datetime.strptime(posted_value, format) if posted_value else None
-                    elif isinstance(field.widget, widgets.Select):
-                        # supporting reference fields!
-                        value = field.mongofield.document_type.objects.get(id=posted_value) if posted_value else None
-                    else:
-                        value = self.form.cleaned_data[key]
+                for form_key in self.form.cleaned_data.keys():
+                    if form_key == 'id' and hasattr(self, 'document'):
+                        self.new_document.id = self.document.id
+                        continue
+                    self.process_document(self.new_document, form_key, None)
 
-                    if list_key in list_fields_dict:
-                        list_fields_dict[list_key].append(value)
-                    else:
-                        list_fields_dict[list_key] = [value]
-                    continue
+                self.new_document.save()
 
-                if isinstance(field.widget, CheckboxInput):
-                    value = self.form.cleaned_data[key]
-                    setattr(self.document, key, value)
-                    continue
+                if success_message:
+                    messages.success(self.request, success_message)
 
-                if isinstance(field.widget, DateTimeInput):
-                    format = field.widget.format
-                    value = datetime.strptime(posted_value, format) if posted_value else None
-                    setattr(self.document, key, value)
-                    continue
-
-                if isinstance(field.widget, widgets.Select):
-                    # supporting reference fields!
-                    value = field.mongofield.document_type.objects.get(id=posted_value) if posted_value else None
-                    setattr(self.document, key, value)
-                    continue
-
-                # for strings
-                setattr(self.document, key, self.form.cleaned_data[key])
-
-            for key, list_values in list_fields_dict.iteritems():
-                # Remove None items from the list so blank fields can be submitted
-                list_values = filter(None, list_values)
-                setattr(self.document, key, list_values)
-
-            self.document.save()
-            if success_message:
-                messages.add_message(self.request, messages.INFO, success_message)
         return self.form
+
+    def process_document(self, document, form_key, passed_key):
+        """
+        Given the form_key will evaluate the document and set values correctly for
+        the document given.
+        """
+
+        if passed_key is not None:
+            current_key, remaining_key_array = trim_field_key(document, passed_key)
+        else:
+            current_key, remaining_key_array = trim_field_key(document, form_key)
+
+        key_array_digit = remaining_key_array[-1] if remaining_key_array and has_digit(remaining_key_array) else None
+        remaining_key = make_key(remaining_key_array)
+
+        if current_key.lower() == 'id':
+            raise KeyError(u"Mongonaut does not work with models which have fields beginning with id_")
+
+        # Create boolean checks to make processing document easier
+        is_embedded_doc = (isinstance(document._fields.get(current_key, None), EmbeddedDocumentField)
+                          if hasattr(document, '_fields') else False)
+        is_list = not key_array_digit is None
+        key_in_fields = current_key in document._fields.keys() if hasattr(document, '_fields') else False
+
+        # This ensures you only go through each documents keys once, and do not duplicate data
+        if key_in_fields:
+            if is_embedded_doc:
+                self.set_embedded_doc(document, form_key, current_key, remaining_key)
+            elif is_list:
+                self.set_list_field(document, form_key, current_key, remaining_key, key_array_digit)
+            else:
+                value = translate_value(document._fields[current_key],
+                                        self.form.cleaned_data[form_key])
+                setattr(document, current_key, value)
+
+    def set_embedded_doc(self, document, form_key, current_key, remaining_key):
+
+        # Get the existing embedded document if it exists, else created it.
+        embedded_doc = getattr(document, current_key, False)
+        if not embedded_doc:
+            embedded_doc = document._fields[current_key].document_type_obj()
+
+        new_key, new_remaining_key_array = trim_field_key(embedded_doc, remaining_key)
+        self.process_document(embedded_doc, form_key, make_key(new_key, new_remaining_key_array))
+        setattr(document, current_key, embedded_doc)
+
+    def set_list_field(self, document, form_key, current_key, remaining_key, key_array_digit):
+
+        document_field = document._fields.get(current_key)
+
+        # Figure out what value the list ought to have
+        # None value for ListFields make mongoengine very un-happy
+        list_value = translate_value(document_field.field, self.form.cleaned_data[form_key])
+        if list_value is None or (not list_value and not bool(list_value)):
+            return None
+
+        current_list = getattr(document, current_key, None)
+
+        if isinstance(document_field.field, EmbeddedDocumentField):
+            embedded_list_key = u"{0}_{1}".format(current_key, key_array_digit)
+
+            # Get the embedded document if it exists, else create it.
+            embedded_list_document = self.embedded_list_docs.get(embedded_list_key, None)
+            if embedded_list_document is None:
+                embedded_list_document = document_field.field.document_type_obj()
+
+            new_key, new_remaining_key_array = trim_field_key(embedded_list_document, remaining_key)
+            self.process_document(embedded_list_document, form_key, new_key)
+
+            list_value = embedded_list_document
+            self.embedded_list_docs[embedded_list_key] = embedded_list_document
+
+            if isinstance(current_list, list):
+                # Do not add the same document twice
+                if embedded_list_document not in current_list:
+                    current_list.append(embedded_list_document)
+            else:
+                setattr(document, current_key, [embedded_list_document])
+
+        elif isinstance(current_list, list):
+            current_list.append(list_value)
+        else:
+            setattr(document, current_key, [list_value])

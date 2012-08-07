@@ -27,7 +27,7 @@ setup(
     author_email='pydanny@gmail.com',
     url='http://github.com/pydanny/django-mongonaut',
     license='MIT',
-    packages=find_packages(),
+    packages=find_packages(exclude=['examples']),
     include_package_data=True,
     install_requires=['mongoengine>=0.5.2'],
     zip_safe=False,
