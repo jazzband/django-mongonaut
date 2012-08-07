@@ -1,10 +1,7 @@
 function addInputFromPrevious(input){
     /* This is a fuction to insert an input after an existing
         input.  It will correclty update the id and name so the
-        input can be posted as desired. 
-
-        Will call callback on the newly created input.  Used for 
-        allowing unlimited adding of new list fields.
+        input can be posted as desired.
      */
     var newInput = input.clone();
     var currentNameArray = newInput.attr('name').split('_');
