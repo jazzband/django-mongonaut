@@ -46,8 +46,9 @@ Introspection of pymongodata
 Data Management
 ----------------------------
 
-    * **[in progress]** Editing on ListFields and EmbeddedDocumentsFields
+    * **[in progress]** EmbeddedDocumentsFields
     * **[in progress]** Admin authored Collection level document control functions
+    * Editing on ListFields    
     * Document Deletes    
     * Editing on most other fields including ReferenceFields.
     * Automatic detection of widget types
