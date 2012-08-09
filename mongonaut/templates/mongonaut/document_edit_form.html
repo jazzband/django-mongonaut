@@ -12,37 +12,8 @@
 
 <h1>Edit {{ document_name }}</h1>
 
-<form method="POST" action="">
-{% csrf_token %}
-<div class="row">
-    <div class="span6">
-        <h2>Main Document</h2>        
-        <fieldset>
-            {% for field in form %}
-                {% include "mongonaut/includes/_field.html" %}
-            {% endfor %}
-        </fieldset>      
-        <div class="btn-group">
-            <input type="submit" name="action" class="btn btn-primary" value="Save">
-
-            <input type="submit" name="action" class="btn btn-disabled" readonly value="Save and continue editing">
-            <input type="submit" name="action" class="btn btn-disabled" readonly value="Save and add another">
-            <a href="#" id="action_delete" 
-                class="btn btn-danger{% if not has_delete_permission %} disabled{%endif%}" {% if not has_delete_permission %}readonly{% endif %}>
-                    <i class="icon-trash icon-white"></i> Delete
-            </a>
-
-        </div>     
-        {% include "mongonaut/includes/_delete_warning.html" %}
-    </div>   
-    <div class="span5 offset1">
-        <h2>Internal Documents</h2>
-        <p>TODO - include EmbeddedDocumentFields here</p>
-    </div>
-</div>
-</form>        
+{% include "mongonaut/includes/form.html" %}       
   
-
 {% endblock %}
 
 {% block extrajs %}
@@ -50,3 +21,8 @@
 {% csrf_token %}
 </form>
 {% endblock %}
+
+{% block inlinejs %}
+{% include 'mongonaut/includes/list_add.js' %}
+{% endblock %}
+
