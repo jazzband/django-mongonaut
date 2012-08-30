@@ -235,6 +235,9 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
         context['document'] = self.document
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
+        context['form_action'] = reverse('document_detail_edit_form', args=[self.kwargs.get('app_label'),
+                                                                            self.kwargs.get('document_name'),
+                                                                            self.kwargs.get('id')])
 
         return context
 
@@ -284,6 +287,9 @@ class DocumentAddFormView(MongonautViewMixin, FormView, MongonautFormViewMixin):
 
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
+        context['form_action'] = reverse('document_detail_add_form', args=[self.kwargs.get('app_label'),
+                                                                           self.kwargs.get('document_name')])
+
         return context
 
     def get_form(self, Form):

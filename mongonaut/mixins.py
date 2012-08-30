@@ -154,7 +154,6 @@ class MongonautFormViewMixin(object):
                     self.process_document(self.new_document, form_key, None)
 
                 self.new_document.save()
-
                 if success_message:
                     messages.success(self.request, success_message)
 
@@ -165,7 +164,6 @@ class MongonautFormViewMixin(object):
         Given the form_key will evaluate the document and set values correctly for
         the document given.
         """
-
         if passed_key is not None:
             current_key, remaining_key_array = trim_field_key(document, passed_key)
         else:
