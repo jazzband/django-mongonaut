@@ -1,32 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-    TODO move permission checks to the dispatch view thingee
+TODO move permission checks to the dispatch view thingee
 """
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.forms import Form
 from django.http import HttpResponseForbidden
+from django.http import Http404
 from django.views.generic.edit import DeletionMixin
-from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-
 from mongoengine.fields import EmbeddedDocumentField, ListField
-from mongonaut.forms import DocumentListForm
-from mongonaut.forms import DocumentDetailForm
-from mongonaut.forms import document_detail_form_factory
+
+from mongonaut.forms import MongoModelForm
 from mongonaut.mixins import MongonautFormViewMixin
 from mongonaut.mixins import MongonautViewMixin
 from mongonaut.utils import is_valid_object_id
-
-
-def setattr_doc(document, attr, value):
-    """Used to set the value of a document.  Ensures an empty value may be given."""
-    if value or isinstance(value, bool):
-        setattr(document, attr, value)
-    else:
-        setattr(document, attr, None)
 
 
 class IndexView(MongonautViewMixin, ListView):
@@ -49,7 +40,7 @@ class DocumentListView(MongonautViewMixin, FormView):
 
         TODO - Make a generic document fetcher method
     """
-    form_class = DocumentListForm
+    form_class = Form
     success_url = '/'
     template_name = "mongonaut/document_list.html"
     permission = 'has_view_permission'
@@ -225,7 +216,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
     """ :args: <app_label> <document_name> <id> """
 
     template_name = "mongonaut/document_edit_form.html"
-    form_class = DocumentDetailForm
+    form_class = Form
     success_url = '/'
     permission = 'has_edit_permission'
 
@@ -244,10 +235,13 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
         context['document'] = self.document
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
+        context['form_action'] = reverse('document_detail_edit_form', args=[self.kwargs.get('app_label'),
+                                                                            self.kwargs.get('document_name'),
+                                                                            self.kwargs.get('id')])
 
         return context
 
-    def get_form(self, DocumentDetailForm):
+    def get_form(self, Form):
         self.set_mongoadmin()
         context = self.set_permissions_in_context({})
 
@@ -256,13 +250,16 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
 
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
-        self.document = self.document_type.objects.get(id=self.ident)
-        self.form = DocumentDetailForm()
+        try:
+            self.document = self.document_type.objects.get(id=self.ident)
+        except self.document_type.DoesNotExist:
+            raise Http404
+        self.form = Form()
 
         if self.request.method == 'POST':
             self.form = self.process_post_form('Your changes have been saved.')
         else:
-            self.form = document_detail_form_factory(form=self.form, document_type=self.document_type, initial=self.document)
+            self.form = MongoModelForm(model=self.document_type, instance=self.document).get_form()
         return self.form
 
 
@@ -270,13 +267,13 @@ class DocumentAddFormView(MongonautViewMixin, FormView, MongonautFormViewMixin):
     """ :args: <app_label> <document_name> <id> """
 
     template_name = "mongonaut/document_add_form.html"
-    form_class = DocumentDetailForm
+    form_class = Form
     success_url = '/'
     permission = 'has_add_permission'
 
     def get_success_url(self):
         self.set_mongonaut_base()
-        return reverse('document_detail', kwargs={'app_label': self.app_label, 'document_name': self.document_name, 'id': str(self.document.id)})
+        return reverse('document_detail', kwargs={'app_label': self.app_label, 'document_name': self.document_name, 'id': str(self.new_document.id)})
 
     def get_context_data(self, **kwargs):
         """ TODO - possibly inherit this from DocumentEditFormView. This is same thing minus:
@@ -290,17 +287,20 @@ class DocumentAddFormView(MongonautViewMixin, FormView, MongonautFormViewMixin):
 
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
+        context['form_action'] = reverse('document_detail_add_form', args=[self.kwargs.get('app_label'),
+                                                                           self.kwargs.get('document_name')])
+
         return context
 
-    def get_form(self, DocumentDetailForm):
+    def get_form(self, Form):
         self.set_mongonaut_base()
         self.document_type = getattr(self.models, self.document_name)
-        self.form = DocumentDetailForm()
+        self.form = Form()
 
         if self.request.method == 'POST':
             self.form = self.process_post_form('Your new document has been added and saved.')
         else:
-            self.form = document_detail_form_factory(form=self.form, document_type=self.document_type)
+            self.form = MongoModelForm(model=self.document_type).get_form()
         return self.form
 
 
@@ -324,16 +324,3 @@ class DocumentDeleteView(DeletionMixin, MongonautViewMixin, TemplateView):
         self.ident = self.kwargs.get('id')
         self.document = self.document_type.objects.get(id=self.ident)
         return self.document
-
-
-class ListFieldListView(MongonautViewMixin, FormView):
-    pass
-
-
-class EmbeddedDocumentView(MongonautViewMixin, DetailView):
-    pass
-
-
-class EmbeddedDocumentDetailView(MongonautViewMixin, DetailView):
-    """ :args: <app_label> <document_name> <id> <???> """
-    template_name = "mongonaut/embedded_document_detail.html"
