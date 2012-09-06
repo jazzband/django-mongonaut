@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span16">
-        <form method="post" action="">
+        <form method="post" action="{{ form_action }}">
             {% csrf_token %}
             <fieldset>
                 {% for field in form %}
@@ -9,15 +9,15 @@
             </fieldset>
             <div class="actions">
                 <input type="submit" name="action" class="btn primary" value="Save">
-                <input type="submit" name="action" class="btn disabled" readonly value="Save and continue editing">               
+                <input type="submit" name="action" class="btn disabled" readonly value="Save and continue editing">
                 <input type="submit" name="action" class="btn disabled" readonly value="Save and add another">
-                {% if document %}                                             
+                {% if document %}
                 <a href="#" id="action_delete" class="btn btn-danger{% if not has_delete_permission %} disabled{%endif%}{% if not has_delete_permission %}readonly{% endif %}">
                   <i class="icon-trash icon-white"></i> Delete
                 </a>
                 {% endif %}
             </div>
             {% include "mongonaut/includes/_delete_warning.html" %}
-        </form>        
+        </form>
     </div>
-</div> 
+</div>
