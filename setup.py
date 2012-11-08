@@ -10,7 +10,7 @@ setup(
     description="An introspective interface for Django and MongoDB",
     long_description=LONG_DESCRIPTION,
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Framework :: Django",
         "License :: OSI Approved :: BSD License",

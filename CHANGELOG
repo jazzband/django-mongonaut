@@ -2,6 +2,8 @@
 CHANGELOG
 =========
 
+# 0.2.17 Can now add, and modify ListFields and Embedded document fields @garrypolley
+
 # 0.2.16 ListFields can be added and updated @garrypolley
 
 # 0.2.15 Editing or Adding a document does not require all fields to be filled out @garrypolley

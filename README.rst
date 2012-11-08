@@ -2,7 +2,7 @@
 django-mongonaut
 ================
 :Info: An introspective interface for Django and MongoDB.
-:Version: 0.2.16
+:Version: 0.2.17
 :Author: Daniel Greenfeld (http://pydanny.com)
 
 About
