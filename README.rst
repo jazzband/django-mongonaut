@@ -89,6 +89,8 @@ All the documentation for this project is hosted at http://django-mongonaut.rtfd
 Support this project!
 ======================
 
+I am making the world better by donating everything I earn via gittip to efforts that help other people learn Python.
+
 .. raw:: html
 
     <iframe style="border: 0; margin: 0; padding: 0;"
