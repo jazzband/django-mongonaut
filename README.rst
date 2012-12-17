@@ -86,11 +86,6 @@ Documentation
 
 All the documentation for this project is hosted at http://django-mongonaut.rtfd.org.
 
-Support this project!
-=====================
-
-Sign up for an account on http://consumernotebook.com. It's free and always will be!
-
 Dependencies
 ============
 
