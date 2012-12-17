@@ -86,6 +86,15 @@ Documentation
 
 All the documentation for this project is hosted at http://django-mongonaut.rtfd.org.
 
+Support this project!
+======================
+
+.. raw:: html
+
+    <iframe style="border: 0; margin: 0; padding: 0;"
+        src="https://www.gittip.com/pydanny/widget.html"
+        width="48pt" height="22pt"></iframe>
+
 Dependencies
 ============
 
