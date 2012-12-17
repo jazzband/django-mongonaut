@@ -89,13 +89,10 @@ All the documentation for this project is hosted at http://django-mongonaut.rtfd
 Support this project!
 ======================
 
-I am making the world better by donating everything I earn via gittip to efforts that help other people learn Python.
+I am making the world better by donating everything I earn via gittip_ to efforts that help other people learn Python. Go to gittip_ to donate!
 
-.. raw:: html
+.. _gittip: https://www.gittip.com/pydanny
 
-    <iframe style="border: 0; margin: 0; padding: 0;"
-        src="https://www.gittip.com/pydanny/widget.html"
-        width="48pt" height="22pt"></iframe>
 
 Dependencies
 ============
