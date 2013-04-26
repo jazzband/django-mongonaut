@@ -2,7 +2,7 @@
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url index %}">Mongonaut</a> <span class="divider">/</span></li>
+<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
 <li><a href="">{{ document_name }}s</a></li>
 {% endblock %}
 
@@ -19,7 +19,7 @@
 {% endif %}
 {% if has_add_permission %}
     <p>
-        <a class="btn btn-primary" href="{% url document_detail_add_form app_label document_name %}">
+        <a class="btn btn-primary" href="{% url "document_detail_add_form" app_label document_name %}">
             <i class="icon-plus icon-white"></i> Add
         </a>
     </p>
@@ -44,7 +44,7 @@
             {% if request.user.is_superuser %}<td><input type="checkbox" name="mongo_id" value="{{ obj.id }}" /></td>{% endif %}
             {% for key in keys %}
                 {% if key == 'id' %}
-                    <td><a href="{% url document_detail app_label document_name obj.id %}">{{ obj.id }}</a></td>                                
+                    <td><a href="{% url "document_detail" app_label document_name obj.id %}">{{ obj.id }}</a></td>                                
                 {% else %}
                     <td>{% get_document_value obj key %}</td>                
                 {% endif %}

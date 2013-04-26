@@ -2,8 +2,8 @@
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url index %}">Mongonaut</a> <span class="divider">/</span></li>
-<li><a href="{% url document_list app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
+<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
+<li><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
 <li><a href="">{{ document_name }} {{ document.id }}</a></li>
 {% endblock %}
 
@@ -17,7 +17,7 @@
         <p>
             <div class="btn-group">
                 {% if has_edit_permission %}            
-                    <a class="btn btn-primary" href="{% url document_detail_edit_form app_label document_name document.id %}">
+                    <a class="btn btn-primary" href="{% url "document_detail_edit_form" app_label document_name document.id %}">
                         <i class="icon-pencil icon-white"></i> Edit
                     </a>
                             
@@ -97,7 +97,7 @@
 {% endblock %}
 
 {% block extrajs %}
-<form method="post" id="delete_form" action="{% url document_delete app_label document_name document.id %}">
+<form method="post" id="delete_form" action="{% url "document_delete" app_label document_name document.id %}">
 {% csrf_token %}
 </form>
 {% endblock %}

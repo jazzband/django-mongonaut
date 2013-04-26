@@ -23,10 +23,10 @@
         <tbody>
         {% for model in app.obj.models %}
             <tr>
-                <td><a href="{% url document_list app.app_name model.name %}">{{ model.name }}</a></td>
+                <td><a href="{% url "document_list" app.app_name model.name %}">{{ model.name }}</a></td>
                 {% if request.user.is_admin or request.user.is_staff %}
-                    <td><a href="{% url document_detail_add_form app.app_name model.name %}">Add</a></td>
-                    <td><a href="{% url document_list app.app_name model.name %}">Change</a></td>                        
+                    <td><a href="{% url "document_detail_add_form" app.app_name model.name %}">Add</a></td>
+                    <td><a href="{% url "document_list" app.app_name model.name %}">Change</a></td>                        
                 {% else %}
                     <td>Add</td>
                     <td>Change</td>

@@ -2,9 +2,9 @@
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url index %}">Mongonaut</a> <span class="divider">/</span></li>
-<li><a href="{% url document_list app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
-<li><a href="{% url document_detail app_label document_name document.id %}">{{ document_name }}</a> <a href="{% url document_detail app_label document_name document.id %}">{{ document.id }}</a> <span class="divider">/</span></li>
+<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
+<li><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
+<li><a href="{% url "document_detail" app_label document_name document.id %}">{{ document_name }}</a> <a href="{% url "document_detail" app_label document_name document.id %}">{{ document.id }}</a> <span class="divider">/</span></li>
 <li><a href="">Delete</a>
 {% endblock %}
 
@@ -17,7 +17,7 @@
         <form method="POST" action="">
             {% csrf_token %}
             <div class="actions">
-                <a class="btn primary" href="{% url document_detail app_label document_name document.id %}">Wait, I change my mind!</a>&nbsp;
+                <a class="btn primary" href="{% url "document_detail" app_label document_name document.id %}">Wait, I change my mind!</a>&nbsp;
                 <input type="submit" name="action_delete" class="btn danger"  value="Yes, delete this record.">&nbsp;
             </div>
         </form>        
