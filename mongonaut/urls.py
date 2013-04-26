@@ -15,12 +15,12 @@ urlpatterns = patterns('',
         name="document_list"
     ),
     url(
-        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/$',
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/$',
         view=views.DocumentDetailView.as_view(),
         name="document_detail"
     ),
     url(
-        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/edit/$',
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/edit/$',
         view=views.DocumentEditFormView.as_view(),
         name="document_detail_edit_form"
     ),
@@ -30,7 +30,7 @@ urlpatterns = patterns('',
         name="document_detail_add_form"
     ),
     url(
-        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]{24})/delete/$',
+        regex=r'^(?P<app_label>[_\-\w]+)/(?P<document_name>[_\-\w]+)/(?P<id>[\w]+)/delete/$',
         view=views.DocumentDeleteView.as_view(),
         name="document_delete"
     )
