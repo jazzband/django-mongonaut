@@ -2,8 +2,8 @@
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url index %}">Mongonaut</a> <span class="divider">/</span></li>
-<li><a href="{% url document_list app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
+<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
+<li><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
 <li><a href="">Add</a>
 {% endblock %}
 
