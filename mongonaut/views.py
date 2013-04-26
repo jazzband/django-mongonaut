@@ -59,7 +59,7 @@ class DocumentListView(MongonautViewMixin, FormView):
                 if field == 'id':
                     # check to make sure this is a valid ID, otherwise we just continue
                     if is_valid_object_id(q):
-                        return queryset.filter(id=q)
+                        return queryset.filter(pk=q)
                     continue
                 search_key = "{field}__icontains".format(field=field)
                 params[search_key] = q
@@ -175,7 +175,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         for form_mongo_id in form.data.getlist('mongo_id'):
             for mongo_id in mongo_ids:
                 if form_mongo_id == mongo_id:
-                    self.document.objects.get(id=mongo_id).delete()
+                    self.document.objects.get(pk=mongo_id).delete()
 
         return self.form_invalid(form)
 
@@ -191,7 +191,7 @@ class DocumentDetailView(MongonautViewMixin, TemplateView):
         context = self.set_permissions_in_context(context)
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
-        self.document = self.document_type.objects.get(id=self.ident)
+        self.document = self.document_type.objects.get(pk=self.ident)
 
         context['document'] = self.document
         context['app_label'] = self.app_label
@@ -230,7 +230,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
         context = self.set_permissions_in_context(context)
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
-        self.document = self.document_type.objects.get(id=self.ident)
+        self.document = self.document_type.objects.get(pk=self.ident)
 
         context['document'] = self.document
         context['app_label'] = self.app_label
@@ -251,7 +251,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
         try:
-            self.document = self.document_type.objects.get(id=self.ident)
+            self.document = self.document_type.objects.get(pk=self.ident)
         except self.document_type.DoesNotExist:
             raise Http404
         self.form = Form()
@@ -278,7 +278,7 @@ class DocumentAddFormView(MongonautViewMixin, FormView, MongonautFormViewMixin):
     def get_context_data(self, **kwargs):
         """ TODO - possibly inherit this from DocumentEditFormView. This is same thing minus:
             self.ident = self.kwargs.get('id')
-            self.document = self.document_type.objects.get(id=self.ident)
+            self.document = self.document_type.objects.get(pk=self.ident)
         """
         context = super(DocumentAddFormView, self).get_context_data(**kwargs)
         self.set_mongoadmin()
@@ -322,5 +322,5 @@ class DocumentDeleteView(DeletionMixin, MongonautViewMixin, TemplateView):
         self.set_mongoadmin()
         self.document_type = getattr(self.models, self.document_name)
         self.ident = self.kwargs.get('id')
-        self.document = self.document_type.objects.get(id=self.ident)
+        self.document = self.document_type.objects.get(pk=self.ident)
         return self.document
