@@ -7,7 +7,8 @@ django-mongonaut
 
 About
 =====
-Extracted from http://consumernotebook.com, django-mongonaut is an introspective interface for working with MongoDB via mongoengine. Rather then attempt to staple this functionality into Django's Admin interface, django-mongonaut takes the approach of rolling a new framework from scratch.
+
+django-mongonaut is an introspective interface for working with MongoDB via mongoengine. Rather then attempt to staple this functionality into Django's Admin interface, django-mongonaut takes the approach of rolling a new framework from scratch.
 
 By writing it from scratch I get to avoid trying to staple ORM functionality on top of MongoDB, a NoSQL key/value binary-tree store.
 
@@ -97,7 +98,7 @@ I am making the world better by donating everything I earn via gittip_ to effort
 Dependencies
 ============
 
-- mongoengine 0.5.2
-- pymongo 2.1.1 (comes with mongoengine)
+- mongoengine >=0.5.2
+- pymongo (comes with mongoengine)
 - sphinx (optional - for documentation generation)
 
