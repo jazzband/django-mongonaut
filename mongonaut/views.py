@@ -24,6 +24,7 @@ class IndexView(MongonautViewMixin, ListView):
 
     template_name = "mongonaut/index.html"
     queryset = []
+    permission = 'has_view_permission'
 
     def get_queryset(self):
         return self.get_mongoadmins()
