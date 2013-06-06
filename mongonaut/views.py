@@ -80,7 +80,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         # search. move this to get_queryset
         # search. move this to get_queryset
         q = self.request.GET.get('q')
-        self.get_qset(queryset, q)
+        queryset = self.get_qset(queryset, q)
 
         ### Start pagination
         ### Note:
