@@ -77,6 +77,9 @@ class DocumentListView(MongonautViewMixin, FormView):
         self.document = getattr(self.models, self.document_name)
         queryset = self.document.objects.all()
 
+        if self.mongoadmin.ordering:
+            queryset = queryset.order_by(*self.mongoadmin.ordering)
+
         # search. move this to get_queryset
         # search. move this to get_queryset
         q = self.request.GET.get('q')
