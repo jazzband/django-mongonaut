@@ -152,7 +152,7 @@ class DocumentListView(MongonautViewMixin, FormView):
             context['keys'] = ['id', ]
 
             # Show those items for which we've got list_fields on the mongoadmin
-            for key in [x for x in self.document._fields.keys() if x != 'id' and x in self.mongoadmin.list_fields]:
+            for key in [x for x in self.mongoadmin.list_fields if x != 'id' and x in self.document._fields.keys()]:
 
                 # TODO - Figure out why this EmbeddedDocumentField and ListField breaks this view
                 # Note - This is the challenge part, right? :)
