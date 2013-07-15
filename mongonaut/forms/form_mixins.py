@@ -194,6 +194,8 @@ class MongoModelFormBaseMixin(object):
             self.form.fields[field_key] = forms.ChoiceField(label=model_field.name,
                                                             required=model_field.required,
                                                             widget=widget)
+            if model_field.choices:
+                self.form.fields[field_key].choices = model_field.choices
         else:
             field_class = get_form_field_class(model_field)
             self.form.fields[field_key] = field_class(label=model_field.name,

@@ -31,7 +31,7 @@ def get_widget(model_field, disabled=False):
     elif isinstance(model_field, BooleanField):
         return forms.CheckboxInput(attrs=attrs)
 
-    elif isinstance(model_field, ReferenceField):
+    elif isinstance(model_field, ReferenceField) or model_field.choices:
         return forms.Select(attrs=attrs)
 
     elif isinstance(model_field, ListField) or isinstance(model_field, EmbeddedDocumentField):
