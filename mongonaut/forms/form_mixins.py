@@ -215,6 +215,9 @@ class MongoModelFormBaseMixin(object):
             # Adding in blank choice so a reference field can be deleted by selecting blank
             self.form.fields[field_key].choices.insert(0, ("", ""))
 
+        elif model_field.choices:
+            self.form.fields[field_key].choices = model_field.choices
+
         for key, form_attr in CHECK_ATTRS.items():
             if hasattr(model_field, key):
                 value = getattr(model_field, key)
