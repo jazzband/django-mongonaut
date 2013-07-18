@@ -2,6 +2,12 @@
 CHANGELOG
 =========
 
+# 0.2.18
+
+    * Use Select widget if choices defined for a field
+    * Use ordering if defined in MongoAdmin class
+    * Respect order of list_fields in admin class, Fixing "django.conf.urls.defaults is deprecated"
+
 # 0.2.17 Can now add, and modify ListFields and Embedded document fields @garrypolley
 
 # 0.2.16 ListFields can be added and updated @garrypolley
