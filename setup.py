@@ -3,7 +3,10 @@ from setuptools import setup, find_packages
 
 import mongonaut
 
-LONG_DESCRIPTION = open('README.rst').read()
+LONG_DESCRIPTION = open('README.rst').read() + "\n\n"
+CHANGELOG = open('CHANGELOG.rst').read()
+
+LONG_DESCRIPTION += CHANGELOG
 
 if sys.argv[-1] == 'publish':
     os.system("python setup.py sdist upload")

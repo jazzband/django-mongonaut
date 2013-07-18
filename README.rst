@@ -2,7 +2,7 @@
 django-mongonaut
 ================
 :Info: An introspective interface for Django and MongoDB.
-:Version: 0.2.17
+:Version: 0.2.19
 :Author: Daniel Greenfeld (http://pydanny.com)
 
 About
@@ -31,11 +31,11 @@ Get MongoDB::
     
 Get mongoengine (and pymongo):
 
-    pip install mongoengine==0.6.2
+    pip install mongoengine=>0.6.2
 
 Get the code::
 
-    pip install django-mongonaut==0.2.17
+    pip install django-mongonaut==0.2.19
     
 Install the dependency in your settings.py::
 
@@ -87,14 +87,6 @@ Documentation
 
 All the documentation for this project is hosted at http://django-mongonaut.rtfd.org.
 
-Support this project!
-======================
-
-I am making the world better by donating everything I earn via gittip_ to efforts that help other people learn Python. Go to gittip_ to donate!
-
-.. _gittip: https://www.gittip.com/pydanny
-
-
 Dependencies
 ============
 
@@ -102,3 +94,11 @@ Dependencies
 - pymongo (comes with mongoengine)
 - sphinx (optional - for documentation generation)
 
+Support this project!
+======================
+
+I am making the world better by donating everything I earn via gittip_ to efforts that help other people learn Python. Go to gittip_ to donate!
+
+.. _gittip: https://www.gittip.com/pydanny
+
+Or you can hire me to work on this software.

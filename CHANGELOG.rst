@@ -2,11 +2,16 @@
 CHANGELOG
 =========
 
-# 0.2.18
+# 0.2.19 (18/07/2013)
 
-    * Use Select widget if choices defined for a field
-    * Use ordering if defined in MongoAdmin class
-    * Respect order of list_fields in admin class, Fixing "django.conf.urls.defaults is deprecated"
+    * Use Select widget if choices defined for a field (@jeff-ogmento )
+    * Use ordering if defined in MongoAdmin class (@jeff-ogmento )
+    * Respect order of list_fields in admin class (@jeff-ogmento )
+    * Fixed "django.conf.urls.defaults is deprecated" (@swaroopch)
+    * Fix search (@swaroopch)
+    * Make index page also password-protected (@swaroopch)
+
+# 0.2.18 Various things
 
 # 0.2.17 Can now add, and modify ListFields and Embedded document fields @garrypolley
 

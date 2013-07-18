@@ -2,5 +2,6 @@ include CONTRIBUTORS.txt
 include LICENSE.txt
 include MANIFEST.in
 include README.rst
+include CHANGELOG.rst
 recursive-include docs *
 recursive-include mongonaut/templates/mongonaut *
