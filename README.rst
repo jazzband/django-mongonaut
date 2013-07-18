@@ -103,4 +103,4 @@ I am making the world better by donating everything I earn via gittip_ to effort
 
 Or you can `hire me`_ to perform dedicated work on this package.
 
-.. _`hire me`: mailto:pydanny@gmail.com?subject=django-mongonaut-professional-work
+.. _`hire me`: http://cartwheelweb.com
