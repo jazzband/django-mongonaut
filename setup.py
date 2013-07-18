@@ -8,6 +8,15 @@ CHANGELOG = open('CHANGELOG.rst').read()
 
 LONG_DESCRIPTION += CHANGELOG
 
+version = mongonaut.__version__
+
+if sys.argv[-1] == 'publish':
+    os.system("python setup.py sdist upload")
+    print("You probably want to also tag the version now:")
+    print("  git tag -a %s -m 'version %s'" % (version, version))
+    print("  git push --tags")
+    sys.exit()
+
 if sys.argv[-1] == 'publish':
     os.system("python setup.py sdist upload")
     print("You probably want to also tag the version now:")
@@ -17,7 +26,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='django-mongonaut',
-    version=mongonaut.__version__,
+    version=version,
     description="An introspective interface for Django and MongoDB",
     long_description=LONG_DESCRIPTION,
     classifiers=[
