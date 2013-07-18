@@ -1,6 +1,6 @@
 __author__ = 'Daniel Greenfeld'
 
-VERSION = (0, 2, 18)
+VERSION = (0, 2, 19)
 
 
 def get_version():

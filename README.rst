@@ -31,7 +31,7 @@ Get MongoDB::
     
 Get mongoengine (and pymongo):
 
-    pip install mongoengine=>0.6.2
+    pip install mongoengine=>0.5.2
 
 Get the code::
 
