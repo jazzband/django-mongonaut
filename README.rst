@@ -97,10 +97,4 @@ Dependencies
 Support this project!
 ======================
 
-I am making the world better by donating everything I earn via gittip_ to efforts that help other people learn Python. Go to gittip_ to donate!
-
-.. _gittip: https://www.gittip.com/pydanny
-
-Or you can `hire me`_ to perform dedicated work on this package.
-
-.. _`hire me`: http://cartwheelweb.com
+You can hire the lead maintainer to perform dedicated work on this package. Please email pydanny@cartwheelweb.com.
