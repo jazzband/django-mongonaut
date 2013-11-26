@@ -31,7 +31,7 @@ class AppStore(object):
 class MongonautViewMixin(object):
 
     def render_to_response(self, context, **response_kwargs):
-        if hasattr(self, 'permission') and self.permission not in context:
+        if hasattr(self, 'permission') and not self.request.user.has_perm(self.permission):
             return HttpResponseForbidden("You do not have permissions to access this content.")
 
         return self.response_class(
