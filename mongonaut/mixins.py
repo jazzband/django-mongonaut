@@ -46,9 +46,9 @@ class MongonautViewMixin(object):
         context['MONGONAUT_JQUERY'] = getattr(settings, "MONGONAUT_JQUERY",
                                       "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
         context['MONGONAUT_TWITTER_BOOTSTRAP'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP",
-                                                 "http://twitter.github.com/bootstrap/assets/css/bootstrap.css")
+                                                 "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
         context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP_ALERT",
-                                                       "http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js")
+                                                       "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js")
         return context
 
     def get_mongoadmins(self):
