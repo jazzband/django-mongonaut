@@ -29,7 +29,7 @@ Add the mongonaut urls.py file to your urlconf file:
 
     urlpatterns = patterns('',
         ...
-        (r'^mongonaut/', include('mongonaut.urls')),
+        url(r'^mongonaut/', include('mongonaut.urls')),
         ...
     )
 
