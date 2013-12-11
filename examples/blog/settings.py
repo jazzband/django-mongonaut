@@ -139,13 +139,15 @@ LOGGING = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
-    'mongoengine.django.auth.MongoEngineBackend',
-)
+#AUTHENTICATION_BACKENDS = (
+#    'mongoengine.django.auth.MongoEngineBackend',
+#)
 #SESSION_ENGINE = 'mongoengine.django.sessions'
 
 from mongoengine import connect
-connect('example_blog')
+MONGO_DATABASE_NAME = 'example_blog'
+connect(MONGO_DATABASE_NAME)
+
 
 ########## LOGGING CONFIGURATION
 LOGGING = {
