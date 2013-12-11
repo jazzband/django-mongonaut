@@ -1,6 +1,4 @@
 #coding: utf-8
-import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'examples.blog.settings'
 
 import unittest
 from django.test import RequestFactory
