@@ -9,5 +9,7 @@ install:
   - pip install -q Django==$DJANGO --use-mirrors
   - pip install unittest2
   - pip install -q -e . --use-mirrors
+services:
+  - mongodb
 script:
   - python tests/runtests.py
