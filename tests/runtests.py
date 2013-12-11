@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-try: 
-     import unittest2 as unittest 
-except ImportError: 
-    import unittest 
-
 import sys
 import os
+
+if sys.hexversion < 0x02070000:
+     import unittest2 as unittest 
+else: 
+    import unittest 
+
 
 #set path
 TEST_ROOT = os.path.dirname(__file__)
