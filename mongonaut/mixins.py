@@ -31,7 +31,7 @@ class AppStore(object):
 class MongonautViewMixin(object):
 
     def render_to_response(self, context, **response_kwargs):
-        if hasattr(self, 'permission') and self.permission not in context:
+        if hasattr(self, 'permission') and not self.request.user.has_perm(self.permission):
             return HttpResponseForbidden("You do not have permissions to access this content.")
 
         return self.response_class(
@@ -46,9 +46,10 @@ class MongonautViewMixin(object):
         context['MONGONAUT_JQUERY'] = getattr(settings, "MONGONAUT_JQUERY",
                                       "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
         context['MONGONAUT_TWITTER_BOOTSTRAP'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP",
-                                                 "http://twitter.github.com/bootstrap/assets/css/bootstrap.css")
-        context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings, "MONGONAUT_TWITTER_BOOTSTRAP_ALERT",
-                                                       "http://twitter.github.com/bootstrap/assets/js/bootstrap-alert.js")
+                                                 "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
+        context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings,
+                                                               "MONGONAUT_TWITTER_BOOTSTRAP_ALERT",
+                                                       "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min")
         return context
 
     def get_mongoadmins(self):
