@@ -29,11 +29,12 @@ class MongoTestCase(TestCase):
 class DummyUser(object):
 
     def __init__(self, is_authenticated = True, is_active=True,
-                    can_view=True, is_staff=True,
+                    can_view=True, is_staff=True, is_superuser=False,
                  has_perm=['has_view_permission']):
         self._is_authenticated = is_authenticated
         self._is_active = is_active
         self._is_staff = is_staff
+        self._is_superuser = is_superuser
         self._has_perm = has_perm
 
     def is_authenticated(self):
@@ -50,3 +51,6 @@ class DummyUser(object):
     def is_staff(self):
         return self._is_staff
 
+    @property
+    def is_superuser(self):
+        return self._is_superuser
