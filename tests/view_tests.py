@@ -7,7 +7,7 @@ from django.test import RequestFactory
 from mongonaut.views import IndexView 
 from common.utils import DummyUser 
 
-class ViewTests(unittest.TestCase):
+class IndexViewTests(unittest.TestCase):
 
     def setUp(self):
         self.req = RequestFactory().get('/')
@@ -31,18 +31,6 @@ class ViewTests(unittest.TestCase):
 
 
 
-
-'''class MongonautViewMixinTests(MongoTestCase, MongonautViewMixin, ListView):
-
-    def setUp(self):
-        self.request_factory = RequestFactory()
-        self.request = self.request_factory.request()
-
-    def test_render_to_response_requires_permission(self):
-        self.permission = 'has_view_permission'
-        self.request.user = DummyUser(is_authenticated=False)
-        self.assertEquals(1, self.render_to_response({}))
-'''
 
 if __name__ == "__main__":
     unittest.main()
