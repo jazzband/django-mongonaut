@@ -1,0 +1,15 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+env:
+  - DJANGO=1.5
+  - DJANGO=1.6
+install:
+  - pip install -q Django==$DJANGO --use-mirrors
+  - pip install unittest2
+  - pip install -q -e . --use-mirrors
+services:
+  - mongodb
+script:
+  - python tests/runtests.py
