@@ -5,6 +5,10 @@ django-mongonaut
 :Version: 0.2.19
 :Author: Daniel Greenfeld (http://pydanny.com)
 
+.. image:: https://travis-ci.org/pydanny/django-mongonaut.png
+   :alt: Build Status
+   :target: https://travis-ci.org/pydanny/django-mongonaut
+
 About
 =====
 
