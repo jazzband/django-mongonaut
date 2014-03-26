@@ -17,13 +17,6 @@ if sys.argv[-1] == 'publish':
     print("  git push --tags")
     sys.exit()
 
-if sys.argv[-1] == 'publish':
-    os.system("python setup.py sdist upload")
-    print("You probably want to also tag the version now:")
-    print("  git tag -a %s -m 'version %s'" % (mongonaut.__version__, mongonaut.__version__))
-    print("  git push --tags")
-    sys.exit()
-
 setup(
     name='django-mongonaut',
     version=version,
