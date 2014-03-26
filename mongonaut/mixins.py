@@ -60,7 +60,7 @@ class MongonautViewMixin(object):
             try:
                 module = import_module(mongoadmin)
             except ImportError as e:
-                if str(e) == "No module named mongoadmin":
+                if str(e).startswith("No module named"):
                     continue
                 raise e
 
