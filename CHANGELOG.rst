@@ -2,6 +2,12 @@
 CHANGELOG
 =========
 
+* 0.2.20 (26/03/2014)
+
+    * Python 3.3 compatibility (@haard)
+    * Working test harness (@j1z0)
+    * Fixed missing url function call in documentation (@JAORMX)
+
 * 0.2.19 (18/07/2013)
 
     * Use Select widget if choices defined for a field (@jeff-ogmento )
