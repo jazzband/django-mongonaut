@@ -3,7 +3,7 @@ CHANGELOG
 =========
 * 0.2.21 (05/19/2014)
 
-    * Backwards compatible tempaltes (@ashishsingh2205)
+    * Backwards compatible templates (@ashishsingh2205)
 
 * 0.2.20 (26/03/2014)
 
