@@ -1,9 +1,10 @@
 =========
 CHANGELOG
 =========
+
 * 0.2.21 (05/19/2014)
 
-    * Backwards compatible templates (@ashishsingh2205)
+    * Backwards compatible templates so things work in Django 1.4 again. (@ashishsingh2205)
 
 * 0.2.20 (26/03/2014)
 
