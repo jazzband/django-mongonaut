@@ -49,7 +49,7 @@ class MongonautViewMixin(object):
                                                  "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
         context['MONGONAUT_TWITTER_BOOTSTRAP_ALERT'] = getattr(settings,
                                                                "MONGONAUT_TWITTER_BOOTSTRAP_ALERT",
-                                                       "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min")
+                                                       "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js")
         return context
 
     def get_mongoadmins(self):
