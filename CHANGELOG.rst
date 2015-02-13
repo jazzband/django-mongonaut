@@ -2,6 +2,10 @@
 CHANGELOG
 =========
 
+* 0.2.21 ???
+
+   * Regex changed so that apps name with . are included, thanks to @kaflesudip
+
 * 0.2.21 (05/19/2014)
 
     * Backwards compatible templates so things work in Django 1.4 again. (@ashishsingh2205)
