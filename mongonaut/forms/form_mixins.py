@@ -16,6 +16,11 @@ from .form_utils import make_key
 from .widgets import get_form_field_class
 from mongonaut.utils import trim_field_key
 
+try:
+    # OrderedDict New in version 2.7
+    from collections import OrderedDict
+except ImportError:
+    OrderedDict = dict
 
 CHECK_ATTRS = {'required': 'required',
                'help_text': 'help_text',
@@ -78,8 +83,13 @@ class MongoModelFormBaseMixin(object):
         keyed by form field.  Each value is a  keyed 4 tuple of:
         (widget, mode_field_instance, model_field_type, field_key)
         """
-        return_dict = {}
-        for field_key, field_dict in model_dict.iteritems():
+        return_dict = OrderedDict()
+        if hasattr(self.model, 'Meta') and hasattr(self.model.Meta, 'ordering'):
+            ordering = tuple(o for o in self.model.Meta.ordering if o in model_dict.iterkeys())
+            order_dict = OrderedDict.fromkeys(ordering)
+            return_dict = order_dict
+
+        for field_key, field_dict in sorted(model_dict.iteritems()):
             if not field_key.startswith("_"):
                 widget = field_dict.get('_widget', None)
                 if widget is None:
