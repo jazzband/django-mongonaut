@@ -86,10 +86,10 @@ class MongoModelFormBaseMixin(object):
         return_dict = OrderedDict()
         # Workaround: mongoengine doesn't preserve form fields ordering from metaclass __new__
         if hasattr(self.model, 'Meta') and hasattr(self.model.Meta, 'form_fields_ordering'):
-            ordering = tuple(form_field_order for form_field_order
-                             in self.model.Meta.form_fields_ordering
-                             if form_field_order in model_dict.iterkeys())
-            order_dict = OrderedDict.fromkeys(ordering)
+            field_order_list = tuple(form_field for form_field
+                                     in self.model.Meta.form_fields_ordering
+                                     if form_field in model_dict.iterkeys())
+            order_dict = OrderedDict.fromkeys(field_order_list)
             return_dict = order_dict
 
         for field_key, field_dict in sorted(model_dict.iteritems()):
