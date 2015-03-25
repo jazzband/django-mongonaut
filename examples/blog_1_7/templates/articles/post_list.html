@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% for post in object_list %}
+        <div>
+            <h2><a href="#">{{ post.title }}</a></h2>
+            <p>{{ post.author.first_name }} {{ post.author.last_name }}</p>
+            <div>{{ content|linebreaksbr|urlize }}</div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
