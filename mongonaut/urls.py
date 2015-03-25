@@ -1,6 +1,4 @@
 from django.conf.urls import patterns, url
-
-
 from mongonaut import views
 
 urlpatterns = patterns('',
@@ -21,6 +19,8 @@ urlpatterns = patterns('',
     ),
     url(
         regex=r'^(?P<app_label>[_\-\w\.]+)/(?P<document_name>[_\-\w\.]+)/(?P<id>[\w]+)/$',
+        # regex=r'^(?P<app_label>.+)/(?P<document_name>.+)/(?P<id>.+)/$',
+
         view=views.DocumentDetailView.as_view(),
         name="document_detail"
     ),
@@ -30,7 +30,7 @@ urlpatterns = patterns('',
         name="document_detail_edit_form"
     ),
     url(
-        regex=r'^(?P<app_label>[_\-\w\.]+)/(?P<document_name>[_\-\w\.]+)/(?P<id>[\w]+)/delete/$',
+        regex=r'^(?P<app_label>[_\-\w\.]+)/(?P<document_name>[_\-\w\self.]+)/(?P<id>[\w]+)/delete/$',
         view=views.DocumentDeleteView.as_view(),
         name="document_delete"
     )

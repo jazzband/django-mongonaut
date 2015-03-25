@@ -23,6 +23,14 @@ class User(Document):
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
 
+    meta = {'allow_inheritance': True}
+
+    def __unicode__(self):
+        return self.email
+
+class NewUser(User):
+    new_field = StringField()
+
     def __unicode__(self):
         return self.email
 

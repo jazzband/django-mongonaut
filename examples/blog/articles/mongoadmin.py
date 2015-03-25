@@ -1,6 +1,6 @@
 from mongonaut.sites import MongoAdmin
 
-from articles.models import Post, User
+from articles.models import Post, User, NewUser
 
 
 class PostAdmin(MongoAdmin):
@@ -18,7 +18,7 @@ class PostAdmin(MongoAdmin):
         return True
 
     search_fields = ('title', 'id')
-    list_fields = ('title', "published", "pub_date", "update_times")
+    list_fields = ('title', 'author', "published", "pub_date", "update_times")
 
 
 class UserAdmin(MongoAdmin):
@@ -36,3 +36,4 @@ class UserAdmin(MongoAdmin):
 
 Post.mongoadmin = PostAdmin()
 User.mongoadmin = UserAdmin()
+NewUser.mongoadmin = UserAdmin()
