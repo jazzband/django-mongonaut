@@ -2,8 +2,9 @@
 CHANGELOG
 =========
 
-* 0.2.21 ???
+* 0.3.0 ???
 
+   * Ability to handle inherited object types, thanks to @lchsk 
    * Regex changed so that apps name with . are included, thanks to @kaflesudip
 
 * 0.2.21 (05/19/2014)
