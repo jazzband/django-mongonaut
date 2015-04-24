@@ -9,6 +9,10 @@ django-mongonaut
    :alt: Build Status
    :target: https://travis-ci.org/pydanny/django-mongonaut
 
+.. image:: https://codeclimate.com/github/pydanny/django-mongonaut/badges/gpa.svg
+   :alt: Code Climate
+   :target: https://codeclimate.com/github/pydanny/django-mongonaut
+
 About
 =====
 
