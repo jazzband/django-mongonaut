@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.test.simple import DjangoTestSuiteRunner
+
 from django_coverage.coverage_runner import CoverageRunner
 
 

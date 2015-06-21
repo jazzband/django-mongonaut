@@ -1,22 +1,19 @@
 #coding: utf-8
 
 import unittest
-from django.test import RequestFactory
-from mongonaut.views import DocumentDetailView
-from common.utils import DummyUser 
-
-from mongoengine import *
-
-from examples.blog.articles.models import Post, User, NewUser
-
-from mongonaut.templatetags.mongonaut_tags import get_document_value
-from bson.objectid import ObjectId
-
 from importlib import import_module
 
+from django.test import RequestFactory
+from bson.objectid import ObjectId
 from django.core.urlresolvers import NoReverseMatch
 from django.conf import settings
 import django
+
+from mongonaut.views import DocumentDetailView
+from common.utils import DummyUser
+from examples.blog.articles.models import Post, NewUser
+from mongonaut.templatetags.mongonaut_tags import get_document_value
+
 
 class IndexViewTests(unittest.TestCase):
 

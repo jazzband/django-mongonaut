@@ -6,8 +6,7 @@
 import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'examples.blog.settings'
 
-import unittest
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.conf import settings
 
 from mongoengine import connect

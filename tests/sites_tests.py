@@ -1,8 +1,11 @@
 #coding: utf-8
 import unittest
+
 from django.test import RequestFactory
-from mongonaut.sites import BaseMongoAdmin  
-from common.utils import DummyUser 
+
+from mongonaut.sites import BaseMongoAdmin
+from common.utils import DummyUser
+
 
 class BaseMongoAdminTests(unittest.TestCase):
 

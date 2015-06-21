@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-from django.core.management import execute_manager
 import imp
+
+from django.core.management import execute_manager
+
 
 # lamo cheat to make work a little easier. Don't do this in other places
 import sys

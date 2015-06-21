@@ -6,6 +6,8 @@ the mongonaut front end.  Do not use this code as an actual blog
 backend.
 """
 
+from datetime import datetime
+
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
@@ -14,8 +16,6 @@ from mongoengine import EmbeddedDocumentField
 from mongoengine import ListField
 from mongoengine import ReferenceField
 from mongoengine import StringField
-
-from datetime import datetime
 
 
 class User(Document):
