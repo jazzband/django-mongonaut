@@ -32,7 +32,7 @@ class NewUser(User):
     new_field = StringField()
 
     def __unicode__(self):
-        return self.email
+        return unicode(self.first_name)
 
 
 class Comment(EmbeddedDocument):
