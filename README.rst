@@ -23,6 +23,8 @@ If you decide to use this project, be forewarned that support and patches will n
 
 If you want to pay the maintainers of this project to support it again, please contact @pydanny and/or @garrypolley.
 
+If you want to join the maintenaince team to bring it back to life, please contact @pydanny.
+
 
 About
 =====
