@@ -13,6 +13,17 @@ django-mongonaut
    :alt: Code Climate
    :target: https://codeclimate.com/github/pydanny/django-mongonaut
 
+This Project is Unsupported
+==============================
+
+If you decide to use this project, be forewarned that support and patches will not be forthcoming at this time. Why?
+
+1. The maintainers of this project are no longer working professionally with MongoDB. 
+2. The maintainers of this project have to triage their open source time to projects that they use on a regular basis, or are paid to maintain. 
+
+If you want to pay the maintainers of this project to support it again, please contact @pydanny and/or @garrypolley.
+
+
 About
 =====
 
@@ -101,8 +112,3 @@ Dependencies
 - mongoengine >=0.5.2
 - pymongo (comes with mongoengine)
 - sphinx (optional - for documentation generation)
-
-Support this project!
-======================
-
-You can hire the lead maintainer to perform dedicated work on this package. Please email pydanny@cartwheelweb.com.
