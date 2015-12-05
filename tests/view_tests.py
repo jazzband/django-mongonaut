@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#coding: utf-8
 
 import unittest
 from django.test import RequestFactory
@@ -27,5 +27,10 @@ class IndexViewTests(unittest.TestCase):
         
         self.assertEquals(resp.status_code, 403)
 
+
+
+
 if __name__ == "__main__":
     unittest.main()
+
+        

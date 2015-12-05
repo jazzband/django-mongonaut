@@ -96,9 +96,9 @@ class IndexViewTests(unittest.TestCase):
 
         # Some unicode characters
 
-        first_name = "ąćźżńłóśę"
+        email = u"ąćźżńłóśę@gmail.com"
 
-        u = NewUser(email='test@test.com', first_name=first_name)
+        u = NewUser(email=email)
         u.id=ObjectId('abcabcabcabc')
 
         p = Post(author=u, title='Test Post')
