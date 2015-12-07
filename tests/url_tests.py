@@ -86,5 +86,33 @@ class IndexViewTests(unittest.TestCase):
         
         self.assertEquals(match_found, True)
 
+    def testUnicodeURLResolver(self):
+        '''
+            Similarly to testURLResolver, it tests whether get_document_value does not throw an exception.
+            This time, the value with unicode characters is provided.
+        '''
+        
+        settings.ROOT_URLCONF = 'examples.blog.urls'
+
+        # Some unicode characters
+
+        email = u"ąćźżńłóśę@gmail.com"
+
+        u = NewUser(email=email)
+        u.id=ObjectId('abcabcabcabc')
+
+        p = Post(author=u, title='Test Post')
+        p.id = ObjectId('abcabcabcabc')
+
+        unicode_ok = False
+
+        try:
+            res = get_document_value(p, 'author')
+            unicode_ok = True
+        except UnicodeEncodeError, e:
+            pass
+
+        self.assertTrue(unicode_ok)
+
 if __name__ == "__main__":
     unittest.main()
