@@ -2,6 +2,7 @@
 """
 TODO move permission checks to the dispatch view thingee
 """
+import math
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
@@ -96,9 +97,7 @@ class DocumentListView(MongonautViewMixin, FormView):
             self.page = 1
 
         obj_count = queryset.count()
-        self.total_pages = int(
-            obj_count / self.documents_per_page + (1 if obj_count % self.documents_per_page else 0)
-            )
+        self.total_pages = math.ceil(obj_count / self.documents_per_page)
             
         if self.page < 1:
             self.page = 1
