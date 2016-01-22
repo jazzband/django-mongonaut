@@ -1,9 +1,12 @@
 #coding: utf-8
 
 import unittest
+
 from django.test import RequestFactory
-from mongonaut.views import IndexView 
-from common.utils import DummyUser 
+
+from mongonaut.views import IndexView
+from common.utils import DummyUser
+
 
 class IndexViewTests(unittest.TestCase):
 

@@ -1,6 +1,8 @@
 import uuid
+
 from django.test import TestCase
 from mongoengine import connect, errors
+
 from mongonaut.forms import MongoModelForm
 from blog_1_7.settings import MONGO_DATABASE_NAME
 from articles.models import User, Comment, Post, OrderedUser
