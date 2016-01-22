@@ -4,9 +4,10 @@ CHANGELOG
 
 * 0.3.0 ???
 
+   * Added logout link
    * Resolved bug with pagination (#82), thanks to @anushajp
    * changed MongoModelFormBaseMixin to inherit model's Meta class ordering (#74), thanks to @anzellai
-   * Ability to handle inherited object types, thanks to @lchsk 
+   * Ability to handle inherited object types, thanks to @lchsk
    * Regex changed so that apps name with . are included, thanks to @kaflesudip
 
 * 0.2.21 (05/19/2014)

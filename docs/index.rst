@@ -12,15 +12,16 @@ Contents:
 
 .. toctree::
    :maxdepth: 3
-   
+
    installation
    configuration
    api
-   future_usage 
-  
+   future_usage
+   contributing
 
 
-   
+
+
 Features
 ========
 
@@ -31,7 +32,7 @@ Introspection of mongoengine data
     * Q based searches
     * django.contrib.admin style browsing
     * Automatic detection of field types
-    * Automatic discovery of collections    
+    * Automatic discovery of collections
 
 Introspection of pymongodata
 -----------------------------
@@ -42,23 +43,23 @@ Introspection of pymongodata
         * Always guarantee the _id.
         * Allow devs to set 1 or more field as 'expected'. But there is no hard contract!
         * introspect on field types to match how pymongo pulls data. So a `str` is handled differently than a list field.
-    
+
 Data Management
 ----------------------------
 
     * **[in progress]** Admin authored Collection level document control functions
     * EmbeddedDocumentsFields
     * Editing on ListFields
-    * Document Deletes    
+    * Document Deletes
     * Editing on most other fields including ReferenceFields.
     * Automatic detection of widget types
     * Text field shorthand for letting user quickly determine type when using without mongoengine
     * Document Adds
-    
+
 Permissions
 ----------------------------
 
-    * **[in progress]** Group defined controls    
+    * **[in progress]** Group defined controls
     * User level controls
     * Staff level controls
     * Admin defined controls
@@ -70,4 +71,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
