@@ -15,6 +15,7 @@ from mongonaut.utils import trim_field_key
 
 
 class AppStore(object):
+    """Represents Django apps in the django-mongonaut admin."""
 
     def __init__(self, module):
         self.models = []
@@ -29,6 +30,9 @@ class AppStore(object):
 
 
 class MongonautViewMixin(object):
+    """Used for all views in the project, handles authorization to content,
+        viewing, controlling and setting of data.
+    """
 
     def render_to_response(self, context, **response_kwargs):
         if hasattr(self, 'permission') and not self.request.user.has_perm(self.permission):
@@ -194,8 +198,8 @@ class MongonautFormViewMixin(object):
                 setattr(document, current_key, value)
 
     def set_embedded_doc(self, document, form_key, current_key, remaining_key):
+        """Get the existing embedded document if it exists, else created it."""
 
-        # Get the existing embedded document if it exists, else created it.
         embedded_doc = getattr(document, current_key, False)
         if not embedded_doc:
             embedded_doc = document._fields[current_key].document_type_obj()
@@ -205,6 +209,9 @@ class MongonautFormViewMixin(object):
         setattr(document, current_key, embedded_doc)
 
     def set_list_field(self, document, form_key, current_key, remaining_key, key_array_digit):
+        """1. Figures out what value the list ought to have
+           2. Sets the list
+        """
 
         document_field = document._fields.get(current_key)
 
