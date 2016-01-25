@@ -9,6 +9,7 @@ OBJECT_ID = ObjectIdField()
 
 
 def is_valid_object_id(value):
+    """Validates BSON IDs using mongoengine's ObjectIdField field."""
     try:
         OBJECT_ID.validate(value)
         return True
