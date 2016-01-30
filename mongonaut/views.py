@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.forms import Form
 from django.http import HttpResponseForbidden
 from django.http import Http404
+from django.utils.functional import cached_property
 from django.views.generic.edit import DeletionMixin
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -33,7 +34,9 @@ class IndexView(MongonautViewMixin, ListView):
 
 
 class DocumentListView(MongonautViewMixin, FormView):
-    """ :args: <app_label> <document_name>
+    """
+        Lists individual mongoengine documents for a model.
+        :args: <app_label> <document_name>
 
         TODO - Make a generic document fetcher method
     """
@@ -50,6 +53,9 @@ class DocumentListView(MongonautViewMixin, FormView):
     #    return super(DocumentListView, self).dispatch(*args, **kwargs)
 
     def get_qset(self, queryset, q):
+        """Performs filtering against the default queryset returned by
+            mongoengine.
+        """
         if self.mongoadmin.search_fields and q:
             params = {}
             for field in self.mongoadmin.search_fields:
@@ -64,10 +70,10 @@ class DocumentListView(MongonautViewMixin, FormView):
             queryset = queryset.filter(**params)
         return queryset
 
+    @cached_property
     def get_queryset(self):
-        if hasattr(self, "queryset") and self.queryset:
-            return self.queryset
-
+        """Replicates Django CBV `get_queryset()` method, but for MongoEngine.
+        """
         self.set_mongonaut_base()
         self.set_mongoadmin()
         self.document = getattr(self.models, self.document_name)
@@ -83,7 +89,7 @@ class DocumentListView(MongonautViewMixin, FormView):
 
         ### Start pagination
         ### Note:
-        ###    Didn't use the Paginator in Django cause mongoengine querysets are
+        ###    Can't use Paginator in Django because mongoengine querysets are
         ###    not the same as Django ORM querysets and it broke.
         # Make sure page request is an int. If not, deliver first page.
         try:
@@ -104,16 +110,16 @@ class DocumentListView(MongonautViewMixin, FormView):
         end = self.page * self.documents_per_page
 
         queryset = queryset[start:end] if obj_count else queryset
-
-        self.queryset = queryset
         return queryset
 
     def get_initial(self):
+        """Used during adding/editing of data."""
         self.query = self.get_queryset()
         mongo_ids = {'mongo_id': [unicode(x.id) for x in self.query]}
         return mongo_ids
 
     def get_context_data(self, **kwargs):
+        """Injects data into the context to replicate CBV ListView."""
         context = super(DocumentListView, self).get_context_data(**kwargs)
         context = self.set_permissions_in_context(context)
 
@@ -167,6 +173,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """Creates new mongoengine records/"""
         # TODO - make sure to check the rights of the poster
         #self.get_queryset() # TODO - write something that grabs the document class better
         form_class = self.get_form_class()
