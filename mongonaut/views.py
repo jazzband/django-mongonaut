@@ -22,6 +22,7 @@ from mongonaut.utils import is_valid_object_id
 
 
 class IndexView(MongonautViewMixin, ListView):
+    """Lists all the apps with mongoadmins attached."""
 
     template_name = "mongonaut/index.html"
     queryset = []
@@ -29,12 +30,6 @@ class IndexView(MongonautViewMixin, ListView):
 
     def get_queryset(self):
         return self.get_mongoadmins()
-
-
-class AppListView(MongonautViewMixin, ListView):
-    """ :args: <app_label> """
-
-    template_name = "mongonaut/app_list.html"
 
 
 class DocumentListView(MongonautViewMixin, FormView):
@@ -98,7 +93,7 @@ class DocumentListView(MongonautViewMixin, FormView):
 
         obj_count = queryset.count()
         self.total_pages = math.ceil(obj_count / self.documents_per_page)
-            
+
         if self.page < 1:
             self.page = 1
 
