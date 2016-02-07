@@ -173,7 +173,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         return context
 
     def post(self, request, *args, **kwargs):
-        """Creates new mongoengine records/"""
+        """Creates new mongoengine records."""
         # TODO - make sure to check the rights of the poster
         #self.get_queryset() # TODO - write something that grabs the document class better
         form_class = self.get_form_class()

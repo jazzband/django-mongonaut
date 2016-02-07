@@ -28,6 +28,7 @@ CHECK_ATTRS = {'required': 'required',
 
 
 def get_document_unicode(document):
+    """Safely converts MongoDB document strings to unicode."""
     try:
         return document.__unicode__()
     except AttributeError:

@@ -14,6 +14,7 @@ register = template.Library()
 
 @register.simple_tag()
 def get_document_value(document, key):
+    """Returns the display value of a field for a particular MongoDB document."""
     value = getattr(document, key)
     if isinstance(value, ObjectId):
         return value
