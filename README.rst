@@ -12,6 +12,11 @@ django-mongonaut
 .. image:: https://codeclimate.com/github/pydanny/django-mongonaut/badges/gpa.svg
    :alt: Code Climate
    :target: https://codeclimate.com/github/pydanny/django-mongonaut
+   
+   
+.. image:: https://jazzband.co/static/img/badge.svg
+  :target: https://jazzband.co/
+  :alt: Jazzband
 
 This Project is Unsupported
 ==============================
