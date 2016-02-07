@@ -114,3 +114,10 @@ Dependencies
 - mongoengine >=0.5.2
 - pymongo (comes with mongoengine)
 - sphinx (optional - for documentation generation)
+
+Code of Conduct
+===============
+
+This project follows the `Jazzband.co Code of Conduct`_.
+
+.. _`Jazzband.co Code of Conduct`: https://jazzband.co/about/conduct
