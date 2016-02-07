@@ -21,7 +21,10 @@ django-mongonaut
 This Project is Being Moved to Jazzband
 =======================================
 
-@garrypolley and I have agreed to move this project to the @jazzband organization. Since we've both been off MongoDB for several years, maintaining this project ourselves no longer makes sense. By handing this to Jazzband, we are:
+`@garrypolley`_ and I have agreed to move this project to the `@jazzband`_ organization. Since we've both been off MongoDB for several years, maintaining this project ourselves no longer makes sense. By handing this to Jazzband, we are:
+
+.. _`@garrypolley`: https://github.com/garrypolley
+.. _`@jazzband`: https://github.com/jazzband
 
 1. Putting the project in a place where it will be maintained and extended.
 2. Removes the time and effort needed to continue to accept and manage pull requests for a project we no longer wish to maintain but has a somewhat active user base.
