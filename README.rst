@@ -18,17 +18,20 @@ django-mongonaut
   :target: https://jazzband.co/
   :alt: Jazzband
 
-This Project is Unsupported
-==============================
+This Project is Being Moved to Jazzband
+=======================================
 
-If you decide to use this project, be forewarned that support and patches will not be forthcoming at this time. Why?
+@garrypolley and I have agreed to move this project to the @jazzband organization. Since we've both been off MongoDB for several years, maintaining this project ourselves no longer makes sense. By handing this to Jazzband, we are:
+
+1. Putting the project in a place where it will be maintained and extended.
+2. Removes the time and effort needed to continue to accept and manage pull requests for a project we no longer wish to maintain but has a somewhat active user base.
+
+Until then, if you decide to use this project, be forewarned that support and patches will not be forthcoming at this time. Why?
 
 1. The maintainers of this project are no longer working professionally with MongoDB. 
 2. The maintainers of this project have to triage their open source time to projects that they use on a regular basis, or are paid to maintain. 
 
-If you want to pay the maintainers of this project to support it again, please contact @pydanny and/or @garrypolley.
-
-If you want to join the maintenaince team to bring it back to life, please contact @pydanny.
+If you want to pay the maintainers of this project to support it again, please contact @pydanny and/or @garrypolley. If you want to join the maintenance team to bring it back to life, please contact @pydanny.
 
 
 About
