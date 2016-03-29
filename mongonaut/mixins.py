@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseForbidden
-from django.utils.importlib import import_module
+from importlib import import_module
 from mongoengine.fields import EmbeddedDocumentField
 
 from mongonaut.exceptions import NoMongoAdminSpecified
