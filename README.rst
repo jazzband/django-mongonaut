@@ -42,7 +42,7 @@ Features
 - Automatic introspection of mongoengine documents.
 - Ability to constrain who sees what and can do what.
 - Full control to add, edit, and delete documents
-- More awesome stuff! See http://django-mongonaut.readthedocs.org/en/latest/index.html#features
+- More awesome stuff! See https://django-mongonaut.readthedocs.io/en/latest/index.html#features
 
 Installation
 ============
@@ -104,12 +104,12 @@ django-mongonaut will let you duplicate much of what `django.contrib.admin` give
     # Then attach the mongoadmin to your model
     Post.mongoadmin = MongoAdmin()
 
-* http://django-mongonaut.readthedocs.org/en/latest/api.html
+* https://django-mongonaut.readthedocs.io/en/latest/api.html
 
 Documentation
 ==============
 
-All the documentation for this project is hosted at http://django-mongonaut.rtfd.org.
+All the documentation for this project is hosted at https://django-mongonaut.readthedocs.io.
 
 Dependencies
 ============
