@@ -3,7 +3,7 @@ django-mongonaut
 ================
 :Info: An introspective interface for Django and MongoDB.
 :Version: 0.2.21
-:Maintainer: Jazzband (jazzband.io)
+:Maintainer: Jazzband (jazzband.co)
 
 .. image:: https://travis-ci.org/jazzband/django-mongonaut.png
    :alt: Build Status
