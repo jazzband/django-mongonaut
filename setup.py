@@ -42,7 +42,7 @@ setup(
     keywords='mongodb,django',
     author=mongonaut.__author__,
     author_email='pydanny@gmail.com',
-    url='http://github.com/pydanny/django-mongonaut',
+    url='http://github.com/jazzband/django-mongonaut',
     license='MIT',
     packages=find_packages(exclude=['examples']),
     include_package_data=True,

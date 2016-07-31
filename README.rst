@@ -9,11 +9,10 @@ django-mongonaut
    :alt: Build Status
    :target: https://travis-ci.org/jazzband/django-mongonaut
 
-.. image:: https://codeclimate.com/github/pydanny/django-mongonaut/badges/gpa.svg
+.. image:: https://codeclimate.com/github/jazzband/django-mongonaut/badges/gpa.svg
    :alt: Code Climate
-   :target: https://codeclimate.com/github/pydanny/django-mongonaut
-   
-   
+   :target: https://codeclimate.com/github/jazzband/django-mongonaut
+
 .. image:: https://jazzband.co/static/img/badge.svg
   :target: https://jazzband.co/
   :alt: Jazzband
@@ -52,7 +51,7 @@ Made as easy as possible, setup is actually easier than `django.contrib.admin`. 
 Get MongoDB::
 
     Download the right version per http://www.mongodb.org/downloads
-    
+
 Get mongoengine (and pymongo):
 
     pip install mongoengine=>0.5.2
@@ -60,7 +59,7 @@ Get mongoengine (and pymongo):
 Get the code::
 
     pip install django-mongonaut==0.2.20
-    
+
 Install the dependency in your settings.py::
 
     INSTALLED_APPS = (
@@ -68,7 +67,7 @@ Install the dependency in your settings.py::
     'mongonaut',
     ...
     )
-    
+
 You will need the following also set up:
 
 * django.contrib.sessions
@@ -100,7 +99,7 @@ django-mongonaut will let you duplicate much of what `django.contrib.admin` give
     # Import your custom models
     from blog.models import Post
 
-    # Instantiate the MongoAdmin class        
+    # Instantiate the MongoAdmin class
     # Then attach the mongoadmin to your model
     Post.mongoadmin = MongoAdmin()
 
