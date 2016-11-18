@@ -32,7 +32,7 @@ class MongonautViewMixin(object):
 
     def render_to_response(self, context, **response_kwargs):
         if hasattr(self, 'permission') and not self.request.user.has_perm(self.permission):
-            return HttpResponseForbidden("You do not have permissions to access this content.")
+            return HttpResponseForbidden("You do not have permissions to access this content. Login as a superuser to view and edit data.")
 
         return self.response_class(
             request=self.request,
