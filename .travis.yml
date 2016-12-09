@@ -3,14 +3,14 @@ python:
   - "2.7"
   - "3.3"
   - "3.4"
-  - "3.5"  
+  - "3.5"
 env:
   - DJANGO=1.5
   - DJANGO=1.6
 install:
-  - pip install -q Django==$DJANGO --use-mirrors
+  - pip install -q Django==$DJANGO
   - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then pip install unittest2; fi
-  - pip install -q -e . --use-mirrors
+  - pip install -q -e .
 services:
   - mongodb
 script:
