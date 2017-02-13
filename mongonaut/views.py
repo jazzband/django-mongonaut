@@ -131,6 +131,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         context['document'] = self.document
         context['app_label'] = self.app_label
         context['document_name'] = self.document_name
+        context['request'] = self.request
 
         # pagination bits
         context['page'] = self.page
