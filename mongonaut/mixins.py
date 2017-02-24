@@ -3,7 +3,12 @@
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseForbidden
-from importlib import import_module
+try:
+    from importlib import import_module
+except ImportError as e:
+    #http://stackoverflow.com/questions/32761566/django-1-9-importerror-for-import-module
+    from importlib import import_module
+
 from mongoengine.fields import EmbeddedDocumentField
 
 from mongonaut.exceptions import NoMongoAdminSpecified
