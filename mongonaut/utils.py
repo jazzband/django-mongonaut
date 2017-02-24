@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from mongoengine.base import ObjectIdField, ValidationError
+from mongoengine.base import ObjectIdField
+try:
+    from mongoengine.base import ValidationError
+except:
+    from django.core.exceptions import ValidationError
+
 from mongoengine.fields import ReferenceField
 
 # Used to validate object_ids.
