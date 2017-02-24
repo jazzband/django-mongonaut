@@ -40,7 +40,7 @@ try:
         )
     )
 
-except Exception as e:
+except ImportError as e:
     #Patterns deprecated in Django 1.10
     urlpatterns = [
         url(

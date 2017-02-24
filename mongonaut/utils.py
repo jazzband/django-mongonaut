@@ -3,7 +3,7 @@
 from mongoengine.base import ObjectIdField
 try:
     from mongoengine.base import ValidationError
-except:
+except ImportError as e:
     from django.core.exceptions import ValidationError
 
 from mongoengine.fields import ReferenceField
