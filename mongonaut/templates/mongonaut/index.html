@@ -1,5 +1,4 @@
 {% extends "mongonaut/base.html" %}
-{% load url from future %}
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
@@ -11,7 +10,7 @@
 <h1>Mongonaut</h1>
 
 <div class="row">
-    <div class="span12">
+    <div class="col-sm-12">
 {% for app in object_list %}
 
     <table class="table table-bordered table-striped">

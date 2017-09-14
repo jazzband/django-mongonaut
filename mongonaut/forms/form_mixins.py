@@ -16,11 +16,6 @@ from .form_utils import make_key
 from .widgets import get_form_field_class
 from mongonaut.utils import trim_field_key
 
-try:
-    # OrderedDict New in version 2.7
-    from collections import OrderedDict
-except ImportError:
-    OrderedDict = dict
 
 CHECK_ATTRS = {'required': 'required',
                'help_text': 'help_text',
@@ -28,11 +23,10 @@ CHECK_ATTRS = {'required': 'required',
 
 
 def get_document_unicode(document):
-    """Safely converts MongoDB document strings to unicode."""
     try:
         return document.__unicode__()
     except AttributeError:
-        return unicode(document)
+        return str(document)
 
 
 class MongoModelFormBaseMixin(object):
@@ -70,13 +64,13 @@ class MongoModelFormBaseMixin(object):
         self.form = forms.Form()
 
         if not isinstance(self.model, TopLevelDocumentMetaclass):
-            raise TypeError(u"The model supplied must be a mongoengine Document")
+            raise TypeError("The model supplied must be a mongoengine Document")
 
         if self.is_initialized and not isinstance(self.model_instance, self.model):
-            raise TypeError(u"The provided instance must be an instance of the given model")
+            raise TypeError("The provided instance must be an instance of the given model")
 
         if self.post_data_dict is not None and not isinstance(self.post_data_dict, dict):
-            raise TypeError(u"You must pass in a dictionary for form_post_data")
+            raise TypeError("You must pass in a dictionary for form_post_data")
 
     def get_form_field_dict(self, model_dict):
         """
@@ -84,16 +78,8 @@ class MongoModelFormBaseMixin(object):
         keyed by form field.  Each value is a  keyed 4 tuple of:
         (widget, mode_field_instance, model_field_type, field_key)
         """
-        return_dict = OrderedDict()
-        # Workaround: mongoengine doesn't preserve form fields ordering from metaclass __new__
-        if hasattr(self.model, 'Meta') and hasattr(self.model.Meta, 'form_fields_ordering'):
-            field_order_list = tuple(form_field for form_field
-                                     in self.model.Meta.form_fields_ordering
-                                     if form_field in model_dict.iterkeys())
-            order_dict = OrderedDict.fromkeys(field_order_list)
-            return_dict = order_dict
-
-        for field_key, field_dict in sorted(model_dict.iteritems()):
+        return_dict = {}
+        for field_key, field_dict in model_dict.items():
             if not field_key.startswith("_"):
                 widget = field_dict.get('_widget', None)
                 if widget is None:
@@ -115,7 +101,7 @@ class MongoModelFormBaseMixin(object):
           parent_key -- the key for the previous key in the recursive call
           field_type -- used to determine what kind of field we are setting
         """
-        for form_key, field_value in form_field_dict.iteritems():
+        for form_key, field_value in form_field_dict.items():
             form_key = make_key(parent_key, form_key) if parent_key is not None else form_key
             if isinstance(field_value, tuple):
 
@@ -135,7 +121,7 @@ class MongoModelFormBaseMixin(object):
                         field_value.widget.attrs['class'] += ' listField'
 
                     # Compute number value for list key
-                    list_keys = [field_key for field_key in self.form.fields.keys()
+                    list_keys = [field_key for field_key in list(self.form.fields.keys())
                                            if has_digit(field_key)]
 
                     key_int = 0
@@ -146,7 +132,7 @@ class MongoModelFormBaseMixin(object):
                 if parent_key is not None:
 
                     # Get the base key for our embedded field class
-                    valid_base_keys = [model_key for model_key in self.model_map_dict.keys()
+                    valid_base_keys = [model_key for model_key in list(self.model_map_dict.keys())
                                                  if not model_key.startswith("_")]
                     while base_key not in valid_base_keys and base_key:
                         base_key = make_key(base_key, exclude_last_string=True)
@@ -180,7 +166,7 @@ class MongoModelFormBaseMixin(object):
                     for list_value in default_value:
                         # Note, this is copied every time so each widget gets a different class
                         list_widget = deepcopy(field_value.widget)
-                        new_key = make_key(new_base_key, unicode(key_index))
+                        new_key = make_key(new_base_key, str(key_index))
                         list_widget.attrs['class'] += " {0}".format(make_key(base_key, key_index))
                         self.set_form_field(list_widget, field_value.document_field, new_key, list_value)
                         key_index += 1
@@ -224,7 +210,7 @@ class MongoModelFormBaseMixin(object):
             self.form.fields[field_key].initial = getattr(model_field, 'default', None)
 
         if isinstance(model_field, ReferenceField):
-            self.form.fields[field_key].choices = [(unicode(x.id), get_document_unicode(x))
+            self.form.fields[field_key].choices = [(str(x.id), get_document_unicode(x))
                                                     for x in model_field.document_type.objects.all()]
             # Adding in blank choice so a reference field can be deleted by selecting blank
             self.form.fields[field_key].choices.insert(0, ("", ""))
@@ -232,7 +218,7 @@ class MongoModelFormBaseMixin(object):
         elif model_field.choices:
             self.form.fields[field_key].choices = model_field.choices
 
-        for key, form_attr in CHECK_ATTRS.items():
+        for key, form_attr in list(CHECK_ATTRS.items()):
             if hasattr(model_field, key):
                 value = getattr(model_field, key)
                 setattr(self.form.fields[field_key], key, value)
@@ -268,8 +254,8 @@ class MongoModelFormBaseMixin(object):
                 return_data = get_value(document._data.get(current_key), new_key)
             else:
                 # Handeling all other fields and id
-                return_data = (document._data.get(None, None) if current_key == "id" else
-                              document._data.get(current_key, None))
+                return_data = document._data.get(current_key, None)
+                # return_data = (document._data.get(None, None) if current_key == "id" else document._data.get(current_key, None))
             return return_data
 
         if self.is_initialized:

@@ -19,7 +19,6 @@ from mongoengine.fields import StringField
 
 
 def get_widget(model_field, disabled=False):
-    """Choose which widget to display for a field."""
 
     attrs = get_attrs(model_field, disabled)
 
@@ -43,7 +42,6 @@ def get_widget(model_field, disabled=False):
 
 
 def get_attrs(model_field, disabled=False):
-    """Set attributes on the display widget."""
     attrs = {}
     attrs['class'] = 'span6 xlarge'
     if disabled or isinstance(model_field, ObjectIdField):

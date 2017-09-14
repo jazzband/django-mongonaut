@@ -5,8 +5,6 @@ except ImportError:
 
 
 class BaseMongoAdmin(object):
-    """Base model class for replication django.site.ModelAdmin class.
-    """
 
     search_fields = []
 
@@ -56,7 +54,6 @@ class BaseMongoAdmin(object):
 
 
 class MongoAdmin(BaseMongoAdmin):
-    """Serves as the controller for all the actions defined by the developer."""
 
     list_display = ('__str__',)
     list_display_links = ()
