@@ -1,7 +1,7 @@
 {% if field.is_hidden %}
     {{ field }}
 {% else %}
-<div class="clearfix {% if field.errors %}error{% endif %}">
+<div class="clearfix {% if field.errors %}error{% endif %} col-sm-12">
     <label for="{{ field.auto_id }}" {% if field.field.required %}class="requiredField"{% endif %}>
         {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
     </label>
@@ -22,9 +22,6 @@
                 {% endif %}
             </span>
         {% endif %}
-            
-            
-        
     </div>
 </div>
 {% endif %}

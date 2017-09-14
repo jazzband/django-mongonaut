@@ -2,39 +2,35 @@
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
-<li><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
-<li><a href="">{{ document_name }} {{ document.id }}</a></li>
+<li class="breadcrumb-item active"><a href="{% url "index" %}">Mongonaut</a></li>
+<li class="breadcrumb-item active"><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a></li>
+<li class="breadcrumb-item active"><a href="">{{ document.id }}</a></li>
 {% endblock %}
 
 {% block content %}
 
-<h1>{{ document_name }} Detail</h1>
 
+    <div class="col-sm-12" id="document-actions">
+        <h1>{{ document_name }} Detail</h1>
 
-<div class="row" >
-    <div class="span12" id="document-actions">
         <p>
-            <div class="btn-group">
                 {% if has_edit_permission %}            
-                    <a class="btn btn-primary" href="{% url "document_detail_edit_form" app_label document_name document.id %}">
-                        <i class="icon-pencil icon-white"></i> Edit
+                    <a class="btn btn-primary" style="margin-right:5px"  href="{% url "document_detail_edit_form" app_label document_name document.id %}">
+                        <i class="icon-pencil icon-white"></i> Edit 
                     </a>
                             
                 {% endif %}
                 {% if has_delete_permission %}                        
                     <a id="action_delete"  class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Delete</a>
                 {% endif %}
-            </div>
         </p>
         {% include "mongonaut/includes/_delete_warning.html" %}
     </div>
-</div>
 
-<div class="row">
-    <div class="span6">
+<div style="overflow: auto;">
+    <div class="col-sm-12">
         <table class="table table-bordered table-striped">
-            <caption>Content</caption>
+            <!-- <caption>Content</caption> -->
             <thead>
                 <tr>
                     <th>Key</th>
@@ -51,7 +47,7 @@
             </tbody>            
         </table>
     </div>
-    <div class="span6">
+    <div class="col-sm-12">
             {% if list_fields %}
                 <table class="table table-bordered table-striped">
                     <caption>List Fields</caption>
