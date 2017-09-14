@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from mongoengine.base import ObjectIdField, ValidationError
+from mongoengine.errors import ValidationError
+from mongoengine.base import ObjectIdField
 from mongoengine.fields import ReferenceField
 
 # Used to validate object_ids.
@@ -9,7 +10,6 @@ OBJECT_ID = ObjectIdField()
 
 
 def is_valid_object_id(value):
-    """Validates BSON IDs using mongoengine's ObjectIdField field."""
     try:
         OBJECT_ID.validate(value)
         return True
@@ -44,7 +44,7 @@ def trim_field_key(document, field_key):
         else:
             key_array = current_key.split("_")
             left_over_key_values.append(key_array.pop())
-            current_key = u"_".join(key_array)
+            current_key = "_".join(key_array)
 
     left_over_key_values.reverse()
     return current_key, left_over_key_values

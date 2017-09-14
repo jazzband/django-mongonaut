@@ -1,21 +1,24 @@
 {% extends "mongonaut/base.html" %}
-{% load url from future %}
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
-<li><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a> <span class="divider">/</span></li>
-<li><a href="">Add</a>
+<li class="breadcrumb-item active"><a href="{% url "index" %}">Mongonaut</a></li>
+<li class="breadcrumb-item active"><a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a></li>
+<li class="breadcrumb-item active"><a href="">Add</a>
 {% endblock %}
 
 {% block content %}
 
+<div class="col-sm-12">
 <h1>Add {{ document_name }}</h1>
 
 {% include "mongonaut/includes/form.html" %}
 
 {% endblock %}
 
+
 {% block inlinejs %}
 {% include 'mongonaut/includes/list_add.js' %}
+
+</div>
 {% endblock %}
