@@ -39,7 +39,7 @@ def make_key(*args, **kwargs):
 
     >>> from mongonaut.forms.form_utils import make_key
     >>> make_key('hi', 'my', 'firend')
-    >>> 'hi_my_firend'
+    >>> u'hi_my_firend'
 
     >>> make_key('hi', 'my', 'firend', sep='i')
     >>> 'hiimyifirend'
@@ -48,10 +48,10 @@ def make_key(*args, **kwargs):
     >>> 'hiimyifirendithisibeiwhat'
 
     >>> make_key('hi', 'my', 'firend',['this', 'be', 'what'])
-    >>> 'hi_my_firend_this_be_what'
+    >>> u'hi_my_firend_this_be_what'
 
     """
-    sep = kwargs.get('sep', "_")
+    sep = kwargs.get('sep', u"_")
     exclude_last_string = kwargs.get('exclude_last_string', False)
     string_array = []
 
@@ -66,4 +66,3 @@ def make_key(*args, **kwargs):
             else:
                 string_array.append(str(arg))
     return sep.join(string_array)
-

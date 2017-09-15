@@ -2,12 +2,14 @@
 """
 TODO move permission checks to the dispatch view thingee
 """
+import math
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.forms import Form
 from django.http import HttpResponseForbidden
 from django.http import Http404
+from django.utils.functional import cached_property
 from django.views.generic.edit import DeletionMixin
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -21,6 +23,7 @@ from mongonaut.utils import is_valid_object_id
 
 
 class IndexView(MongonautViewMixin, ListView):
+    """Lists all the apps with mongoadmins attached."""
 
     template_name = "mongonaut/index.html"
     queryset = []
@@ -30,14 +33,10 @@ class IndexView(MongonautViewMixin, ListView):
         return self.get_mongoadmins()
 
 
-class AppListView(MongonautViewMixin, ListView):
-    """ :args: <app_label> """
-
-    template_name = "mongonaut/app_list.html"
-
-
 class DocumentListView(MongonautViewMixin, FormView):
-    """ :args: <app_label> <document_name>
+    """
+        Lists individual mongoengine documents for a model.
+        :args: <app_label> <document_name>
 
         TODO - Make a generic document fetcher method
     """
@@ -54,6 +53,9 @@ class DocumentListView(MongonautViewMixin, FormView):
     #    return super(DocumentListView, self).dispatch(*args, **kwargs)
 
     def get_qset(self, queryset, q):
+        """Performs filtering against the default queryset returned by
+            mongoengine.
+        """
         if self.mongoadmin.search_fields and q:
             params = {}
             for field in self.mongoadmin.search_fields:
@@ -68,7 +70,10 @@ class DocumentListView(MongonautViewMixin, FormView):
             queryset = queryset.filter(**params)
         return queryset
 
+    @cached_property
     def get_queryset(self):
+        """Replicates Django CBV `get_queryset()` method, but for MongoEngine.
+        """
         if hasattr(self, "queryset") and self.queryset:
             return self.queryset
 
@@ -87,7 +92,7 @@ class DocumentListView(MongonautViewMixin, FormView):
 
         ### Start pagination
         ### Note:
-        ###    Didn't use the Paginator in Django cause mongoengine querysets are
+        ###    Can't use Paginator in Django because mongoengine querysets are
         ###    not the same as Django ORM querysets and it broke.
         # Make sure page request is an int. If not, deliver first page.
         try:
@@ -96,7 +101,7 @@ class DocumentListView(MongonautViewMixin, FormView):
             self.page = 1
 
         obj_count = queryset.count()
-        self.total_pages = obj_count / self.documents_per_page + (1 if obj_count % self.documents_per_page else 0)
+        self.total_pages = math.ceil(obj_count / self.documents_per_page)
 
         if self.page < 1:
             self.page = 1
@@ -108,16 +113,17 @@ class DocumentListView(MongonautViewMixin, FormView):
         end = self.page * self.documents_per_page
 
         queryset = queryset[start:end] if obj_count else queryset
-
         self.queryset = queryset
         return queryset
 
     def get_initial(self):
+        """Used during adding/editing of data."""
         self.query = self.get_queryset()
         mongo_ids = {'mongo_id': [str(x.id) for x in self.query]}
         return mongo_ids
 
     def get_context_data(self, **kwargs):
+        """Injects data into the context to replicate CBV ListView."""
         context = super(DocumentListView, self).get_context_data(**kwargs)
         context = self.set_permissions_in_context(context)
 
@@ -156,7 +162,7 @@ class DocumentListView(MongonautViewMixin, FormView):
             context['keys'] = ['id', ]
 
             # Show those items for which we've got list_fields on the mongoadmin
-            for key in [x for x in self.mongoadmin.list_fields if x != 'id' and x in list(self.document._fields.keys())]:
+            for key in [x for x in self.mongoadmin.list_fields if x != 'id' and x in self.document._fields.keys()]:
 
                 # TODO - Figure out why this EmbeddedDocumentField and ListField breaks this view
                 # Note - This is the challenge part, right? :)
@@ -172,6 +178,7 @@ class DocumentListView(MongonautViewMixin, FormView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """Creates new mongoengine records."""
         # TODO - make sure to check the rights of the poster
         #self.get_queryset() # TODO - write something that grabs the document class better
         form_class = self.get_form_class()
@@ -204,7 +211,7 @@ class DocumentDetailView(MongonautViewMixin, TemplateView):
         context['keys'] = ['id', ]
         context['embedded_documents'] = []
         context['list_fields'] = []
-        for key in sorted([x for x in list(self.document._fields.keys()) if x != 'id']):
+        for key in sorted([x for x in self.document._fields.keys() if x != 'id']):
             # TODO - Figure out why this EmbeddedDocumentField and ListField breaks this view
             # Note - This is the challenge part, right? :)
             if isinstance(self.document._fields[key], EmbeddedDocumentField):
@@ -246,7 +253,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
 
         return context
 
-    def get_form(self):
+    def get_form(self): #get_form(self, Form) leads to "get_form() missing 1 required positional argument: 'Form'" error."
         self.set_mongoadmin()
         context = self.set_permissions_in_context({})
 
