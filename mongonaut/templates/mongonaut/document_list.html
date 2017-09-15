@@ -1,10 +1,10 @@
 {% extends "mongonaut/base.html" %}
-{% load url from future %}
+
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li><a href="{% url "index" %}">Mongonaut</a> <span class="divider">/</span></li>
-<li><a href="">{{ document_name }}s</a></li>
+<li class="breadcrumb-item active"><a href='{% url "index" %}'>Mongonaut</a></li>
+<li class="breadcrumb-item active"><a href="">{{ document_name }}s</a></li>
 {% endblock %}
 
 

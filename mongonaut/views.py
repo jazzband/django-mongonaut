@@ -74,6 +74,9 @@ class DocumentListView(MongonautViewMixin, FormView):
     def get_queryset(self):
         """Replicates Django CBV `get_queryset()` method, but for MongoEngine.
         """
+        if hasattr(self, "queryset") and self.queryset:
+            return self.queryset
+
         self.set_mongonaut_base()
         self.set_mongoadmin()
         self.document = getattr(self.models, self.document_name)
@@ -110,12 +113,13 @@ class DocumentListView(MongonautViewMixin, FormView):
         end = self.page * self.documents_per_page
 
         queryset = queryset[start:end] if obj_count else queryset
+        self.queryset = queryset
         return queryset
 
     def get_initial(self):
         """Used during adding/editing of data."""
         self.query = self.get_queryset()
-        mongo_ids = {'mongo_id': [unicode(x.id) for x in self.query]}
+        mongo_ids = {'mongo_id': [str(x.id) for x in self.query]}
         return mongo_ids
 
     def get_context_data(self, **kwargs):
@@ -249,7 +253,7 @@ class DocumentEditFormView(MongonautViewMixin, FormView, MongonautFormViewMixin)
 
         return context
 
-    def get_form(self, Form):
+    def get_form(self): #get_form(self, Form) leads to "get_form() missing 1 required positional argument: 'Form'" error."
         self.set_mongoadmin()
         context = self.set_permissions_in_context({})
 
@@ -300,7 +304,7 @@ class DocumentAddFormView(MongonautViewMixin, FormView, MongonautFormViewMixin):
 
         return context
 
-    def get_form(self, Form):
+    def get_form(self):
         self.set_mongonaut_base()
         self.document_type = getattr(self.models, self.document_name)
         self.form = Form()
