@@ -5,7 +5,7 @@ TODO move permission checks to the dispatch view thingee
 import math
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.forms import Form
 from django.http import HttpResponseForbidden
 from django.http import Http404

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+import types
+from importlib import import_module
 
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseForbidden
-from importlib import import_module
 from mongoengine.fields import EmbeddedDocumentField
 
 from mongonaut.exceptions import NoMongoAdminSpecified
@@ -19,10 +20,17 @@ class AppStore(object):
 
     def __init__(self, module):
         self.models = []
+        self.add_module(module)
+
+    def add_module(self, module, max_depth=1):
         for key in module.__dict__.keys():
             model_candidate = getattr(module, key)
             if hasattr(model_candidate, 'mongoadmin'):
                 self.add_model(model_candidate)
+
+            elif (max_depth > 0
+                  and isinstance(model_candidate, types.ModuleType)):
+                self.add_module(model_candidate, max_depth - 1)
 
     def add_model(self, model):
         model.name = model.__name__
