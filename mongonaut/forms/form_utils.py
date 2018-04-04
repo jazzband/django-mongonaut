@@ -5,6 +5,7 @@ Used as a utility class for functions related to
 form manipulation.
 """
 
+import six
 from collections import namedtuple
 
 
@@ -19,9 +20,12 @@ def has_digit(string_or_list, sep="_"):
     element is a digit.  sep is used when a string is given to know
     what separates one word from another.
     """
-    if isinstance(string_or_list, list):
+    if isinstance(string_or_list, (tuple, list)):
         list_length = len(string_or_list)
-        return unicode(string_or_list[-1]).isdigit() if list_length > 0 else False
+        if list_length:
+            return six.text_type(string_or_list[-1]).isdigit()
+        else:
+            return False
     else:
         return has_digit(string_or_list.split(sep))
 
@@ -57,12 +61,12 @@ def make_key(*args, **kwargs):
 
     for arg in args:
         if isinstance(arg, list):
-            string_array.append(unicode(sep.join(arg)))
+            string_array.append(six.text_type(sep.join(arg)))
         else:
             if exclude_last_string:
                 new_key_array = arg.split(sep)[:-1]
                 if len(new_key_array) > 0:
                     string_array.append(make_key(new_key_array))
             else:
-                string_array.append(unicode(arg))
+                string_array.append(six.text_type(arg))
     return sep.join(string_array)

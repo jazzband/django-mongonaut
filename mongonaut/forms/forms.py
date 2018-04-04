@@ -53,7 +53,7 @@ class MongoModelForm(MongoModelFormBaseMixin, Form):
 
         # Specifically adding list field keys to the form so they are included
         # in form.cleaned_data after the call to is_valid
-        for field_key, field in self.form.fields.iteritems():
+        for field_key, field in self.form.fields.items():
             if has_digit(field_key):
                 # We have a list field.
                 base_key = make_key(field_key, exclude_last_string=True)
@@ -93,7 +93,7 @@ class MongoModelForm(MongoModelFormBaseMixin, Form):
         if not isinstance(document, TopLevelDocumentMetaclass) and doc_key:
             doc_dict.update({"_field_type": EmbeddedDocumentField})
 
-        for key, field in document._fields.iteritems():
+        for key, field in document._fields.items():
             doc_dict[key] = field
 
         return doc_dict
@@ -128,7 +128,7 @@ class MongoModelForm(MongoModelFormBaseMixin, Form):
         """
         doc_dict = self.create_doc_dict(document, document_key, owner_document)
 
-        for doc_key, doc_field in doc_dict.iteritems():
+        for doc_key, doc_field in doc_dict.items():
             # Base fields should not be evaluated
             if doc_key.startswith("_"):
                 continue

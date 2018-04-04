@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from mongonaut import views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(
         regex=r'^$',
         view=views.IndexView.as_view(),
@@ -34,4 +34,4 @@ urlpatterns = patterns('',
         view=views.DocumentDeleteView.as_view(),
         name="document_delete"
     )
-)
+]

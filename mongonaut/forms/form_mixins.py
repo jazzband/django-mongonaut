@@ -93,7 +93,7 @@ class MongoModelFormBaseMixin(object):
             order_dict = OrderedDict.fromkeys(field_order_list)
             return_dict = order_dict
 
-        for field_key, field_dict in sorted(model_dict.iteritems()):
+        for field_key, field_dict in sorted(model_dict.items()):
             if not field_key.startswith("_"):
                 widget = field_dict.get('_widget', None)
                 if widget is None:
@@ -115,7 +115,7 @@ class MongoModelFormBaseMixin(object):
           parent_key -- the key for the previous key in the recursive call
           field_type -- used to determine what kind of field we are setting
         """
-        for form_key, field_value in form_field_dict.iteritems():
+        for form_key, field_value in form_field_dict.items():
             form_key = make_key(parent_key, form_key) if parent_key is not None else form_key
             if isinstance(field_value, tuple):
 
@@ -268,8 +268,12 @@ class MongoModelFormBaseMixin(object):
                 return_data = get_value(document._data.get(current_key), new_key)
             else:
                 # Handeling all other fields and id
-                return_data = (document._data.get(None, None) if current_key == "id" else
+                try: # Added try except otherwise we get "TypeError: getattr(): attribute name must be string" error from mongoengine/base/datastructures.py 
+                    return_data = (document._data.get(None, None) if current_key == "id" else
                               document._data.get(current_key, None))
+                except: 
+                    return_data = document._data.get(current_key, None)
+
             return return_data
 
         if self.is_initialized:

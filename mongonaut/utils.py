@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from mongoengine.base import ObjectIdField, ValidationError
+from mongoengine.errors import ValidationError
+from mongoengine.base import ObjectIdField
 from mongoengine.fields import ReferenceField
 
 # Used to validate object_ids.

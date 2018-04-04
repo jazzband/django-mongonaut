@@ -52,19 +52,15 @@ Get MongoDB::
 
     Download the right version per http://www.mongodb.org/downloads
 
-Get mongoengine (and pymongo):
+Get Django Mongonaut (and mongoengine + pymongo)::
 
-    pip install mongoengine=>0.5.2
-
-Get the code::
-
-    pip install django-mongonaut==0.2.20
+    pip install -U django-mongonaut
 
 Install the dependency in your settings.py::
 
     INSTALLED_APPS = (
     ...
-    'mongonaut',
+        'mongonaut',
     ...
     )
 
@@ -79,11 +75,13 @@ Add the mongonaut urls.py file to your urlconf file:
 
 .. sourcecode:: python
 
-    urlpatterns = patterns('',
+    from djanog import urls
+
+    urlpatterns = [
         ...
-        (r'^mongonaut/', include('mongonaut.urls')),
+        url.path('mongonaut/', urls.include('mongonaut.urls')),
         ...
-    )
+    ]
 
 
 Configuration
