@@ -3,10 +3,23 @@
 {% load mongonaut_tags %}
 
 {% block breadcrumbs %}
-<li class="breadcrumb-item active"><a href='{% url "index" %}'>Mongonaut</a></li>
-<li class="breadcrumb-item active"><a href='{% url "document_list" app_label document_name %}'>{{ document_name }}s</a></li>
-<li class="breadcrumb-item active"><a href='{% url "document_detail" app_label document_name document.id %}'>{{ document_name }} {{ document.id }}</a></li>
-<li class="breadcrumb-item active"><a href="">Edit</a>
+<li class="breadcrumb-item">
+    <a href="{% url "index" %}">Mongonaut</a>
+    <span class="divider">/</span>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url "document_list" app_label document_name %}">{{ document_name }}s</a>
+    <span class="divider">/</span>
+</li>
+<li class="breadcrumb-item">
+    <a href="{% url "document_detail" app_label document_name document.id %}">
+        {{ document }}
+    </a>
+    <span class="divider">/</span>
+</li>
+<li class="breadcrumb-item active">
+    Edit
+</li>
 {% endblock %}
 
 {% block content %}
