@@ -44,7 +44,7 @@ class IndexViewTests(unittest.TestCase):
 
         try:
             v = get_document_value(p, 'author')
-        except NoReverseMatch, e:
+        except NoReverseMatch as e:
             match_found = False
 
         settings.ROOT_URLCONF = urls_tmp
@@ -76,7 +76,7 @@ class IndexViewTests(unittest.TestCase):
 
         try:
             self.view.render()
-        except NoReverseMatch, e:
+        except NoReverseMatch as e:
             match_found = False
 
         settings.ROOT_URLCONF = urls_tmp
@@ -106,7 +106,7 @@ class IndexViewTests(unittest.TestCase):
         try:
             res = get_document_value(p, 'author')
             unicode_ok = True
-        except UnicodeEncodeError, e:
+        except UnicodeEncodeError as e:
             pass
 
         self.assertTrue(unicode_ok)
