@@ -16,6 +16,7 @@ from mongoengine.fields import DecimalField
 from mongoengine.fields import URLField
 from mongoengine.fields import IntField
 from mongoengine.fields import StringField
+from mongoengine.fields import GeoPointField
 
 
 def get_widget(model_field, disabled=False):
@@ -35,7 +36,9 @@ def get_widget(model_field, disabled=False):
     elif isinstance(model_field, ReferenceField) or model_field.choices:
         return forms.Select(attrs=attrs)
 
-    elif isinstance(model_field, ListField) or isinstance(model_field, EmbeddedDocumentField):
+    elif (isinstance(model_field, ListField) or
+          isinstance(model_field, EmbeddedDocumentField) or
+          isinstance(model_field, GeoPointField)):
         return None
 
     else:

@@ -103,11 +103,11 @@ class DocumentListView(MongonautViewMixin, FormView):
         obj_count = queryset.count()
         self.total_pages = math.ceil(obj_count / self.documents_per_page)
 
-        if self.page < 1:
-            self.page = 1
-
         if self.page > self.total_pages:
             self.page = self.total_pages
+
+        if self.page < 1:
+            self.page = 1
 
         start = (self.page - 1) * self.documents_per_page
         end = self.page * self.documents_per_page
