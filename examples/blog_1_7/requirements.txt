@@ -1,4 +1,4 @@
-Django==1.7.7
+Django==2.2.24
 django-mongonaut==0.2.21
 mongoengine==0.8.7
 pymongo==2.8
