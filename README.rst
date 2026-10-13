@@ -5,6 +5,13 @@ django-mongonaut
 :Version: 0.2.21
 :Maintainer: Jazzband (jazzband.co)
 
+Retired
+=======
+
+django-mongonaut is retired and no longer maintained. The GitHub repository and
+PyPI project are archived. Existing releases and documentation remain available.
+See the `retirement discussion <https://github.com/jazzband/help/issues/461>`_.
+
 .. image:: https://travis-ci.org/jazzband/django-mongonaut.png
    :alt: Build Status
    :target: https://travis-ci.org/jazzband/django-mongonaut
@@ -17,8 +24,8 @@ django-mongonaut
   :target: https://jazzband.co/
   :alt: Jazzband
 
-This Project is Being Moved to Jazzband
-=======================================
+Move to Jazzband in 2015
+=======================
 
 In late 2015 `@garrypolley`_ and I agreed to move this project to the `@jazzband`_ organization. Since we've both been off MongoDB for several years, maintaining this project ourselves no longer makes sense. By handing this to Jazzband, we are:
 
